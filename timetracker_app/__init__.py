@@ -7,4 +7,6 @@ app.config.from_object(Config)
 
 db = SQLAlchemy(app)
 
+
 from timetracker_app import overtimes
+from timetracker_app import models
