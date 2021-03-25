@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Add hours{% endblock %}
+
+{% block content %}
+<br>
+<form method="POST">
+    <h2 align="center">Add hours</h2>
+    <div class="form-group">
+        <label for="hours">Extra hours</label>
+        <input type="text" class="form-control" id="hours" name="hours" placeholder="Add hours">
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Confirm</button>
+</form>
+
+{% endblock %}

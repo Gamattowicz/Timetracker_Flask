@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<br>
+<form method="POST">
+    <h2 align="center">Add new day</h2>
+    <div class="form-group">
+        <label for="day">New Day</label>
+        <input type="text" class="form-control" id="day" name="day" placeholder="Add new day">
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Confirm</button>
+</form>
+
+{% endblock %}

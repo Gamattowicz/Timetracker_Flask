@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Add projects{% endblock %}
+
+{% block content %}
+<br>
+<form method="POST">
+    <h2 align="center">Add new project</h2>
+    <div class="form-group">
+        <label for="project">New project</label>
+        <input type="text" class="form-control" id="project" name="project" placeholder="Add new project">
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Confirm</button>
+</form>
+
+{% endblock %}
