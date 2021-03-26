@@ -6,8 +6,12 @@
 <form method="POST", action="{{ url_for('views.projects') }}">
     <h2 align="center">Add new project</h2>
     <div class="form-group">
-        <label for="project">New project</label>
-        <input type="text" class="form-control" id="project" name="project" placeholder="Add new project">
+        <label for="name">Project name</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Add a project name">
+    </div>
+    <div class="form-group">
+        <label for="shortcut">Project shortcut</label>
+        <input type="text" class="form-control" id="shortcut" name="shortcut" placeholder="Add a project shortcut">
     </div>
     <br>
     <button type="submit" class="btn btn-primary">Confirm</button>

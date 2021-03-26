@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request
+import sqlite3
 
 views = Blueprint('views', __name__)
 
@@ -18,5 +19,14 @@ def hours():
 @views.route('/projects', methods=['GET', 'POST'])
 def projects():
     if request.method == 'POST':
-        return f'<h1> Name: {request.form["project"]} </h1>'
+        name = request.form['name']
+        shortcut = request.form['shortcut']
+
+        connection = sqlite3.connect(r'timetracker\time_tracker.db')
+        cur = connection.cursor()
+        cur.execute('INSERT INTO projects (name, shortcut) VALUES (?, ?)', \
+                    [name, shortcut])
+        connection.commit()
+        connection.close()
+
     return render_template('projects.html')
