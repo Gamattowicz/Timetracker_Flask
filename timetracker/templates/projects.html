@@ -3,7 +3,7 @@
 
 {% block content %}
 <br>
-<form method="POST">
+<form method="POST", action="{{ url_for('views.projects') }}">
     <h2 align="center">Add new project</h2>
     <div class="form-group">
         <label for="project">New project</label>

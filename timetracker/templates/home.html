@@ -3,7 +3,7 @@
 
 {% block content %}
 <br>
-<form method="POST">
+<form method="POST" action="{{ url_for('views.home') }}">
     <h2 align="center">Add new day</h2>
     <div class="form-group">
         <label for="day">New Day</label>
