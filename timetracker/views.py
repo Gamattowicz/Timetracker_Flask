@@ -18,15 +18,20 @@ def hours():
 
 @views.route('/projects', methods=['GET', 'POST'])
 def projects():
+    connection = sqlite3.connect(r'timetracker\time_tracker.db')
+    connection.row_factory = sqlite3.Row
+    cur = connection.cursor()
+
     if request.method == 'POST':
         name = request.form['name']
         shortcut = request.form['shortcut']
 
-        connection = sqlite3.connect(r'timetracker\time_tracker.db')
-        cur = connection.cursor()
         cur.execute('INSERT INTO projects (name, shortcut) VALUES (?, ?)', \
                     [name, shortcut])
-        connection.commit()
-        connection.close()
 
-    return render_template('projects.html')
+    c = cur.execute('select * from projects')
+    results = c.fetchall()
+    connection.commit()
+    connection.close()
+
+    return render_template('projects.html', results=results)
