@@ -11,9 +11,31 @@ def home():
     return render_template('home.html')
 
 
-@views.route('/hours')
+@views.route('/hours', methods=['GET', 'POST'])
 def hours():
-    return render_template('hours.html')
+    connection = sqlite3.connect(r'timetracker\time_tracker.db')
+    connection.row_factory = sqlite3.Row
+    cur = connection.cursor()
+
+    if request.method == 'POST':
+        amount = request.form['amount']
+        project_shortcut = request.form['shortcut']
+        if request.form['work-date']:
+            work_date = request.form['work-date']
+
+            cur.execute('INSERT INTO hours (amount, work_date, '
+                        'project_shortcut) VALUES (?, ?, ?)', [amount,
+                                                               work_date, project_shortcut])
+        else:
+            cur.execute('INSERT INTO hours (amount, project_shortcut) VALUES (?, ?)',
+                        [amount, project_shortcut])
+
+    c = cur.execute('select * from hours')
+    results = c.fetchall()
+    connection.commit()
+    connection.close()
+
+    return render_template('hours.html', results=results)
 
 
 @views.route('/projects', methods=['GET', 'POST'])
