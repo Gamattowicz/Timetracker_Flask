@@ -13,11 +13,9 @@ cur.execute('''create table hours (
             id integer primary key autoincrement,
             amount integer not null,
             work_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            project_id integer not null,
-            FOREIGN KEY (project_id) REFERENCES Projects(id))''')
+            project_shortcut text not null,
+            FOREIGN KEY (project_shortcut) REFERENCES Projects(shortcut))''')
 
-# cur.execute('INSERT INTO projects (name, shortcut)'
-#             'VALUES("fsdas", "dsadsa")')
 
 connection.commit()
 connection.close()
