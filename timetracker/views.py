@@ -32,10 +32,12 @@ def hours():
 
     c = cur.execute('select * from hours order by work_date desc')
     results = c.fetchall()
+    p = cur.execute('select * from projects')
+    projects = p.fetchall()
     connection.commit()
     connection.close()
 
-    return render_template('hours.html', results=results)
+    return render_template('hours.html', results=results, projects=projects)
 
 
 @views.route('/projects', methods=['GET', 'POST'])
