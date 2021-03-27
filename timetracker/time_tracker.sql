@@ -7,7 +7,7 @@ create table projects (
 create table hours (
     id integer primary key autoincrement,
     amount integer not null,
-    work_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,,
+    work_date DATE NOT NULL DEFAULT CURRENT_DATE,
     project_shortcut text not null,
     FOREIGN KEY (project_shortcut) REFERENCES Projects(shortcut)
 )
