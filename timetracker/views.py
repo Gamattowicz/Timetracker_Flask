@@ -30,7 +30,7 @@ def hours():
             cur.execute('INSERT INTO hours (amount, project_shortcut) VALUES (?, ?)',
                         [amount, project_shortcut])
 
-    c = cur.execute('select * from hours')
+    c = cur.execute('select * from hours order by work_date desc')
     results = c.fetchall()
     connection.commit()
     connection.close()
@@ -51,7 +51,10 @@ def projects():
         cur.execute('INSERT INTO projects (name, shortcut) VALUES (?, ?)', \
                     [name, shortcut])
 
-    c = cur.execute('select * from projects')
+    c = cur.execute('SELECT p.id, p.name, p.shortcut, SUM(h.amount) as sum '
+                    'FROM projects p '
+                    'JOIN hours h ON p.shortcut = h.project_shortcut '
+                    'GROUP BY p.id ')
     results = c.fetchall()
     connection.commit()
     connection.close()
