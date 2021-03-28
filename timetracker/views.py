@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, flash
 import sqlite3
 
 views = Blueprint('views', __name__)
@@ -18,17 +18,20 @@ def hours():
     cur = connection.cursor()
 
     if request.method == 'POST':
-        amount = request.form['amount']
-        project_shortcut = request.form['shortcut']
-        if request.form['work-date']:
-            work_date = request.form['work-date']
-
-            cur.execute('INSERT INTO hours (amount, work_date, '
-                        'project_shortcut) VALUES (?, ?, ?)', [amount,
-                                                               work_date, project_shortcut])
+        if not request.form['amount'].isdigit():
+            flash('Amount must be a number!', category='error')
         else:
-            cur.execute('INSERT INTO hours (amount, project_shortcut) VALUES (?, ?)',
-                        [amount, project_shortcut])
+            amount = request.form['amount']
+            project_shortcut = request.form['shortcut']
+            if request.form['work-date']:
+                work_date = request.form['work-date']
+
+                cur.execute('INSERT INTO hours (amount, work_date, '
+                            'project_shortcut) VALUES (?, ?, ?)', [amount,
+                                                                   work_date, project_shortcut])
+            else:
+                cur.execute('INSERT INTO hours (amount, project_shortcut) VALUES (?, ?)',
+                            [amount, project_shortcut])
 
     c = cur.execute('select * from hours order by work_date desc')
     results = c.fetchall()
