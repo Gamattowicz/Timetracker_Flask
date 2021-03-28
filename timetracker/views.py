@@ -18,7 +18,8 @@ def hours():
     cur = connection.cursor()
 
     if request.method == 'POST':
-        if not request.form['amount'].isdigit():
+        if not (isinstance(float(request.form['amount']), float) or isinstance(
+                int(request.form['amount']), int)):
             flash('Amount must be a number!', category='error')
         else:
             amount = request.form['amount']
