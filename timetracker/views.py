@@ -77,6 +77,7 @@ def projects():
 
             cur.execute('INSERT INTO projects (name, shortcut) VALUES (?, ?)',
                         [name, shortcut])
+            flash('Project have been added!', category='success')
 
     c = cur.execute('''SELECT p.id, p.name, p.shortcut, IFNULL(SUM(
                     h.amount), 0) as sum
