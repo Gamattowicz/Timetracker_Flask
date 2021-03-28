@@ -35,12 +35,14 @@ def hours():
                     cur.execute('INSERT INTO hours (amount, work_date, '
                                 'project_shortcut) VALUES (?, ?, ?)', [amount,
                                                                    work_date, project_shortcut])
+                    flash('Hours have been added!', category='success')
                 else:
                     flash('Format of date is incorrect. Must be YYYY-MM-DD',
                           category='error')
             else:
                 cur.execute('INSERT INTO hours (amount, project_shortcut) VALUES (?, ?)',
                             [amount, project_shortcut])
+                flash('Hours have been added!', category='success')
 
     c = cur.execute('select * from hours order by work_date desc')
     results = c.fetchall()
