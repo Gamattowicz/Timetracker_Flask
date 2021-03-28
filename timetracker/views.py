@@ -21,6 +21,9 @@ def hours():
         if not (isinstance(float(request.form['amount']), float) or isinstance(
                 int(request.form['amount']), int)):
             flash('Amount must be a number!', category='error')
+        elif request.form['shortcut'] == 'Choose project shortcut':
+            flash('You have to choose one of existing shortcut project!',
+                  category='error')
         else:
             amount = request.form['amount']
             project_shortcut = request.form['shortcut']
