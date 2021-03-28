@@ -63,9 +63,14 @@ def projects():
     if request.method == 'POST':
         r = cur.execute('SELECT name from projects WHERE name = ?',
                         (request.form["name"], ))
+        n = cur.execute('SELECT shortcut from projects WHERE shortcut = ?',
+                        (request.form["shortcut"], ))
         if r.fetchone():
             flash(f"Project with name {request.form['name']} already exist!",
                   category='error')
+        elif n.fetchone():
+            flash(f"Project with shortcut {request.form['shortcut']} already "
+                  f"exist!", category='error')
         else:
             name = request.form['name']
             shortcut = request.form['shortcut']
