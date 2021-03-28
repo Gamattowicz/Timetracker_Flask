@@ -61,18 +61,23 @@ def projects():
     cur = connection.cursor()
 
     if request.method == 'POST':
-        name = request.form['name']
-        shortcut = request.form['shortcut']
+        r = cur.execute('SELECT name from projects WHERE name = ?',
+                        (request.form["name"], ))
+        if r.fetchone():
+            flash(f"Project with name {request.form['name']} already exist!",
+                  category='error')
+        else:
+            name = request.form['name']
+            shortcut = request.form['shortcut']
 
-        cur.execute('INSERT INTO projects (name, shortcut) VALUES (?, ?)', \
-                    [name, shortcut])
+            cur.execute('INSERT INTO projects (name, shortcut) VALUES (?, ?)',
+                        [name, shortcut])
 
-    c = cur.execute('SELECT p.id, p.name, p.shortcut, SUM(h.amount) as sum '
-                    'FROM projects p '
-                    'JOIN hours h ON p.shortcut = h.project_shortcut '
-                    'GROUP BY p.id ')
+    c = cur.execute('''SELECT p.id, p.name, p.shortcut, SUM(h.amount) as sum
+                    FROM projects p
+                    LEFT JOIN hours h ON p.shortcut = h.project_shortcut
+                    GROUP BY p.id ''')
     results = c.fetchall()
     connection.commit()
-    connection.close()
 
     return render_template('projects.html', results=results)
