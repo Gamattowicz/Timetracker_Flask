@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, flash
 import sqlite3
+from re import fullmatch
 
 views = Blueprint('views', __name__)
 
@@ -28,11 +29,15 @@ def hours():
             amount = request.form['amount']
             project_shortcut = request.form['shortcut']
             if request.form['work-date']:
-                work_date = request.form['work-date']
-
-                cur.execute('INSERT INTO hours (amount, work_date, '
-                            'project_shortcut) VALUES (?, ?, ?)', [amount,
+                if fullmatch(r'20[0-2][0-9]-[0-1][0-9]-[0-3][0-9]',
+                             request.form['work-date']):
+                    work_date = request.form['work-date']
+                    cur.execute('INSERT INTO hours (amount, work_date, '
+                                'project_shortcut) VALUES (?, ?, ?)', [amount,
                                                                    work_date, project_shortcut])
+                else:
+                    flash('Format of date is incorrect. Must be YYYY-MM-DD',
+                          category='error')
             else:
                 cur.execute('INSERT INTO hours (amount, project_shortcut) VALUES (?, ?)',
                             [amount, project_shortcut])
