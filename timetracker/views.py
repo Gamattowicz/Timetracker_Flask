@@ -73,7 +73,8 @@ def projects():
             cur.execute('INSERT INTO projects (name, shortcut) VALUES (?, ?)',
                         [name, shortcut])
 
-    c = cur.execute('''SELECT p.id, p.name, p.shortcut, SUM(h.amount) as sum
+    c = cur.execute('''SELECT p.id, p.name, p.shortcut, IFNULL(SUM(
+                    h.amount), 0) as sum
                     FROM projects p
                     LEFT JOIN hours h ON p.shortcut = h.project_shortcut
                     GROUP BY p.id ''')
