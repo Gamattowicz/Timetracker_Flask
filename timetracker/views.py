@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, request, flash
 import sqlite3
 from re import fullmatch
+from .models import Projects, Hours
+from . import db
 
 views = Blueprint('views', __name__)
 
@@ -14,10 +16,6 @@ def home():
 
 @views.route('/hours', methods=['GET', 'POST'])
 def hours():
-    connection = sqlite3.connect(r'timetracker\time_tracker.db')
-    connection.row_factory = sqlite3.Row
-    cur = connection.cursor()
-
     if request.method == 'POST':
         if not (isinstance(float(request.form['amount']), float) or isinstance(
                 int(request.form['amount']), int)):
@@ -32,34 +30,29 @@ def hours():
                 if fullmatch(r'20[0-2][0-9]-[0-1][0-9]-[0-3][0-9]',
                              request.form['work-date']):
                     work_date = request.form['work-date']
-                    cur.execute('INSERT INTO hours (amount, work_date, '
-                                'project_shortcut) VALUES (?, ?, ?)', [amount,
-                                                                   work_date, project_shortcut])
+                    new_hours = Hours(amount=amount, work_date=work_date,
+                                      project_shortcut=project_shortcut)
+                    db.session.add(new_hours)
+                    db.session.commit()
                     flash('Hours have been added!', category='success')
                 else:
                     flash('Format of date is incorrect. Must be YYYY-MM-DD',
                           category='error')
             else:
-                cur.execute('INSERT INTO hours (amount, project_shortcut) VALUES (?, ?)',
-                            [amount, project_shortcut])
+                new_hours = Hours(amount=amount,
+                                  project_shortcut=project_shortcut)
+                db.session.add(new_hours)
+                db.session.commit()
                 flash('Hours have been added!', category='success')
 
-    c = cur.execute('select * from hours order by work_date desc')
-    results = c.fetchall()
-    p = cur.execute('select * from projects')
-    projects = p.fetchall()
-    connection.commit()
-    connection.close()
+    results = Hours.query.all()
+    projects = Projects.query.all()
 
     return render_template('hours.html', results=results, projects=projects)
 
 
 @views.route('/projects', methods=['GET', 'POST'])
 def projects():
-    connection = sqlite3.connect(r'timetracker\time_tracker.db')
-    connection.row_factory = sqlite3.Row
-    cur = connection.cursor()
-
     if request.method == 'POST':
         r = cur.execute('SELECT name from projects WHERE name = ?',
                         (request.form["name"], ))

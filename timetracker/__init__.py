@@ -16,6 +16,10 @@ def create_app():
 
     app.register_blueprint(views, url_prefix='/')
 
+    from .models import Projects, Hours
+
+    create_database(app)
+
     return app
 
 
