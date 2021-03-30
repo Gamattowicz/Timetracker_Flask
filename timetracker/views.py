@@ -3,6 +3,7 @@ import sqlite3
 from re import fullmatch
 from .models import Projects, Hours
 from . import db
+from sqlalchemy.sql import func
 
 views = Blueprint('views', __name__)
 
@@ -54,30 +55,30 @@ def hours():
 @views.route('/projects', methods=['GET', 'POST'])
 def projects():
     if request.method == 'POST':
-        r = cur.execute('SELECT name from projects WHERE name = ?',
-                        (request.form["name"], ))
-        n = cur.execute('SELECT shortcut from projects WHERE shortcut = ?',
-                        (request.form["shortcut"], ))
-        if r.fetchone():
+        if Projects.query.filter_by(name=request.form['name']).first():
             flash(f"Project with name {request.form['name']} already exist!",
                   category='error')
-        elif n.fetchone():
+        elif Projects.query.filter_by(shortcut=request.form['shortcut']).first():
             flash(f"Project with shortcut {request.form['shortcut']} already "
                   f"exist!", category='error')
         else:
             name = request.form['name']
             shortcut = request.form['shortcut']
 
-            cur.execute('INSERT INTO projects (name, shortcut) VALUES (?, ?)',
-                        [name, shortcut])
+            new_project = Projects(name=name, shortcut=shortcut)
+            db.session.add(new_project)
+            db.session.commit()
             flash('Project have been added!', category='success')
 
-    c = cur.execute('''SELECT p.id, p.name, p.shortcut, IFNULL(SUM(
-                    h.amount), 0) as sum
-                    FROM projects p
-                    LEFT JOIN hours h ON p.shortcut = h.project_shortcut
-                    GROUP BY p.id ''')
-    results = c.fetchall()
-    connection.commit()
+    # c = cur.execute('''SELECT p.id, p.name, p.shortcut, IFNULL(SUM(
+    #                 h.amount), 0) as sum
+    #                 FROM projects p
+    #                 LEFT JOIN hours h ON p.shortcut = h.project_shortcut
+    #                 GROUP BY p.id ''')
+    results = db.session.query(Projects.id, Projects.name,
+                               Projects.shortcut,
+                               func.sum(Hours.amount).label('sum')).outerjoin(
+                                    Hours, Projects.shortcut ==
+                                    Hours.project_shortcut).group_by(Projects.id).all()
 
     return render_template('projects.html', results=results)
