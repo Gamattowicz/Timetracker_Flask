@@ -3,7 +3,7 @@ import sqlite3
 from re import fullmatch
 from .models import Projects, Hours
 from . import db
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, alias
 
 views = Blueprint('views', __name__)
 
@@ -77,7 +77,8 @@ def projects():
     #                 GROUP BY p.id ''')
     results = db.session.query(Projects.id, Projects.name,
                                Projects.shortcut,
-                               func.sum(Hours.amount).label('sum')).outerjoin(
+                               func.ifnull(func.sum(Hours.amount), '0').label(
+                                   'sum')).outerjoin(
                                     Hours, Projects.shortcut ==
                                     Hours.project_shortcut).group_by(Projects.id).all()
 
