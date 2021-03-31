@@ -25,12 +25,12 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-
+        remember = request.form.get('remember')
         user = User.query.filter_by(username=username).first()
         if user:
             if check_password_hash(user.password, password):
                 flash('You have logged in correctly', category='success')
-                login_user(user, remember=True)
+                login_user(user, remember)
                 if 'next' in session and session['next']:
                     if is_safe_url(session['next']):
                         return redirect(session['next'])
