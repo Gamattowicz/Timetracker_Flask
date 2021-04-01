@@ -35,17 +35,17 @@
           <th class="border border-dark" scope="col">Number of hours</th>
           <th class="border border-dark" scope="col">Date</th>
           <th class="border border-dark" scope="col">Project shortcut</th>
-          <th class="border border-dark" scope="col">User id</th>
         </tr>
       </thead>
         <tbody>
     {% for result in results %}
+        {% if result.user_id == user.id %}
         <tr>
           <td class="border border-white">{{ result.amount }}</td>
           <td class="border border-white">{{ result.work_date }}</td>
           <td class="border border-white">{{ result.project_shortcut }}</td>
-          <td class="border border-white">{{ result.user_id }}</td>
         </tr>
+        {% endif %}
     {% endfor %}
         </tbody>
     </table>
