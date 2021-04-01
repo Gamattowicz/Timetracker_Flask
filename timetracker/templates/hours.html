@@ -32,8 +32,7 @@
     <table class="table table-primary table-striped table-bordered">
       <thead class="thead-dark">
         <tr>
-          <th class="border border-dark" scope="col">#</th>
-          <th class="border border-dark" scope="col">Amount</th>
+          <th class="border border-dark" scope="col">Number of hours</th>
           <th class="border border-dark" scope="col">Date</th>
           <th class="border border-dark" scope="col">Project shortcut</th>
         </tr>
@@ -41,7 +40,6 @@
         <tbody>
     {% for result in results %}
         <tr>
-          <th class="border border-white" scope="row">{{ result.id }}</th>
           <td class="border border-white">{{ result.amount }}</td>
           <td class="border border-white">{{ result.work_date }}</td>
           <td class="border border-white">{{ result.project_shortcut }}</td>

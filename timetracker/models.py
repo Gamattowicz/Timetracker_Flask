@@ -13,7 +13,7 @@ class Projects(db.Model):
 class Hours(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Integer, nullable=False)
-    work_date = db.Column(db.DateTime(timezone=True), default=func.now())
+    work_date = db.Column(db.String(50), default=func.current_date())
     project_shortcut = db.Column(db.String(50), db.ForeignKey(
         'projects.shortcut'), nullable=False)
 
