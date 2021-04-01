@@ -1,21 +1,24 @@
 from flask import Blueprint, render_template, request, flash
-import sqlite3
 from re import fullmatch
 from .models import Projects, Hours
 from . import db
-from sqlalchemy.sql import func, alias
+from sqlalchemy.sql import func
+from flask_login import login_required, current_user
+
 
 views = Blueprint('views', __name__)
 
 
 @views.route('/', methods=['GET', 'POST'])
+@login_required
 def home():
     if request.method == 'POST':
         print('<h1> Good </h1>')
-    return render_template('home.html')
+    return render_template('home.html', user=current_user)
 
 
 @views.route('/hours', methods=['GET', 'POST'])
+@login_required
 def hours():
     if request.method == 'POST':
         if not (isinstance(float(request.form['amount']), float) or isinstance(
@@ -49,10 +52,12 @@ def hours():
     results = Hours.query.all()
     projects = Projects.query.all()
 
-    return render_template('hours.html', results=results, projects=projects)
+    return render_template('hours.html', results=results, projects=projects,
+                           user=current_user)
 
 
 @views.route('/projects', methods=['GET', 'POST'])
+@login_required
 def projects():
     if request.method == 'POST':
         if Projects.query.filter_by(name=request.form['name']).first():
@@ -82,4 +87,4 @@ def projects():
                                     Hours, Projects.shortcut ==
                                     Hours.project_shortcut).group_by(Projects.id).all()
 
-    return render_template('projects.html', results=results)
+    return render_template('projects.html', results=results, user=current_user)
