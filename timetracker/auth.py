@@ -1,11 +1,23 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, \
+    url_for, session
 from .models import User
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, current_user, logout_user, login_required
+from urllib.parse import urlparse, urljoin
 
 
 auth = Blueprint('auth', __name__)
+
+
+def is_safe_url(target):
+    """
+    Function that checks if the url address entered by the user if safe
+    """
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -13,18 +25,22 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-
+        remember = request.form.get('remember')
         user = User.query.filter_by(username=username).first()
         if user:
             if check_password_hash(user.password, password):
                 flash('You have logged in correctly', category='success')
-                login_user(user, remember=True)
+                login_user(user, remember)
+                if 'next' in session and session['next']:
+                    if is_safe_url(session['next']):
+                        return redirect(session['next'])
                 return redirect(url_for('views.home'))
             else:
                 flash('Incorrect password!', category='error')
         else:
             flash('User with that username does not exist!', category='error')
 
+    session['next'] = request.args.get('next')
     return render_template('login.html', user=current_user)
 
 
