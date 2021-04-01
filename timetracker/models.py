@@ -20,7 +20,5 @@ class Hours(db.Model):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), nullable=False, unique=True,
-                         server_default='')
-    password = db.Column(db.String(50), server_default='')
-    active = db.Column('is_active', db.Boolean(), nullable=False, server_default='1')
+    username = db.Column(db.String(100), nullable=False, unique=True)
+    password = db.Column(db.String(50))

@@ -3,7 +3,6 @@ from config import Config, DB_NAME
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
-from flask_user import UserManager
 
 
 db = SQLAlchemy()
@@ -31,10 +30,6 @@ def create_app():
     @login_manager.user_loader
     def load_user(id):
         return User.query.get(int(id))
-
-    user_manager = UserManager(app, db, User)
-    user_manager.login_manager = login
-
 
     return app
 
