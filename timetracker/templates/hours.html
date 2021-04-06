@@ -2,10 +2,9 @@
 {% block title %}Add hours{% endblock %}
 
 {% block content %}
-<br>
-<form method="POST" class="was-validated" action="{{ url_for('views.hours') }}">
+<form method="POST" class="was-validated mt-4" action="{{ url_for('views.hours') }}">
     <h2 align="center">Add hours</h2>
-    <div class="form-group row">
+    <div class="form-group row my-4">
         <label for="amount" class="col-sm-2 col-form-label">Work hours</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter the number of hours" required>
@@ -16,9 +15,8 @@
                 Looks good!
             </div>
         </div>
-
     </div>
-    <div class="form-group row">
+    <div class="form-group row my-4">
         <label for="work-date" class="col-sm-2 col-form-label">Date of work</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" id="work-date" name="work-date" placeholder="Enter the date of work" required>
@@ -30,9 +28,8 @@
                 Looks good!
             </div>
         </div>
-
     </div>
-    <div class="form-group row">
+    <div class="form-group row my-4">
         <label for="shortcut" class="col-sm-2 control-label" class="col-form-label">Project shortcut</label>
         <div class="col-sm-10">
             <select id="shortcut" name="shortcut" class="form-select" aria-label="Default select example">
@@ -43,13 +40,11 @@
             </select>
         </div>
     </div>
-    <br>
     <button type="submit" class="btn btn-primary">Confirm</button>
 </form>
 
 <div class="hours-list">
-    <h3 align="center">List of hours</h3>
-    <br>
+    <h3 align="center" class="my-4">List of hours</h3>
     <table class="table table-primary table-hover table-bordered">
       <thead class="thead-dark">
         <tr>
