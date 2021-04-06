@@ -3,15 +3,28 @@
 
 {% block content %}
 <br>
-<form method="POST", action="{{ url_for('views.hours') }}">
+<form method="POST" class="was-validated" action="{{ url_for('views.hours') }}">
     <h2 align="center">Add hours</h2>
     <div class="form-group">
         <label for="amount">Work hours</label>
-        <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter the number of hours">
+        <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter the number of hours" required>
+        <div class="invalid-feedback">
+            This field must be filled!
+        </div>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
     </div>
     <div class="form-group">
         <label for="work-date">Date of work</label>
-        <input type="text" class="form-control" id="work-date" name="work-date" placeholder="Enter the date of work in format YYYY-MM-DD. If it is empty, the current date will be saved ">
+        <input type="text" class="form-control" id="work-date" name="work-date" placeholder="Enter the date of work" required>
+        <small class="form-text text-muted">Format of date is YYYY-MM-DD. If it is empty, the current date will be saved. </small>
+        <div class="invalid-feedback">
+            This field must be filled!
+        </div>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
     </div>
     <div class="form-group">
         <label for="shortcut" class="control-label">Project shortcut</label>
@@ -29,7 +42,7 @@
 <div class="hours-list">
     <h3 align="center">List of hours</h3>
     <br>
-    <table class="table table-primary table-striped table-bordered">
+    <table class="table table-primary table-hover table-bordered">
       <thead class="thead-dark">
         <tr>
           <th class="border border-dark" scope="col">Number of hours</th>
