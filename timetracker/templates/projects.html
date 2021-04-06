@@ -3,15 +3,27 @@
 
 {% block content %}
 <br>
-<form method="POST", action="{{ url_for('views.projects') }}">
+<form method="POST" class="was-validated" action="{{ url_for('views.projects') }}">
     <h2 align="center">Add new project</h2>
     <div class="form-group">
         <label for="name">Project name</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Enter a project name">
+        <input type="text" class="form-control" id="name" name="name" placeholder="Enter a project name" required>
+        <div class="invalid-feedback">
+            This field must be filled!
+        </div>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
     </div>
     <div class="form-group">
         <label for="shortcut">Project shortcut</label>
-        <input type="text" class="form-control" id="shortcut" name="shortcut" placeholder="Enter a project shortcut">
+        <input type="text" class="form-control" id="shortcut" name="shortcut" placeholder="Enter a project shortcut" required>
+        <div class="invalid-feedback">
+            This field must be filled!
+        </div>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
     </div>
     <br>
     <button type="submit" class="btn btn-primary">Confirm</button>
