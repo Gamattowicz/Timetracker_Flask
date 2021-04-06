@@ -5,9 +5,11 @@
 <br>
 <form method="POST" class="was-validated" action="{{ url_for('views.hours') }}">
     <h2 align="center">Add hours</h2>
-    <div class="form-group">
-        <label for="amount">Work hours</label>
-        <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter the number of hours" required>
+    <div class="form-group row">
+        <label for="amount" class="col-sm-2 col-form-label">Work hours</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter the number of hours" required>
+        </div>
         <div class="invalid-feedback">
             This field must be filled!
         </div>
@@ -15,10 +17,12 @@
             Looks good!
         </div>
     </div>
-    <div class="form-group">
-        <label for="work-date">Date of work</label>
-        <input type="text" class="form-control" id="work-date" name="work-date" placeholder="Enter the date of work" required>
-        <small class="form-text text-muted">Format of date is YYYY-MM-DD. If it is empty, the current date will be saved. </small>
+    <div class="form-group row">
+        <label for="work-date" class="col-sm-2 col-form-label">Date of work</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="work-date" name="work-date" placeholder="Enter the date of work" required>
+            <small class="form-text text-muted">Format of date is YYYY-MM-DD. If it is empty, the current date will be saved. </small>
+            </div>
         <div class="invalid-feedback">
             This field must be filled!
         </div>
@@ -26,14 +30,16 @@
             Looks good!
         </div>
     </div>
-    <div class="form-group">
-        <label for="shortcut" class="control-label">Project shortcut</label>
-        <select id="shortcut" name="shortcut" class="form-select" aria-label="Default select example">
-          <option selected>Choose project shortcut</option>
-            {% for project in projects %}
-            <option value="{{ project['shortcut'] }}">{{ project['shortcut'] }}</option>
-            {% endfor %}
-        </select>
+    <div class="form-group row">
+        <label for="shortcut" class="col-sm-2 control-label" class="col-form-label">Project shortcut</label>
+        <div class="col-sm-10">
+            <select id="shortcut" name="shortcut" class="form-select" aria-label="Default select example">
+              <option selected>Choose project shortcut</option>
+                {% for project in projects %}
+                <option value="{{ project['shortcut'] }}">{{ project['shortcut'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
     </div>
     <br>
     <button type="submit" class="btn btn-primary">Confirm</button>
