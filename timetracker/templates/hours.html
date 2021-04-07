@@ -17,11 +17,11 @@
         </div>
     </div>
     <div class="form-group row my-4">
-        <label for="work-date" class="col-sm-2 col-form-label">Date of work</label>
+        <label class="col-sm-2 col-form-label">Date of work</label>
         <div class="col-sm-10">
             {{ form.csrf_token }}
             {{ form.work_date(class_="form-control", id="work-date") }}
-            <input type="text" class="form-control" id="work-date" name="work-date" placeholder="Enter the date of work">
+            <small class="form-text text-muted">If it is empty, the current date will be saved. </small>
         </div>
     </div>
     <div class="form-group row my-4">
