@@ -5,6 +5,7 @@ from . import db
 from sqlalchemy.sql import func
 from flask_login import login_required, current_user
 import json
+from .forms import DatePicker
 
 
 views = Blueprint('views', __name__)
@@ -21,6 +22,7 @@ def home():
 @views.route('/hours', methods=['GET', 'POST'])
 @login_required
 def hours():
+    form = DatePicker()
     if request.method == 'POST':
         if not (isinstance(float(request.form['amount']), float) or isinstance(
                 int(request.form['amount']), int)):
@@ -32,7 +34,7 @@ def hours():
             amount = request.form['amount']
             project_shortcut = request.form['shortcut']
             user_id = current_user.id
-            if request.form['work-date']:
+            if request.form['work_date']:
                 if fullmatch(r'20[0-2][0-9]-[0-1][0-9]-[0-3][0-9]',
                              request.form['work-date']):
                     work_date = request.form['work-date']
@@ -57,7 +59,7 @@ def hours():
     projects = Projects.query.all()
 
     return render_template('hours.html', results=results, projects=projects,
-                           user=current_user)
+                           user=current_user, form=form)
 
 
 @views.route('/delete-hour', methods=['POST'])
