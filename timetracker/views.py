@@ -35,18 +35,13 @@ def hours():
             project_shortcut = request.form['shortcut']
             user_id = current_user.id
             if request.form['work_date']:
-                if fullmatch(r'20[0-2][0-9]-[0-1][0-9]-[0-3][0-9]',
-                             request.form['work-date']):
-                    work_date = request.form['work-date']
-                    new_hours = Hours(amount=amount, work_date=work_date,
-                                      project_shortcut=project_shortcut,
-                                      user_id=user_id)
-                    db.session.add(new_hours)
-                    db.session.commit()
-                    flash('Hours have been added!', category='success')
-                else:
-                    flash('Format of date is incorrect. Must be YYYY-MM-DD',
-                          category='error')
+                work_date = request.form['work_date']
+                new_hours = Hours(amount=amount, work_date=work_date,
+                                  project_shortcut=project_shortcut,
+                                  user_id=user_id)
+                db.session.add(new_hours)
+                db.session.commit()
+                flash('Hours have been added!', category='success')
             else:
                 new_hours = Hours(amount=amount,
                                   project_shortcut=project_shortcut,
