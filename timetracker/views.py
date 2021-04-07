@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, jsonify
 from re import fullmatch
 from .models import Projects, Hours
 from . import db
 from sqlalchemy.sql import func
 from flask_login import login_required, current_user
+import json
 
 
 views = Blueprint('views', __name__)
@@ -59,6 +60,18 @@ def hours():
                            user=current_user)
 
 
+@views.route('/delete-hour', methods=['POST'])
+def delete_hour():
+    hour = json.loads(request.data)
+    hourId = hour['hourId']
+    hour = Hours.query.get(hourId)
+    if hour:
+        db.session.delete(hour)
+        db.session.commit()
+        flash('Hours deleted!', category='success')
+    return jsonify({})
+
+
 @views.route('/projects', methods=['GET', 'POST'])
 @login_required
 def projects():
@@ -77,12 +90,6 @@ def projects():
             db.session.add(new_project)
             db.session.commit()
             flash('Project have been added!', category='success')
-
-    # c = cur.execute('''SELECT p.id, p.name, p.shortcut, IFNULL(SUM(
-    #                 h.amount), 0) as sum
-    #                 FROM projects p
-    #                 LEFT JOIN hours h ON p.shortcut = h.project_shortcut
-    #                 GROUP BY p.id ''')
     results = db.session.query(Projects.id, Projects.name,
                                Projects.shortcut,
                                func.ifnull(func.sum(Hours.amount), '0').label(

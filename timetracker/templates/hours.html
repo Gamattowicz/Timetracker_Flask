@@ -51,6 +51,7 @@
           <th class="border border-dark" scope="col">Number of hours</th>
           <th class="border border-dark" scope="col">Date</th>
           <th class="border border-dark" scope="col">Project shortcut</th>
+          <th class="border border-dark" scope="col"></th>
         </tr>
       </thead>
         <tbody>
@@ -60,6 +61,11 @@
           <td class="border border-white">{{ result.amount }}</td>
           <td class="border border-white">{{ result.work_date }}</td>
           <td class="border border-white">{{ result.project_shortcut }}</td>
+          <td class="border border-white">
+                <button type="button" class="close text-danger" onClick="deleteHour({{ result.id }})">
+                <span aria-hidden="true" class="text-center">&times; {{ result.id }}</span>
+                </button>
+          </td>
         </tr>
         {% endif %}
     {% endfor %}
