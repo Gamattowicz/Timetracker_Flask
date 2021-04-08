@@ -3,14 +3,13 @@
 
 {% block content %}
 
-<div id="stopwatch">
+<div id="watch">
     00:00:00
 </div>
 
 <div id="buttons">
-    <button onclick="startTimer()">Start</button>
-    <button onclick="pauseTimer()">Pause</button>
-    <button onclick="resetTimer()">Reset</button>
+    <button onclick="timer()" id="start">Start</button>
+    <button onclick="reset()" id="reset">Reset</button>
 </div>
 
 
@@ -18,66 +17,56 @@
 
 {% block js %}
 <script type="application/javascript">
-const timer = document.getElementById('stopwatch');
+const btnTime = document.getElementById('start');
+const watch = document.getElementById('watch');
 
-let h = 0;
-let m = 0;
-let s = 0;
+let time = 0;
 let active = false;
+let idInterval;
+let hours;
+let minutes;
+let seconds;
 
-function startTimer() {
-  if (active == false) {
+const timer = () => {
+    if (!active) {
+        active = !active
+        btnTime.textContent = 'Pause';
+        idInterval = setInterval(start, 1000);
+    } else {
         active = !active;
-        timerCycle();
+        btnTime.textContent = 'Start';
+        clearInterval(idInterval);
     }
 }
 
-function pauseTimer() {
-  if (active == true) {
-    active = !active;
-  }
+const start = () => {
+    time++;
+
+    let diffH = time / 3600;
+    hours = Math.floor(diffH);
+    hours = hours < 10 ? `0${hours}` : hours;
+
+    let diffM = (diffH - hours) * 60;
+    minutes = Math.floor(diffM);
+    minutes = minutes < 10 ? `0${minutes}` : minutes;
+
+    let diffS = (diffM - minutes) * 60;
+    seconds = Math.floor(diffS);
+    seconds = seconds < 10 ? `0${seconds}` : seconds;
+
+    watch.textContent = `${hours}:${minutes}:${seconds}`;
 }
 
-function timerCycle() {
-    if (active == true) {
-    s = parseInt(s);
-    m = parseInt(m);
-    h = parseInt(h);
+const reset = () => {
+    time = 0;
+    hours = 0;
+    minutes = 0;
+    seconds = 0;
 
-    s++;
-
-    if (s == 60) {
-      m++;
-      s = 0;
-    }
-    if (m == 60) {
-      h++;
-      m = 0;
-      s = 0;
-    }
-
-    if (s < 10 || s == 0) {
-      s = '0' + s;
-    }
-    if (m < 10 || m == 0) {
-      m = '0' + m;
-    }
-    if (h < 10 || h == 0) {
-      h = '0' + h;
-    }
-
-    timer.innerHTML = h + ':' + m + ':' + s;
-
-    setTimeout("timerCycle()", 1000);
-  }
-}
-
-function resetTimer() {
-    timer.innerHTML = "00:00:00";
+    watch.textContent = `0${hours}:0${minutes}:0${seconds}`;
     active = false;
-    h = 0;
-    s = 0;
-    m = 0;
+    btnTime.textContent = 'Start';
+    clearInterval(idInterval);
 }
 </script>
 {% endblock %}
