@@ -95,3 +95,15 @@ def projects():
                                     Hours.project_shortcut).group_by(Projects.id).all()
 
     return render_template('projects.html', results=results, user=current_user)
+
+
+@views.route('/vacation')
+@login_required
+def vacation():
+    return render_template('vacation.html', user=current_user)
+
+
+@views.route('/overtime')
+@login_required
+def overtime():
+    return render_template('overtime.html', user=current_user)
