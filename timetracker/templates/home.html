@@ -4,69 +4,12 @@
 {% block content %}
 
 <div id="watch">
-    00:00:00
+    00:00:00:00
 </div>
 
 <div id="buttons">
-    <button onclick="timer()" id="start">Start</button>
-    <button onclick="reset()" id="reset">Reset</button>
+    <button onclick="start()" id="startBtn" style="display:inline-block">Start</button>
+    <button onclick="pause()" id="pauseBtn" style="display:none">Pause</button>
+    <button onclick="reset()" id="resetBtn">Reset</button>
 </div>
-
-
-{% endblock %}
-
-{% block js %}
-<script type="application/javascript">
-const btnTime = document.getElementById('start');
-const watch = document.getElementById('watch');
-
-let time = 0;
-let active = false;
-let idInterval;
-let hours;
-let minutes;
-let seconds;
-
-const timer = () => {
-    if (!active) {
-        active = !active
-        btnTime.textContent = 'Pause';
-        idInterval = setInterval(start, 1000);
-    } else {
-        active = !active;
-        btnTime.textContent = 'Start';
-        clearInterval(idInterval);
-    }
-}
-
-const start = () => {
-    time++;
-
-    let diffH = time / 3600;
-    hours = Math.floor(diffH);
-    hours = hours < 10 ? `0${hours}` : hours;
-
-    let diffM = (diffH - hours) * 60;
-    minutes = Math.floor(diffM);
-    minutes = minutes < 10 ? `0${minutes}` : minutes;
-
-    let diffS = (diffM - minutes) * 60;
-    seconds = Math.floor(diffS);
-    seconds = seconds < 10 ? `0${seconds}` : seconds;
-
-    watch.textContent = `${hours}:${minutes}:${seconds}`;
-}
-
-const reset = () => {
-    time = 0;
-    hours = 0;
-    minutes = 0;
-    seconds = 0;
-
-    watch.textContent = `0${hours}:0${minutes}:0${seconds}`;
-    active = false;
-    btnTime.textContent = 'Start';
-    clearInterval(idInterval);
-}
-</script>
 {% endblock %}
