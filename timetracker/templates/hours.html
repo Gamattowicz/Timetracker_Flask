@@ -57,9 +57,11 @@
           <td class="border border-white">{{ result.work_date }}</td>
           <td class="border border-white">{{ result.project_shortcut }}</td>
           <td class="border border-white">
+              <div class="d-flex justify-content-center">
                 <button type="button" class="close text-danger" onClick="deleteHour({{ result.id }})">
-                <span aria-hidden="true" class="text-center">&times;</span>
+                    <span aria-hidden="true" class="text-center">&times;</span>
                 </button>
+              </div>
           </td>
         </tr>
         {% endif %}
