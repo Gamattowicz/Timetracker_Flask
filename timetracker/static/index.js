@@ -64,7 +64,11 @@ const reset = () => {
 
 // Function that copy time from timer
 const clipboardCopy = () => {
-  let text = document.querySelector("#watch").textContent;
-  navigator.clipboard.writeText(text);
+  let text = document.querySelector("#watch").textContent.split(":");
+  let first = Math.floor(text[0]);
+  let second = Math.floor((text[1] / 60) * 100);
+  second = second < 10 ? `0${second}` : second;
+
+  navigator.clipboard.writeText(`${first}.${second}`);
 }
 document.getElementById('copyBtn').addEventListener('click', clipboardCopy);
