@@ -3,16 +3,17 @@
 
 {% block content %}
 <div class="container">
-        <h1 align="center" class="my-4">TIMER</h1>
+    <h1 align="center" class="my-4">TIMER</h1>
     <div class="d-flex justify-content-center">
         <div align="center" class="ring shadow row">
-            <span id="watch" class="m-auto align-self-center">00:00:00:00</span>
+            <div id="watch" class="m-auto align-self-center">00:00:00:00</div>
         </div>
-        </div>
-        <div id="buttons" align="center" class="mt-4">
-            <span onclick="start()" id="startBtn" style="display:inline-block"><i class="far fa-play-circle mx-4"></i></span>
-            <span onclick="pause()" id="pauseBtn" style="display:none"><i class="far fa-pause-circle mx-4"></i></span>
-            <span onclick="reset()" id="resetBtn"><i class="far fa-stop-circle mx-4"></i></span>
-        </div>
+    </div>
+    <div id="buttons" align="center" class="mt-4">
+        <span onclick="start()" id="startBtn" style="display:inline-block"><i class="far fa-play-circle mx-4"></i></span>
+        <span onclick="pause()" id="pauseBtn" style="display:none"><i class="far fa-pause-circle mx-4"></i></span>
+        <span onclick="reset()" id="resetBtn"><i class="far fa-stop-circle mx-4"></i></span>
+    </div>
+    <button type="submit" class="btn btn-primary" align="center" id="copyBtn">Copy</button>
 </div>
 {% endblock %}
