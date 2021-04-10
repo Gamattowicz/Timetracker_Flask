@@ -18,3 +18,9 @@
     border: 5px solid #007bff;;
     border-radius: 50%;
 }
+
+.far:active {
+    color: #FFD700;
+    font-size: 100px;
+    transition: .02s;
+}
