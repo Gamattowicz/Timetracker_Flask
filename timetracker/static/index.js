@@ -61,3 +61,10 @@ const reset = () => {
     startBtn.style.display = "inline-block";
     pauseBtn.style.display = "none";
 }
+
+// Function that copy time from timer
+const clipboardCopy = () => {
+  let text = document.querySelector("#watch").textContent;
+  navigator.clipboard.writeText(text);
+}
+document.getElementById('copyBtn').addEventListener('click', clipboardCopy);
