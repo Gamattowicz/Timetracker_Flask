@@ -12,7 +12,7 @@ class DatePicker(FlaskForm):
 class VacationLength(FlaskForm):
     seniority = IntegerField('Seniority', widget=NumberInput(min=0, max=60,
                                                              step=1))
-    disability = BooleanField('Certificate of disability')
+    disability = BooleanField('Certificate of disability', false_values=(False, 'false', '',))
     school = SelectField('The type of school you graduated', choices=[
         ('Basic vocational school'), ('High vocational school'),
         ('High school'), ('Post-high school'),

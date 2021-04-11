@@ -2,19 +2,27 @@
 {% block title %}Vacation{% endblock %}
 
 {% block content %}
-<h3 align="center">Vacation</h3>
-
-    {{ form.seniority.label }}
-    {{ form.seniority }}
-<br>
-    {{ form.disability.label }}
-    {{ form.disability }}
-<br>
-    {{ form.school.label }}
-    {{ form.school }}
-<br>
-    {{ form.position.label }}
-    {{ form.position }}
-<br>
-    {{ form.submit_button }}
+<div class="container">
+    <h3 align="center">Vacation</h3>
+    <form method="post">
+            {{ form.seniority.label }}
+            {{ form.seniority(id="seniority") }}
+        <br>
+            {{ form.disability.label }}
+            {{ form.disability(id="disability") }}
+        <br>
+            {{ form.school.label }}
+            {{ form.school(id="school") }}
+        <br>
+            {{ form.position.label }}
+            {{ form.position(id="position") }}
+        <br>
+            {{ form.submit_button(id="submit_button") }}
+    </form>
+    <br>
+    <div class="form-group">
+        <label for="vacation_d">The number of vacation days</label>
+        <input type="text" class="form-control" id="vacation_d" name="vacation_d" value="{{ total_vacation_days if total_vacation_days else 0 }}" disabled>
+    </div>
+</div>
 {% endblock %}
