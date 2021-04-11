@@ -6,6 +6,7 @@ from sqlalchemy.sql import func
 from flask_login import login_required, current_user
 import json
 from .forms import DatePicker, VacationLength
+from math import ceil
 
 
 views = Blueprint('views', __name__)
@@ -52,7 +53,6 @@ def hours():
 
     results = Hours.query.all()
     projects = Projects.query.all()
-
     return render_template('hours.html', results=results, projects=projects,
                            user=current_user, form=form)
 
@@ -97,11 +97,44 @@ def projects():
     return render_template('projects.html', results=results, user=current_user)
 
 
-@views.route('/vacation')
+@views.route('/vacation', methods=['GET', 'POST'])
 @login_required
 def vacation():
     form = VacationLength()
-    return render_template('vacation.html', user=current_user, form=form)
+    school_years = {
+        'Basic vocational school': 3,
+        'High vocational school': 5,
+        'High school': 4,
+        'Post-high school': 6,
+        'Bachelor/Masters degree': 8
+    }
+    job_position = {
+        'Full-time': 1,
+        'Half-time': 0.5,
+        '1/3 time': (1/3),
+        '2/3 time': (2/3),
+        '1/4 time': 0.25,
+        '3/4 time': 0.75
+    }
+    total_vacation_days = 0
+    if request.method == 'POST':
+        if form.seniority.data:
+            seniority = form.seniority.data
+            school = form.school.data
+            position = form.position.data
+            vacation_days = int(seniority) + school_years[school]
+            if form.disability.data:
+                if vacation_days > 10:
+                    total_vacation_days = ceil(36 * job_position[position])
+                else:
+                    total_vacation_days = ceil(30 * job_position[position])
+            else:
+                if vacation_days > 10:
+                    total_vacation_days = ceil(26 * job_position[position])
+                else:
+                    total_vacation_days = ceil(20 * job_position[position])
+    return render_template('vacation.html', user=current_user, form=form,
+                           total_vacation_days=total_vacation_days)
 
 
 @views.route('/overtime')
