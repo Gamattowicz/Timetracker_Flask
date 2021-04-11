@@ -2,5 +2,19 @@
 {% block title %}Vacation{% endblock %}
 
 {% block content %}
-<h3>Vacation</h3>
+<h3 align="center">Vacation</h3>
+
+    {{ form.seniority.label }}
+    {{ form.seniority }}
+<br>
+    {{ form.disability.label }}
+    {{ form.disability }}
+<br>
+    {{ form.school.label }}
+    {{ form.school }}
+<br>
+    {{ form.position.label }}
+    {{ form.position }}
+<br>
+    {{ form.submit_button }}
 {% endblock %}

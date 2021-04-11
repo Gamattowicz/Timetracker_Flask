@@ -5,7 +5,7 @@ from . import db
 from sqlalchemy.sql import func
 from flask_login import login_required, current_user
 import json
-from .forms import DatePicker
+from .forms import DatePicker, VacationLength
 
 
 views = Blueprint('views', __name__)
@@ -100,7 +100,8 @@ def projects():
 @views.route('/vacation')
 @login_required
 def vacation():
-    return render_template('vacation.html', user=current_user)
+    form = VacationLength()
+    return render_template('vacation.html', user=current_user, form=form)
 
 
 @views.route('/overtime')
