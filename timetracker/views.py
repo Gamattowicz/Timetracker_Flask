@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, jsonify
 from re import fullmatch
-from .models import Projects, Hours
+from .models import Projects, Hours, User
 from . import db
 from sqlalchemy.sql import func
 from flask_login import login_required, current_user
@@ -133,8 +133,13 @@ def vacation():
                     total_vacation_days = ceil(26 * job_position[position])
                 else:
                     total_vacation_days = ceil(20 * job_position[position])
+
+            worker = User.query.filter_by(id=current_user.id).first()
+            worker.vacation_days = total_vacation_days
+            db.session.commit()
+
     return render_template('vacation.html', user=current_user, form=form,
-                           total_vacation_days=total_vacation_days)
+                           total_vacation_days=total_vacation_days, rem_days_off=current_user.vacation_days)
 
 
 @views.route('/overtime')
