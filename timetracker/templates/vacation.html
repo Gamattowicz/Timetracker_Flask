@@ -5,19 +5,19 @@
 <div class="container">
     <h3 align="center">Vacation</h3>
     <form method="post">
-            {{ form.seniority.label }}
-            {{ form.seniority(id="seniority") }}
+        {{ form_l.seniority.label }}
+        {{ form_l.seniority(id="seniority") }}
         <br>
-            {{ form.disability.label }}
-            {{ form.disability(id="disability") }}
+        {{ form_l.disability.label }}
+        {{ form_l.disability(id="disability") }}
         <br>
-            {{ form.school.label }}
-            {{ form.school(id="school") }}
+        {{ form_l.school.label }}
+        {{ form_l.school(id="school") }}
         <br>
-            {{ form.position.label }}
-            {{ form.position(id="position") }}
+        {{ form_l.position.label }}
+        {{ form_l.position(id="position") }}
         <br>
-            {{ form.submit_button(id="submit_button") }}
+        {{ form_l.submit_button(id="submit_button") }}
     </form>
     <br>
     <div class="form-group">
@@ -27,8 +27,17 @@
         <input type="text" class="form-control" id="rem_vacation_d" name="rem_vacation_d" value="{{ rem_days_off }}" disabled>
     </div>
 
+    <h3 align="center">Add vacation day</h3>
+    <form method="post">
+        {{ form_d.vacation_date.label }}
+        {{ form_d.vacation_date(id="vacation_date") }}
+        <br>
+        {{ form_d.confirm_button(id="confirm_button") }}
+    </form>
+
+
     <div class="vacation-list">
-        <h3 align="center" class="my-4">Days of vacation</h3>
+        <h3 align="center" class="my-4">List of vacation days</h3>
         <table class="table table-primary table-hover table-bordered">
           <thead class="thead-dark">
             <tr>
@@ -54,6 +63,5 @@
             </tbody>
         </table>
     </div>
-
 </div>
 {% endblock %}

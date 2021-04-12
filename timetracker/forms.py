@@ -22,3 +22,8 @@ class VacationLength(FlaskForm):
                                                     ('1/3 time'), ('2/3 time'),
                                                     ('1/4 time'), ('3/4 time')])
     submit_button = SubmitField('Submit')
+
+
+class VacationDay(FlaskForm):
+    vacation_date = DateField('The date of the vacation day', format='%YYYY-%m-%d')
+    confirm_button = SubmitField('Confirm')

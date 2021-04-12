@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, request, flash, jsonify
 from re import fullmatch
-from .models import Projects, Hours, User
+from .models import Projects, Hours, User, Vacation
 from . import db
 from sqlalchemy.sql import func
 from flask_login import login_required, current_user
 import json
-from .forms import DatePicker, VacationLength
+from .forms import DatePicker, VacationLength, VacationDay
 from math import ceil
 
 
@@ -100,7 +100,8 @@ def projects():
 @views.route('/vacation', methods=['GET', 'POST'])
 @login_required
 def vacation():
-    form = VacationLength()
+    form_l = VacationLength()
+    form_d = VacationDay()
     school_years = {
         'Basic vocational school': 3,
         'High vocational school': 5,
@@ -118,27 +119,35 @@ def vacation():
     }
     total_vacation_days = 0
     if request.method == 'POST':
-        if form.seniority.data:
-            seniority = form.seniority.data
-            school = form.school.data
-            position = form.position.data
-            vacation_days = int(seniority) + school_years[school]
-            if form.disability.data:
-                if vacation_days > 10:
-                    total_vacation_days = ceil(36 * job_position[position])
+        if form_l.submit_button.data:
+            if form_l.seniority.data:
+                seniority = form_l.seniority.data
+                school = form_l.school.data
+                position = form_l.position.data
+                vacation_days = int(seniority) + school_years[school]
+                if form_l.disability.data:
+                    if vacation_days > 10:
+                        total_vacation_days = ceil(36 * job_position[position])
+                    else:
+                        total_vacation_days = ceil(30 * job_position[position])
                 else:
-                    total_vacation_days = ceil(30 * job_position[position])
-            else:
-                if vacation_days > 10:
-                    total_vacation_days = ceil(26 * job_position[position])
-                else:
-                    total_vacation_days = ceil(20 * job_position[position])
+                    if vacation_days > 10:
+                        total_vacation_days = ceil(26 * job_position[position])
+                    else:
+                        total_vacation_days = ceil(20 * job_position[position])
 
-            worker = User.query.filter_by(id=current_user.id).first()
-            worker.vacation_days = total_vacation_days
-            db.session.commit()
+                worker = User.query.filter_by(id=current_user.id).first()
+                worker.vacation_days = total_vacation_days
+                db.session.commit()
+        elif form_d.confirm_button.data:
+            if request.form['vacation_date']:
+                vacation_date = request.form['vacation_date']
+                new_vacation_day = Vacation(vacation_date=vacation_date, user_id=current_user.id)
+                db.session.add(new_vacation_day)
+                db.session.commit()
+                flash('Vacation day have been added!', category='success')
 
-    return render_template('vacation.html', user=current_user, form=form,
+    return render_template('vacation.html', user=current_user, form_l=form_l, form_d=form_d,
                            total_vacation_days=total_vacation_days, rem_days_off=current_user.vacation_days)
 
 
