@@ -46,13 +46,13 @@
             </tr>
           </thead>
             <tbody>
-        {% for result in results %}
-            {% if result.user_id == user.id %}
+        {% for day in days %}
+            {% if day.user_id == user.id %}
             <tr>
-              <td class="border border-white">{{ result.vacation_date }}</td>
+              <td class="border border-white">{{ day.vacation_date }}</td>
               <td class="border border-white">
                   <div class="d-flex justify-content-center">
-                    <button type="button" class="close text-danger" onClick="deleteVacation({{ result.id }})">
+                    <button type="button" class="close text-danger" onClick="deleteVacationDay({{ day.id }})">
                         <span aria-hidden="true" class="text-center">&times;</span>
                     </button>
                   </div>
