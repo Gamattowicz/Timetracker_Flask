@@ -23,4 +23,12 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(50))
+    vacation_days = db.Column(db.Integer, default=0)
     hour = db.relationship('Hours')
+    vacation = db.relationship('Vacation')
+
+
+class Vacation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    vacation_date = db.Column(db.String(50), default=func.current_date())
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
