@@ -147,8 +147,22 @@ def vacation():
                 db.session.commit()
                 flash('Vacation day have been added!', category='success')
 
+    days = Vacation.query.all()
+
     return render_template('vacation.html', user=current_user, form_l=form_l, form_d=form_d,
-                           total_vacation_days=total_vacation_days, rem_days_off=current_user.vacation_days)
+                           total_vacation_days=total_vacation_days, rem_days_off=current_user.vacation_days, days=days)
+
+
+@views.route('/delete-vacation-day', methods=['POST'])
+def delete_vacation_day():
+    day = json.loads(request.data)
+    dayId = day['dayId']
+    day = Vacation.query.get(dayId)
+    if day:
+        db.session.delete(day)
+        db.session.commit()
+        flash('Day deleted!', category='success')
+    return jsonify({})
 
 
 @views.route('/overtime')
