@@ -7,6 +7,8 @@ class Projects(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False, unique=True)
     shortcut = db.Column(db.String(50), nullable=False, unique=True)
+    start_date = db.Column(db.String(50), nullable=False, default=func.current_date())
+    end_date = db.Column(db.String(50), nullable=False)
     hour = db.relationship('Hours')
 
 
