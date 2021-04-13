@@ -34,4 +34,5 @@ class Project(FlaskForm):
     shortcut = StringField('Project shortcut')
     start_date = DateField('Project start date', format='%YYYY-%m-%d')
     end_date = DateField('Project end date', format='%YYYY-%m-%d')
+    phase = StringField('Project phase')
     confirm_button = SubmitField('Confirm')

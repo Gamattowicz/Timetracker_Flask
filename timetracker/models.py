@@ -9,6 +9,7 @@ class Projects(db.Model):
     shortcut = db.Column(db.String(50), nullable=False, unique=True)
     start_date = db.Column(db.String(50), nullable=False, default=func.current_date())
     end_date = db.Column(db.String(50), nullable=False)
+    phase = db.Column(db.String(50), nullable=False)
     hour = db.relationship('Hours')
 
 
