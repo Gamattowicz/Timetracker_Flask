@@ -5,9 +5,9 @@
 <form method="POST" class="was-validated mt-4" action="{{ url_for('views.projects') }}">
     <h2 align="center">Add new project</h2>
     <div class="form-group row my-4">
-        <label for="name" class="col-sm-2 col-form-label">Project name</label>
+        {{ form.name.label(class_="col-sm-2 col-form-label") }}
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="name" name="name" placeholder="Enter a project name" required>
+            {{ form.name(class_="form-control", id="name", placeholder="Enter a project name", required="required") }}
             <div class="invalid-feedback">
                 This field must be filled!
             </div>
@@ -17,9 +17,28 @@
         </div>
     </div>
     <div class="form-group row my-4">
-        <label for="shortcut" class="col-sm-2 col-form-label">Project shortcut</label>
+        {{ form.shortcut.label(class_="col-sm-2 col-form-label") }}
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="shortcut" name="shortcut" placeholder="Enter a project shortcut" required>
+            {{ form.shortcut(class_="form-control", id="shortcut", placeholder="Enter a project shortcut", required="required") }}
+            <div class="invalid-feedback">
+                This field must be filled!
+            </div>
+            <div class="valid-feedback">
+                Looks good!
+        </div>
+        </div>
+    </div>
+        <div class="form-group row my-4">
+        {{ form.start_date.label(class="col-sm-2 col-form-label") }}
+        <div class="col-sm-10">
+            {{ form.start_date(class_="form-control", id="start_date") }}
+            <small class="form-text text-muted">If it is empty, the current date will be saved. </small>
+        </div>
+    </div>
+        <div class="form-group row my-4">
+        {{ form.end_date.label(class="col-sm-2 col-form-label") }}
+        <div class="col-sm-10">
+            {{ form.end_date(class_="form-control", id="end_date", required="required") }}
             <div class="invalid-feedback">
                 This field must be filled!
             </div>
@@ -28,7 +47,7 @@
             </div>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Confirm</button>
+    {{ form.confirm_button(class_="btn btn-primary") }}
 </form>
 
 <div class="project-list">
@@ -37,8 +56,10 @@
       <thead class="thead-dark">
         <tr>
           <th class="border border-dark" scope="col" style="width:5%">#</th>
-          <th class="border border-dark" scope="col" style="width:50%">Name</th>
-          <th class="border border-dark" scope="col" style="width:30%">Shortcut</th>
+          <th class="border border-dark" scope="col" style="width:35%">Name</th>
+          <th class="border border-dark" scope="col" style="width:15%">Shortcut</th>
+          <th class="border border-dark" scope="col" style="width:15%">Start date</th>
+          <th class="border border-dark" scope="col" style="width:15%">End date</th>
           <th class="border border-dark" scope="col" style="width:15%">Total hours</th>
         </tr>
       </thead>
@@ -48,6 +69,8 @@
           <th class="border border-white" scope="row">{{ result.id }}</th>
           <td class="border border-white">{{ result.name }}</td>
           <td class="border border-white">{{ result.shortcut }}</td>
+          <td class="border border-white">{{ result.start_date }}</td>
+          <td class="border border-white">{{ result.end_date }}</td>
           <td class="border border-white">{{ result.sum }}</td>
         </tr>
     {% endfor %}

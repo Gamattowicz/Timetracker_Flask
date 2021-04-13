@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms.fields.html5 import DateField, IntegerField
-from wtforms import BooleanField, SelectField, SubmitField
+from wtforms import BooleanField, SelectField, SubmitField, StringField
 from wtforms.widgets.html5 import NumberInput
 from datetime import datetime
 
@@ -26,4 +26,12 @@ class VacationLength(FlaskForm):
 
 class VacationDay(FlaskForm):
     vacation_date = DateField('The date of the vacation day', format='%YYYY-%m-%d')
+    confirm_button = SubmitField('Confirm')
+
+
+class Project(FlaskForm):
+    name = StringField('Project name')
+    shortcut = StringField('Project shortcut')
+    start_date = DateField('Project start date', format='%YYYY-%m-%d')
+    end_date = DateField('Project end date', format='%YYYY-%m-%d')
     confirm_button = SubmitField('Confirm')

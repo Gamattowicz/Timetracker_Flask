@@ -1,12 +1,12 @@
 from flask import Blueprint, render_template, request, flash, jsonify
-from re import fullmatch
 from .models import Projects, Hours, User, Vacation
 from . import db
 from sqlalchemy.sql import func
 from flask_login import login_required, current_user
 import json
-from .forms import DatePicker, VacationLength, VacationDay
+from .forms import DatePicker, VacationLength, VacationDay, Project
 from math import ceil
+from datetime import date
 
 
 views = Blueprint('views', __name__)
@@ -25,16 +25,16 @@ def home():
 def hours():
     form = DatePicker()
     if request.method == 'POST':
-        if not (isinstance(float(request.form['amount']), float) or isinstance(
-                int(request.form['amount']), int)):
+        amount = request.form['amount']
+        project_shortcut = request.form['shortcut']
+        user_id = current_user.id
+        if not (isinstance(float(amount), float) or isinstance(
+                int(amount), int)):
             flash('Amount must be a number!', category='error')
-        elif request.form['shortcut'] == 'Choose project shortcut':
+        elif project_shortcut == 'Choose project shortcut':
             flash('You have to choose one of existing shortcut project!',
                   category='error')
         else:
-            amount = request.form['amount']
-            project_shortcut = request.form['shortcut']
-            user_id = current_user.id
             if request.form['work_date']:
                 work_date = request.form['work_date']
                 new_hours = Hours(amount=amount, work_date=work_date,
@@ -72,29 +72,46 @@ def delete_hour():
 @views.route('/projects', methods=['GET', 'POST'])
 @login_required
 def projects():
+    form = Project()
     if request.method == 'POST':
-        if Projects.query.filter_by(name=request.form['name']).first():
-            flash(f"Project with name {request.form['name']} already exist!",
+        name = request.form['name']
+        shortcut = request.form['shortcut']
+        end_date = request.form['end_date']
+        if Projects.query.filter_by(name=name).first():
+            flash(f'Project with name {name} already exist!',
                   category='error')
-        elif Projects.query.filter_by(shortcut=request.form['shortcut']).first():
-            flash(f"Project with shortcut {request.form['shortcut']} already "
-                  f"exist!", category='error')
+        elif Projects.query.filter_by(shortcut=shortcut).first():
+            flash(f'Project with shortcut {shortcut} already'
+                  f'exist!', category='error')
+        elif request.form['start_date']:
+            start_date = request.form['start_date']
+            if start_date > end_date:
+                flash(f'Invalid date of start and end project', category='error')
+            else:
+                new_project = Projects(name=name, shortcut=shortcut,
+                                       start_date=start_date, end_date=end_date)
+                db.session.add(new_project)
+                db.session.commit()
+                flash('Project have been added!', category='success')
         else:
-            name = request.form['name']
-            shortcut = request.form['shortcut']
-
-            new_project = Projects(name=name, shortcut=shortcut)
-            db.session.add(new_project)
-            db.session.commit()
-            flash('Project have been added!', category='success')
+            if end_date < date.today().strftime('%Y-%m-%d'):
+                flash(f'Invalid date of end project', category='error')
+            else:
+                new_project = Projects(name=name, shortcut=shortcut,
+                                       end_date=end_date)
+                db.session.add(new_project)
+                db.session.commit()
+                flash('Project have been added!', category='success')
     results = db.session.query(Projects.id, Projects.name,
-                               Projects.shortcut,
+                               Projects.shortcut, Projects.start_date,
+                               Projects.end_date,
                                func.ifnull(func.sum(Hours.amount), '0').label(
                                    'sum')).outerjoin(
                                     Hours, Projects.shortcut ==
                                     Hours.project_shortcut).group_by(Projects.id).all()
 
-    return render_template('projects.html', results=results, user=current_user)
+    return render_template('projects.html', results=results,
+                           user=current_user, form=form)
 
 
 @views.route('/vacation', methods=['GET', 'POST'])
