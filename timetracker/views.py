@@ -77,6 +77,7 @@ def projects():
         name = request.form['name']
         shortcut = request.form['shortcut']
         end_date = request.form['end_date']
+        phase = request.form['phase']
         if Projects.query.filter_by(name=name).first():
             flash(f'Project with name {name} already exist!',
                   category='error')
@@ -89,6 +90,7 @@ def projects():
                 flash(f'Invalid date of start and end project', category='error')
             else:
                 new_project = Projects(name=name, shortcut=shortcut,
+                                       phase=phase,
                                        start_date=start_date, end_date=end_date)
                 db.session.add(new_project)
                 db.session.commit()
@@ -98,12 +100,14 @@ def projects():
                 flash(f'Invalid date of end project', category='error')
             else:
                 new_project = Projects(name=name, shortcut=shortcut,
+                                       phase=phase,
                                        end_date=end_date)
                 db.session.add(new_project)
                 db.session.commit()
                 flash('Project have been added!', category='success')
     results = db.session.query(Projects.id, Projects.name,
-                               Projects.shortcut, Projects.start_date,
+                               Projects.shortcut,
+                               Projects.phase, Projects.start_date,
                                Projects.end_date,
                                func.ifnull(func.sum(Hours.amount), '0').label(
                                    'sum')).outerjoin(
