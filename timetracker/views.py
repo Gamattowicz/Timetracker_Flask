@@ -173,3 +173,9 @@ def delete_vacation_day():
 @login_required
 def overtime():
     return render_template('overtime.html', user=current_user)
+
+
+@views.route('/schedule')
+@login_required
+def schedule():
+    return render_template('schedule.html', user=current_user)
