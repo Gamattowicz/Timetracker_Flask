@@ -207,33 +207,28 @@ def overtime():
 @views.route('/schedule')
 @login_required
 def schedule():
-    date_start = '2021-04-13'
-    date_end = '2021-05-2'
-
-    start = datetime.strptime(date_start, '%Y-%m-%d').date()
-    end = datetime.strptime(date_end, '%Y-%m-%d').date()
-    start2 = datetime.strptime(date_start, '%Y-%m-%d').date()
-    end2 = datetime.strptime(date_end, '%Y-%m-%d').date()
-
-    delta = end - start
-    delta2 = end - start
-
-    fig, ax = plt.subplots()
-    ax.broken_barh([(start, delta)], (10, 9),
-                   facecolors='blue')
-    ax.broken_barh([(start2, delta2)], (20, 9),
-                   facecolors='blue')
+    projectsList = Projects.query.all()
+    fig = Figure(figsize=(13, 6), dpi=100)
+    ax = fig.add_subplot()
+    yTicks = []
+    yTickValue = 10
+    for project in projectsList:
+        start_date = datetime.strptime(project.start_date, '%Y-%m-%d').date()
+        end_date = datetime.strptime(project.end_date, '%Y-%m-%d').date()
+        delta = end_date - start_date
+        ax.broken_barh([(start_date, delta)], (yTickValue, 9))
+        yTicks.append(yTickValue + 5)
+        yTickValue += 10
     ax.grid(True)
-    ax.set_yticks([15, 25])
-    ax.set_yticklabels(['Tom', 'Jerry'])
-    fmt_half_month = mdates.DayLocator(interval=15)
-    ax.xaxis.set_major_locator(fmt_half_month)
+    ax.set_yticks(yTicks)
+    ax.set_yticklabels([project.name for project in projectsList])
+    fmt_month = mdates.MonthLocator(interval=1)
+    ax.xaxis.set_major_locator(fmt_month)
 
     pngImage = io.BytesIO()
     FigureCanvas(fig).print_png(pngImage)
 
     pngImageB64String = "data:image/png;base64,"
     pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
-
 
     return render_template('schedule.html', user=current_user, image=pngImageB64String)
