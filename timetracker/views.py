@@ -1,5 +1,3 @@
-import io
-
 from flask import Blueprint, render_template, request, flash, jsonify
 from .models import Projects, Hours, User, Vacation
 from . import db
@@ -9,12 +7,12 @@ import json
 from .forms import DatePicker, VacationLength, VacationDay, Project
 from math import ceil
 from datetime import date, datetime
-import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 import io
 import base64
+import numpy as np
 
 
 views = Blueprint('views', __name__)
@@ -68,8 +66,8 @@ def hours():
 @views.route('/delete-hour', methods=['POST'])
 def delete_hour():
     hour = json.loads(request.data)
-    hourId = hour['hourId']
-    hour = Hours.query.get(hourId)
+    hour_id = hour['hourId']
+    hour = Hours.query.get(hour_id)
     if hour:
         db.session.delete(hour)
         db.session.commit()
@@ -189,8 +187,8 @@ def vacation():
 @views.route('/delete-vacation-day', methods=['POST'])
 def delete_vacation_day():
     day = json.loads(request.data)
-    dayId = day['dayId']
-    day = Vacation.query.get(dayId)
+    day_id = day['dayId']
+    day = Vacation.query.get(day_id)
     if day:
         db.session.delete(day)
         db.session.commit()
@@ -207,28 +205,30 @@ def overtime():
 @views.route('/schedule')
 @login_required
 def schedule():
-    projectsList = Projects.query.all()
+    projects_list = Projects.query.all()
     fig = Figure(figsize=(13, 6), dpi=100)
     ax = fig.add_subplot()
-    yTicks = []
-    yTickValue = 10
-    for project in projectsList:
+    y_ticks = []
+    y_tick_value = 10
+    colors = list(np.random.rand(len(projects_list), 3))
+    for project in projects_list:
         start_date = datetime.strptime(project.start_date, '%Y-%m-%d').date()
         end_date = datetime.strptime(project.end_date, '%Y-%m-%d').date()
         delta = end_date - start_date
-        ax.broken_barh([(start_date, delta)], (yTickValue, 9))
-        yTicks.append(yTickValue + 5)
-        yTickValue += 10
+        ax.broken_barh([(start_date, delta)], (y_tick_value, 9),
+                       facecolors=colors.pop())
+        y_ticks.append(y_tick_value + 5)
+        y_tick_value += 10
     ax.grid(True)
-    ax.set_yticks(yTicks)
-    ax.set_yticklabels([project.name for project in projectsList])
+    ax.set_yticks(y_ticks)
+    ax.set_yticklabels([project.name for project in projects_list])
     fmt_month = mdates.MonthLocator(interval=1)
     ax.xaxis.set_major_locator(fmt_month)
 
-    pngImage = io.BytesIO()
-    FigureCanvas(fig).print_png(pngImage)
+    png_image = io.BytesIO()
+    FigureCanvas(fig).print_png(png_image)
 
     pngImageB64String = "data:image/png;base64,"
-    pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
+    pngImageB64String += base64.b64encode(png_image.getvalue()).decode('utf8')
 
     return render_template('schedule.html', user=current_user, image=pngImageB64String)
