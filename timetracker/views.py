@@ -1,3 +1,5 @@
+import io
+
 from flask import Blueprint, render_template, request, flash, jsonify
 from .models import Projects, Hours, User, Vacation
 from . import db
@@ -6,7 +8,13 @@ from flask_login import login_required, current_user
 import json
 from .forms import DatePicker, VacationLength, VacationDay, Project
 from math import ceil
-from datetime import date
+from datetime import date, datetime
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
+import io
+import base64
 
 
 views = Blueprint('views', __name__)
@@ -199,4 +207,33 @@ def overtime():
 @views.route('/schedule')
 @login_required
 def schedule():
-    return render_template('schedule.html', user=current_user)
+    date_start = '2021-04-13'
+    date_end = '2021-05-2'
+
+    start = datetime.strptime(date_start, '%Y-%m-%d').date()
+    end = datetime.strptime(date_end, '%Y-%m-%d').date()
+    start2 = datetime.strptime(date_start, '%Y-%m-%d').date()
+    end2 = datetime.strptime(date_end, '%Y-%m-%d').date()
+
+    delta = end - start
+    delta2 = end - start
+
+    fig, ax = plt.subplots()
+    ax.broken_barh([(start, delta)], (10, 9),
+                   facecolors='blue')
+    ax.broken_barh([(start2, delta2)], (20, 9),
+                   facecolors='blue')
+    ax.grid(True)
+    ax.set_yticks([15, 25])
+    ax.set_yticklabels(['Tom', 'Jerry'])
+    fmt_half_month = mdates.DayLocator(interval=15)
+    ax.xaxis.set_major_locator(fmt_half_month)
+
+    pngImage = io.BytesIO()
+    FigureCanvas(fig).print_png(pngImage)
+
+    pngImageB64String = "data:image/png;base64,"
+    pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
+
+
+    return render_template('schedule.html', user=current_user, image=pngImageB64String)
