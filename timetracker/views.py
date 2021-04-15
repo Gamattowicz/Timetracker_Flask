@@ -222,9 +222,10 @@ def overtime():
             except KeyError:
                 overtime_list[day] = num
     overtime = sum([h for d, h in overtime_list.items()])
+    working_hours = sum([h for d, h in work_days.items()])
     return render_template('overtime.html', user=current_user,
                            work_days=work_days, overtime_list=overtime_list,
-                           overtime=overtime)
+                           overtime=overtime, working_hours=working_hours)
 
 
 @views.route('/schedule')

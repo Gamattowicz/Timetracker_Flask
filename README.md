@@ -43,10 +43,11 @@ Go to `http://127.0.0.1:5000`
 
 ## Features
 * User management system
-* Calculating vacation days
+* Calculation of vacation days
 * Working timer
 * Adding hours of work and projects
 * Projects schedule
+* Calculation of overtime
 
 ## Status 
 Project in progress.

@@ -8,6 +8,10 @@
         <label for="overtime">The number of overtime</label>
         <input type="number" class="form-control" id="overtime" name="overtime" value="{{ overtime }}" disabled>
     </div>
+    <div class="form-group">
+        <label for="working_hours">The number of working hours</label>
+        <input type="number" class="form-control" id="working_hours" name="working_hours" value="{{ working_hours }}" disabled>
+    </div>
 
     <div class="work-day-list">
     <h3 align="center" class="my-4">List of working hours in each day</h3>
@@ -29,6 +33,25 @@
     </table>
     </div>
 
+    <div class="overtime-list">
+    <h3 align="center" class="my-4">List of overtime in each day</h3>
+    <table class="table table-primary table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th class="border border-dark" scope="col" style="width:60%">Date</th>
+          <th class="border border-dark" scope="col" style="width:40%">Number of overtime</th>
+        </tr>
+      </thead>
+        <tbody>
+    {% for d, h in overtime_list.items() %}
+        <tr>
+          <td class="border border-white">{{ d }}</td>
+          <td class="border border-white">{{ h }}</td>
+        </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+    </div>
 
 
 </div>
