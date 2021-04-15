@@ -13,6 +13,7 @@ from matplotlib.figure import Figure
 import io
 import base64
 import numpy as np
+from calendar import day_name
 
 
 views = Blueprint('views', __name__)
@@ -199,7 +200,18 @@ def delete_vacation_day():
 @views.route('/overtime')
 @login_required
 def overtime():
-    return render_template('overtime.html', user=current_user)
+    hours = Hours.query.filter_by(user_id=current_user.id).all()
+    work_days = {}
+    overtime_num = 0
+    for hour in hours:
+        try:
+            work_days[hour.work_date] += hour.amount
+        except KeyError:
+            work_days[hour.work_date] = hour.amount
+    #     date = datetime.strptime(hour.work_date, '%Y-%m-%d').weekday()
+    #     if day_name[date] != 'Saturday' and day_name[date] != 'Sunday':
+    return render_template('overtime.html', user=current_user,
+                           work_days=work_days, hours=hours)
 
 
 @views.route('/schedule')
@@ -224,6 +236,10 @@ def schedule():
     ax.set_yticklabels([project.name for project in projects_list])
     fmt_month = mdates.MonthLocator(interval=1)
     ax.xaxis.set_major_locator(fmt_month)
+    fig.autofmt_xdate()
+    fig.suptitle('Projects start and end dates', fontsize=20)
+    fig.supxlabel('Start and end dates', fontsize=14)
+    fig.supylabel('Names of projects', fontsize=14)
 
     png_image = io.BytesIO()
     FigureCanvas(fig).print_png(png_image)
