@@ -202,16 +202,29 @@ def delete_vacation_day():
 def overtime():
     hours = Hours.query.filter_by(user_id=current_user.id).all()
     work_days = {}
-    overtime_num = 0
+    overtime_list = {}
     for hour in hours:
         try:
             work_days[hour.work_date] += hour.amount
         except KeyError:
             work_days[hour.work_date] = hour.amount
-    #     date = datetime.strptime(hour.work_date, '%Y-%m-%d').weekday()
-    #     if day_name[date] != 'Saturday' and day_name[date] != 'Sunday':
+    for day, num in work_days.items():
+        date = datetime.strptime(day, '%Y-%m-%d').weekday()
+        if day_name[date] != 'Saturday' and day_name[date] != 'Sunday':
+            if num > 8:
+                try:
+                    overtime_list[day] += num - 8
+                except KeyError:
+                    overtime_list[day] = num - 8
+        else:
+            try:
+                overtime_list[day] += num
+            except KeyError:
+                overtime_list[day] = num
+    overtime = sum([h for d, h in overtime_list.items()])
     return render_template('overtime.html', user=current_user,
-                           work_days=work_days, hours=hours)
+                           work_days=work_days, overtime_list=overtime_list,
+                           overtime=overtime)
 
 
 @views.route('/schedule')
