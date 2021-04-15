@@ -46,6 +46,7 @@ Go to `http://127.0.0.1:5000`
 * Calculating vacation days
 * Working timer
 * Adding hours of work and projects
+* Projects schedule
 
 ## Status 
 Project in progress.
