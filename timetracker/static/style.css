@@ -24,3 +24,7 @@
     font-size: 100px;
     transition: .02s;
 }
+
+.fab, .fas {
+    font-size: 25px;
+}
