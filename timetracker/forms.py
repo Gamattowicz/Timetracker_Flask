@@ -1,7 +1,10 @@
 from flask_wtf import FlaskForm
 from wtforms.fields.html5 import DateField, IntegerField
-from wtforms import BooleanField, SelectField, SubmitField, StringField
+from wtforms import BooleanField, SelectField, SubmitField, StringField, \
+    TextField, PasswordField
 from wtforms.widgets.html5 import NumberInput
+from wtforms.validators import DataRequired, Length, EqualTo
+from .models import User
 
 
 class VacationLength(FlaskForm):
@@ -24,7 +27,7 @@ class VacationDay(FlaskForm):
     confirm_button = SubmitField('Confirm')
 
 
-class Project(FlaskForm):
+class ProjectForm(FlaskForm):
     name = StringField('Project name')
     shortcut = StringField('Project shortcut')
     start_date = DateField('Project start date', format='%YYYY-%m-%d')
@@ -33,10 +36,59 @@ class Project(FlaskForm):
     confirm_button = SubmitField('Confirm')
 
 
-class Hour(FlaskForm):
+class HourForm(FlaskForm):
     amount = IntegerField('Number of hours', widget=NumberInput(min=0,
                                                                    max=24,
                                                                    step=0.5))
     work_date = DateField('Date of work', format='%YYYY-%m-%d')
     shortcut = SelectField('Project shortcut')
     confirm_button = SubmitField('Confirm')
+
+
+class RegisterForm(FlaskForm):
+    username = TextField('Username',
+            validators=[DataRequired(), Length(min=3, max=32)])
+
+    password = PasswordField('Password',
+            validators=[DataRequired(), Length(min=8, max=64)])
+    confirm = PasswordField('Verify password',
+            validators=[DataRequired(), EqualTo('password',
+            message='Passwords must match')])
+    confirm_button = SubmitField('Submit')
+
+    def __init__(self, *args, **kwargs):
+        super(RegisterForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(RegisterForm, self).validate()
+        if not initial_validation:
+            return False
+        user = User.query.filter_by(username=self.username.data).first()
+        if user:
+            self.username.errors.append("Username already registered")
+            return False
+        return True
+
+
+class LoginForm(FlaskForm):
+    username = TextField('Username',
+                      validators=[DataRequired(), Length(1, 64)])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember_me = BooleanField('Keep me logged in')
+    submit = SubmitField('Log In')
+
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(LoginForm, self).validate()
+        if not initial_validation:
+            return False
+        user = User.query.filter_by(username=self.username.data).first()
+        if not user:
+            self.username.errors.append('Unknown username')
+            return False
+        if not user.verify_password(self.password.data):
+            self.password.errors.append('Invalid password')
+            return False
+        return True

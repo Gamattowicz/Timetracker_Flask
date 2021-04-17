@@ -3,8 +3,8 @@
 
 {% block content %}
 <div class="container">
+    <h2 align="center" class="mt-4">Add new project</h2>
     <form method="POST" class="was-validated mt-4" action="{{ url_for('views.projects') }}">
-        <h2 align="center">Add new project</h2>
         <div class="form-group row my-4">
             {{ form.name.label(class_="col-sm-2 col-form-label") }}
             <div class="col-sm-10">

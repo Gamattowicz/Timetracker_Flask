@@ -4,7 +4,7 @@ from . import db
 from sqlalchemy.sql import func
 from flask_login import login_required, current_user
 import json
-from .forms import Hour, VacationLength, VacationDay, Project
+from .forms import HourForm, VacationLength, VacationDay, ProjectForm
 from math import ceil
 from datetime import date, datetime
 import matplotlib.dates as mdates
@@ -30,7 +30,7 @@ def home():
 @views.route('/hours', methods=['GET', 'POST'])
 @login_required
 def hours():
-    form = Hour()
+    form = HourForm()
     projects = Projects.query.all()
     form.shortcut.choices = [(project.shortcut) for project in projects]
     if request.method == 'POST':
@@ -72,7 +72,7 @@ def delete_hour():
 @views.route('/projects', methods=['GET', 'POST'])
 @login_required
 def projects():
-    form = Project()
+    form = ProjectForm()
     if request.method == 'POST':
         name = request.form['name']
         shortcut = request.form['shortcut']
