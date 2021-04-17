@@ -78,9 +78,8 @@
         {% endif %}
         {% endwith %}
 
-            <div class="container">
-                {% block content%}{% endblock %}
-            </div>
+    {% block content%}{% endblock %}
+
 
 
     <footer class="footer bg-primary mt-auto">
@@ -90,7 +89,9 @@
                 <span><a href="https://github.com/Gamattowicz"><i class="fab fa-github-square text-light mx-3"></i></a></span>
                 <span><a href="gmail.com"><i class="fab fa-linkedin text-light mx-3"></i></a></span>
             </div>
-            <span class="text-light">© 2021 Copyright | Designed by Przemysław Romańczuk</span>
+            <div class="text-light pb-3">
+                <span>© 2021 Copyright | Designed by Przemysław Romańczuk</span>
+            </div>
         </div>
     </footer>
 </body>
