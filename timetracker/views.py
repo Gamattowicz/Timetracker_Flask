@@ -4,7 +4,7 @@ from . import db
 from sqlalchemy.sql import func
 from flask_login import login_required, current_user
 import json
-from .forms import DatePicker, VacationLength, VacationDay, Project
+from .forms import Hour, VacationLength, VacationDay, Project
 from math import ceil
 from datetime import date, datetime
 import matplotlib.dates as mdates
@@ -30,38 +30,31 @@ def home():
 @views.route('/hours', methods=['GET', 'POST'])
 @login_required
 def hours():
-    form = DatePicker()
+    form = Hour()
+    projects = Projects.query.all()
+    form.shortcut.choices = [(project.shortcut) for project in projects]
     if request.method == 'POST':
         amount = request.form['amount']
         project_shortcut = request.form['shortcut']
         user_id = current_user.id
-        if not (isinstance(float(amount), float) or isinstance(
-                int(amount), int)):
-            flash('Amount must be a number!', category='error')
-        elif project_shortcut == 'Choose project shortcut':
-            flash('You have to choose one of existing shortcut project!',
-                  category='error')
+        if request.form['work_date']:
+            work_date = request.form['work_date']
+            new_hours = Hours(amount=amount, work_date=work_date,
+                              project_shortcut=project_shortcut,
+                              user_id=user_id)
+            db.session.add(new_hours)
+            db.session.commit()
+            flash('Hours have been added!', category='success')
         else:
-            if request.form['work_date']:
-                work_date = request.form['work_date']
-                new_hours = Hours(amount=amount, work_date=work_date,
-                                  project_shortcut=project_shortcut,
-                                  user_id=user_id)
-                db.session.add(new_hours)
-                db.session.commit()
-                flash('Hours have been added!', category='success')
-            else:
-                new_hours = Hours(amount=amount,
-                                  project_shortcut=project_shortcut,
-                                  user_id=user_id)
-                db.session.add(new_hours)
-                db.session.commit()
-                flash('Hours have been added!', category='success')
+            new_hours = Hours(amount=amount,
+                              project_shortcut=project_shortcut,
+                              user_id=user_id)
+            db.session.add(new_hours)
+            db.session.commit()
+            flash('Hours have been added!', category='success')
 
     results = Hours.query.all()
-    projects = Projects.query.all()
-    return render_template('hours.html', results=results, projects=projects,
-                           user=current_user, form=form)
+    return render_template('hours.html', results=results, user=current_user, form=form)
 
 
 @views.route('/delete-hour', methods=['POST'])
@@ -232,7 +225,7 @@ def overtime():
 @login_required
 def schedule():
     projects_list = Projects.query.all()
-    fig = Figure(figsize=(13, 6), dpi=100)
+    fig = Figure(figsize=(13, 4.4), dpi=100)
     ax = fig.add_subplot()
     y_ticks = []
     y_tick_value = 10
