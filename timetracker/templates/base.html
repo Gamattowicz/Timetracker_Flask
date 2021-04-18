@@ -11,102 +11,103 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body class="d-flex flex-column min-vh-100">
+    <div class="wrapper flex-grow-1">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+          <div class="container-fluid">
+          <a class="navbar-brand" href="#">Timetracker</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
-      <div class="container-fluid">
-      <a class="navbar-brand" href="#">Timetracker</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  {% if user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" href="/vacation">Vacation</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" href="/schedule">Schedule</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" href="/overtime">Overtime</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" href="/hours">Add hours</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" href="/projects">Add projects</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="/logout">Logout</a>
+                </li>
+                <li class="nav-item">
+                  {% else %}
+                  <a class="nav-link active" aria-current="page" href="/sign-up">Sign up</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/login">Login</a>
+                </li>
+                  {% endif %}
+              </ul>
+            </div>
+          </div>
+        </nav>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="/vacation">Vacation</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="/schedule">Schedule</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="/overtime">Overtime</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="/hours">Add hours</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="/projects">Add projects</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/logout">Logout</a>
-            </li>
-            <li class="nav-item">
-              {% else %}
-              <a class="nav-link active" aria-current="page" href="/sign-up">Sign up</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/login">Login</a>
-            </li>
-              {% endif %}
-          </ul>
-        </div>
-      </div>
-    </nav>
+            {% macro render_field(field) %}
+            <div class="form-group">
+                {{ field.label }}
+                {{ field(**kwargs)|safe }}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        {{ error }}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            {% endmacro %}
 
-        {% macro render_field(field) %}
-        <div class="form-group">
-            {{ field.label }}
-            {{ field(**kwargs)|safe }}
-            {% if field.errors %}
-                {% for error in field.errors %}
-                    {{ error }}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                {% if category == 'error' %}
+                    <div class="alert alert-danger alter-dismissable fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% else %}
+                    <div class="alert alert-success alter-dismissable fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endif %}
                 {% endfor %}
             {% endif %}
-        </div>
-        {% endmacro %}
+            {% endwith %}
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-            {% if category == 'error' %}
-                <div class="alert alert-danger alter-dismissable fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+        {% block content%}{% endblock %}
+
+    </div>
+
+    <footer class="bg-primary text-light py-2">
+        <div class="container">
+            <div class="row">
+                <div class="social col-md-12 d-flex justify-content-center pb-1">
+                    <span><a href="http://linkedin.com"><i class="fas fa-envelope mx-3"></i></a></span>
+                    <span><a href="https://github.com/Gamattowicz"><i class="fab fa-github-square mx-3"></i></a></span>
+                    <span><a href="https://gmail.com"><i class="fab fa-linkedin mx-3"></i></a></span>
                 </div>
-            {% else %}
-                <div class="alert alert-success alter-dismissable fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endif %}
-            {% endfor %}
-        {% endif %}
-        {% endwith %}
-
-    {% block content%}{% endblock %}
-
-
-
-    <footer class="footer bg-primary mt-auto">
-        <div align="center" class="container">
-            <div class="social py-3">
-                <span><a href="http://linkedin.com"><i class="fas fa-envelope text-light mx-3"></i></a></span>
-                <span><a href="https://github.com/Gamattowicz"><i class="fab fa-github-square text-light mx-3"></i></a></span>
-                <span><a href="gmail.com"><i class="fab fa-linkedin text-light mx-3"></i></a></span>
-            </div>
-            <div class="text-light pb-3">
-                <span>© 2021 Copyright | Designed by Przemysław Romańczuk</span>
+                <div class="copyright col-md-12 d-flex justify-content-center pt-1">
+                    <span>© 2021 Copyright | Designed by Przemysław Romańczuk</span>
+               </div>
             </div>
         </div>
     </footer>
-</body>
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
