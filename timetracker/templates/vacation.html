@@ -4,11 +4,11 @@
 {% block content %}
 <div class="container">
     <h2 class="mt-4 text-center">Vacation</h2>
-    <form method="post" class="was-validated my-4">
-        <div class="form-group row my-4">
-            {{ form_l.seniority.label(class_="col-sm-2 col-form-label") }}
-            <div class="col-sm-3">
-                {{ form_l.seniority(class_="form-control", id="seniority", required="required") }}
+    <form method="post" class="was-validated my-5">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                {{ form_l.seniority.label(for="seniority") }}
+                {{ form_l.seniority(class_="form-control", id="seniority", required="required", placeholder="Years of work") }}
                 <div class="invalid-feedback">
                     This field must be filled!
                 </div>
@@ -16,53 +16,46 @@
                     Looks good!
                 </div>
             </div>
-        </div>
-        <div class="form-group row my-4">
-            {{ form_l.disability.label(class_="col-sm-2 col-form-label") }}
-            <div class="col-sm-3">
-            {{ form_l.disability(class_="form-control", id="disability") }}
+            <div class="form-group col-md-4">
+                {{ form_l.position.label(for="position") }}
+                {{ form_l.position(class_="form-control", id="position") }}
+            </div>
+            <div class="form-group col-md-4">
+                {{ form_l.school.label(for="school") }}
+                {{ form_l.school(class_="form-control", id="school") }}
             </div>
         </div>
-        <div class="form-group row my-4">
-            {{ form_l.school.label(class_="col-sm-2 col-form-label") }}
-            <div class="col-sm-3">
-            {{ form_l.school(class_="form-control", id="school") }}
-            </div>
-        </div>
-        <div class="form-group row my-4">
-            {{ form_l.position.label(class_="col-sm-2 col-form-label") }}
-            <div class="col-sm-3">
-            {{ form_l.position(class_="form-control", id="position") }}
+        <div class="form-group">
+            <div class="form-check">
+            {{ form_l.disability(class_="form-check-input", id="disability") }}
+            {{ form_l.disability.label(class_="form-check-label", for="disability") }}
             </div>
         </div>
         {{ form_l.submit_button(class_="btn btn-primary", id="submit_button") }}
     </form>
 
-    <div class="form-group row my-4">
-        <label for="vacation_d">The number of vacation days in the current year</label>
-        <div class="col-sm-2">
-            <input type="text" class="form-control" id="vacation_d" name="vacation_d" value="{{ total_vacation_days if total_vacation_days else 0 }}" disabled>
-        </div>
+    <div class="form-row">
+            <div class="form-group col-md-6 border border-primary d-flex justify-content-between align-items-center">
+                The number of vacation days in the current year
+                <span class="badge badge-primary badge-pill m-2 ">{{ total_vacation_days if total_vacation_days else 0 }}</span>
+            </div>
+            <div class="form-group col-md-6 border border-primary d-flex justify-content-between align-items-center">
+                The remaining vacation days in the current year
+                <span class="badge badge-primary badge-pill m-2">{{ rem_days_off }}</span>
+            </div>
     </div>
-    <div class="form-group row my-4">
-        <label for="rem_vacation_d">The remaining vacation days in the current year</label>
-        <div class="col-sm-2">
-            <input type="text" class="form-control" id="rem_vacation_d" name="rem_vacation_d" value="{{ rem_days_off }}" disabled>
-        </div>
-    </div>
-
-    <h3 class="text-center">Add vacation day</h3>
+    <hr>
+    <h3 class="text-center mt-4">Add vacation day</h3>
     <form method="post" class="was-validated mt-4">
-        <div class="form-group row my-4">
-            {{ form_d.vacation_date.label(class="col-sm-2 col-form-label") }}
-            <div class="col-sm-3">
-            {{ form_d.vacation_date(class_="form-control", id="vacation_date") }}
-            <small class="form-text text-muted">If it is empty, the current date will be saved. </small>
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                {{ form_d.vacation_date.label(for="vacation_date") }}
+                {{ form_d.vacation_date(class_="form-control", id="vacation_date") }}
+                <small class="form-text text-muted">If it is empty, the current date will be saved. </small>
             </div>
         </div>
-        {{ form_d.confirm_button(class_="btn btn-primary", id="confirm_button") }}
+        {{ form_d.confirm_button(for="vacation_date", class_="btn btn-primary", id="confirm_button") }}
     </form>
-
 
     <div class="vacation-list">
         <h3 class="my-4 text-center">List of vacation days</h3>
