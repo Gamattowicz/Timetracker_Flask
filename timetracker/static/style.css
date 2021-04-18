@@ -27,4 +27,9 @@
 
 .fab, .fas {
     font-size: 25px;
+    color: silver;
+}
+
+.fab:hover, .fas:hover{
+    color: rgb(248, 249, 250);
 }
