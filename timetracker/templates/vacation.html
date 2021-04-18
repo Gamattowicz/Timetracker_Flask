@@ -3,41 +3,69 @@
 
 {% block content %}
 <div class="container">
-    <h3 align="center" class="mt-4">Vacation</h3>
-    <form method="post">
-        {{ form_l.seniority.label }}
-        {{ form_l.seniority(id="seniority") }}
-        <br>
-        {{ form_l.disability.label }}
-        {{ form_l.disability(id="disability") }}
-        <br>
-        {{ form_l.school.label }}
-        {{ form_l.school(id="school") }}
-        <br>
-        {{ form_l.position.label }}
-        {{ form_l.position(id="position") }}
-        <br>
-        {{ form_l.submit_button(id="submit_button") }}
+    <h2 class="mt-4 text-center">Vacation</h2>
+    <form method="post" class="was-validated my-4">
+        <div class="form-group row my-4">
+            {{ form_l.seniority.label(class_="col-sm-2 col-form-label") }}
+            <div class="col-sm-3">
+                {{ form_l.seniority(class_="form-control", id="seniority", required="required") }}
+                <div class="invalid-feedback">
+                    This field must be filled!
+                </div>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+        </div>
+        <div class="form-group row my-4">
+            {{ form_l.disability.label(class_="col-sm-2 col-form-label") }}
+            <div class="col-sm-3">
+            {{ form_l.disability(class_="form-control", id="disability") }}
+            </div>
+        </div>
+        <div class="form-group row my-4">
+            {{ form_l.school.label(class_="col-sm-2 col-form-label") }}
+            <div class="col-sm-3">
+            {{ form_l.school(class_="form-control", id="school") }}
+            </div>
+        </div>
+        <div class="form-group row my-4">
+            {{ form_l.position.label(class_="col-sm-2 col-form-label") }}
+            <div class="col-sm-3">
+            {{ form_l.position(class_="form-control", id="position") }}
+            </div>
+        </div>
+        {{ form_l.submit_button(class_="btn btn-primary", id="submit_button") }}
     </form>
-    <br>
-    <div class="form-group">
+
+    <div class="form-group row my-4">
         <label for="vacation_d">The number of vacation days in the current year</label>
-        <input type="text" class="form-control" id="vacation_d" name="vacation_d" value="{{ total_vacation_days if total_vacation_days else 0 }}" disabled>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="vacation_d" name="vacation_d" value="{{ total_vacation_days if total_vacation_days else 0 }}" disabled>
+        </div>
+    </div>
+    <div class="form-group row my-4">
         <label for="rem_vacation_d">The remaining vacation days in the current year</label>
-        <input type="text" class="form-control" id="rem_vacation_d" name="rem_vacation_d" value="{{ rem_days_off }}" disabled>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="rem_vacation_d" name="rem_vacation_d" value="{{ rem_days_off }}" disabled>
+        </div>
     </div>
 
-    <h3 align="center">Add vacation day</h3>
-    <form method="post">
-        {{ form_d.vacation_date.label }}
-        {{ form_d.vacation_date(id="vacation_date") }}
-        <br>
-        {{ form_d.confirm_button(id="confirm_button") }}
+    <h3 class="text-center">Add vacation day</h3>
+    <form method="post" class="was-validated mt-4">
+        <div class="form-group row my-4">
+            {{ form_d.vacation_date.label(class="col-sm-2 col-form-label") }}
+            <div class="col-sm-3">
+            {{ form_d.vacation_date(class_="form-control", id="vacation_date") }}
+            <small class="form-text text-muted">If it is empty, the current date will be saved. </small>
+            </div>
+        </div>
+        {{ form_d.confirm_button(class_="btn btn-primary", id="confirm_button") }}
     </form>
 
 
     <div class="vacation-list">
-        <h3 align="center" class="my-4">List of vacation days</h3>
+        <h3 class="my-4 text-center">List of vacation days</h3>
         <table class="table table-primary table-hover table-bordered">
           <thead class="thead-dark">
             <tr>

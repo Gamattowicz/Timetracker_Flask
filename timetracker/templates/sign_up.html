@@ -5,10 +5,16 @@
 <div class="container">
     <form id="loginForm" class="form form-register" method="POST" action="" role="form">
         {{ form.hidden_tag() }}
-        {{ render_field(form.username, placeholder="Username") }}<br>
-        {{ render_field(form.password, placeholder="Password") }}<br>
-        {{ render_field(form.confirm, placeholder="Confirm password") }}<br>
-        <p><input class="btn btn-default btn-submit" type="submit" value="Confirm"></p>
+        <div class="form-group row my-4">
+            {{ render_field(form.username, class_="form-control", placeholder="Username") }}
+        </div>
+        <div class="form-group row my-4">
+            {{ render_field(form.password, class_="form-control", placeholder="Password") }}
+        </div>
+        <div class="form-group row my-4">
+            {{ render_field(form.confirm, class_="form-control", placeholder="Confirm password") }}
+        </div>
+        <div class="form-group row my-4"><input class="btn btn-primary btn-submit" type="submit" value="Confirm"></div>
     </form>
 </div>
 {% endblock %}
