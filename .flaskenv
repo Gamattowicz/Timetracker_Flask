@@ -1,0 +1,2 @@
+FLASK_APP=timetracker_app
+FLASK_ENV=development
