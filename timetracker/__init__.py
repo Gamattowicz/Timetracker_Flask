@@ -1,5 +1,5 @@
 from flask import Flask
-from config import Config, DB_NAME
+from config import config, DB_NAME
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
@@ -8,9 +8,9 @@ from flask_login import LoginManager
 db = SQLAlchemy()
 
 
-def create_app():
+def create_app(config_name='development'):
     app = Flask(__name__)
-    app.config.from_object(Config)
+    app.config.from_object(config[config_name])
     db.init_app(app)
 
     from .views import views

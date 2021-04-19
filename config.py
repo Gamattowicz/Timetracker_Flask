@@ -11,13 +11,22 @@ DB_NAME = 'timetracker.db'
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
 
-    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_NAME}'
+    SQLALCHEMY_DATABASE_URI = ''
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 class DevelopmentConfig(Config):
-    pass
+    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_NAME}'
 
 
 class TestingConfig(Config):
-    pass
+    DB_FILE_PATH = base_dir / 'tests' / 'tests.db'
+    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_FILE_PATH}'
+    DEBUG = True
+    TESTING = True
+
+
+config = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig
+}
