@@ -7,6 +7,15 @@ function deleteHour(hourId) {
   });
 }
 
+function deleteProject(projectId) {
+  fetch("/delete-project", {
+    method: "POST",
+    body: JSON.stringify({ projectId: projectId }),
+  }).then((_res) => {
+    window.location.href = "/projects";
+  });
+}
+
 function deleteVacationDay(dayId) {
   fetch("/delete-vacation-day", {
     method: "POST",

@@ -75,6 +75,7 @@
               <th class="border border-dark" scope="col" style="width:15%">Start date</th>
               <th class="border border-dark" scope="col" style="width:15%">End date</th>
               <th class="border border-dark" scope="col" style="width:15%">Total hours</th>
+              <th class="border border-dark" scope="col" style="width:5%"></th>
             </tr>
           </thead>
             <tbody>
@@ -87,6 +88,13 @@
               <td class="border border-white">{{ result.start_date }}</td>
               <td class="border border-white">{{ result.end_date }}</td>
               <td class="border border-white">{{ result.sum }}</td>
+              <td class="border border-white">
+                  <div class="d-flex justify-content-center">
+                    <button type="button" class="close text-danger" onClick="deleteProject({{ result.id }})">
+                        <span aria-hidden="true" class="text-center">&times;</span>
+                    </button>
+                  </div>
+              </td>
             </tr>
         {% endfor %}
             </tbody>
