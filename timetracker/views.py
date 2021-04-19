@@ -118,6 +118,18 @@ def projects():
                            user=current_user, form=form)
 
 
+@views.route('/delete-project', methods=['POST'])
+def delete_project():
+    project = json.loads(request.data)
+    project_id = project['projectId']
+    project = Projects.query.get(project_id)
+    if project:
+        db.session.delete(project)
+        db.session.commit()
+        flash('Project deleted!', category='success')
+    return jsonify({})
+
+
 @views.route('/vacation', methods=['GET', 'POST'])
 @login_required
 def vacation():
