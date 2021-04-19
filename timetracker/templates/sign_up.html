@@ -3,18 +3,42 @@
 
 {% block content %}
 <div class="container">
-    <form id="loginForm" class="form form-register" method="POST" action="" role="form">
+    <h2 class="mt-4 text-center">Register</h2>
+    <form id="signUpForm" class="was-validated my-5" method="POST" action="" role="form">
         {{ form.hidden_tag() }}
-        <div class="form-group row my-4">
-            {{ render_field(form.username, class_="form-control", placeholder="Username") }}
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                {{ render_field(form.username.label, for="username") }}
+                {{ render_field(form.username, class_="form-control", id="username", required="required", placeholder="Username") }}
+                <div class="invalid-feedback">
+                    This field must be filled!
+                </div>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+               {{ render_field(form.password.label, for="password1") }}
+               {{ render_field(form.password, class_="form-control", id="password1", required="required", placeholder="Password") }}
+                <div class="invalid-feedback">
+                    This field must be filled!
+                </div>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+               {{ render_field(form.confirm.label, for="password2") }}
+               {{ render_field(form.confirm, class_="form-control", id="password2", required="required", placeholder="Confirm password") }}
+                <div class="invalid-feedback">
+                    This field must be filled!
+                </div>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
         </div>
-        <div class="form-group row my-4">
-            {{ render_field(form.password, class_="form-control", placeholder="Password") }}
-        </div>
-        <div class="form-group row my-4">
-            {{ render_field(form.confirm, class_="form-control", placeholder="Confirm password") }}
-        </div>
-        <div class="form-group row my-4"><input class="btn btn-primary btn-submit" type="submit" value="Confirm"></div>
+        {{ render_field(form.confirm_button, class_="btn btn-primary") }}
     </form>
 </div>
 {% endblock %}
