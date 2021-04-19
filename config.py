@@ -13,3 +13,11 @@ class Config:
 
     SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_NAME}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+
+class DevelopmentConfig(Config):
+    pass
+
+
+class TestingConfig(Config):
+    pass
