@@ -5,7 +5,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 
 class Projects(db.Model):
-    __tablename__ == 'projects'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False, unique=True)
     shortcut = db.Column(db.String(50), nullable=False, unique=True)
@@ -14,12 +13,8 @@ class Projects(db.Model):
     phase = db.Column(db.String(50), nullable=False)
     hour = db.relationship('Hours')
 
-    def __repr__(self):
-        return f'<{self.__class__.__name__}>: {self.name} {self.shortcut}'
-
 
 class Hours(db.Model):
-    __tablename__ == 'hours'
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Integer, nullable=False)
     work_date = db.Column(db.String(50), default=func.current_date())
@@ -27,13 +22,8 @@ class Hours(db.Model):
         'projects.shortcut'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __repr__(self):
-        return f'<{self.__class__.__name__}>: {self.amount} ' \
-               f'{self.project_shortcut} {self.user_id}'
-
 
 class User(db.Model, UserMixin):
-    __tablename__ == 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
     password_hash = db.Column(db.String(50))
@@ -43,7 +33,7 @@ class User(db.Model, UserMixin):
     vacation = db.relationship('Vacation')
 
     def __repr__(self):
-        return f'<{self.__class__.__name__}>: {self.username}'
+        return '<User({username!r})>'.format(username=self.username)
 
     @property
     def password(self):
@@ -58,10 +48,6 @@ class User(db.Model, UserMixin):
 
 
 class Vacation(db.Model):
-    __tablename__ == 'users'
     id = db.Column(db.Integer, primary_key=True)
     vacation_date = db.Column(db.String(50), default=func.current_date())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-    def __repr__(self):
-        return f'<{self.__class__.__name__}>: {self.vacation_date} {self.user_id}'
