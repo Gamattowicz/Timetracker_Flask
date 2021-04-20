@@ -19,3 +19,15 @@ def app():
 def client(app):
     with app.test_client() as client:
         yield client
+
+
+@pytest.fixture()
+def user(client):
+    user = {
+        "username": "test542",
+        "password": "12345678",
+        "confirm": "12345678"
+    }
+    client.post('/sign-up', data=user)
+
+    return user
