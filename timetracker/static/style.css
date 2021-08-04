@@ -1,11 +1,11 @@
 .far {
-    color: #007bff;
+    color: #e95420;
     font-size: 80px;
 }
 
 #watch, h1 {
     font-size: 48px;
-    color: #007bff;
+    color: #e95420;
 }
 
 #watch {
@@ -15,13 +15,13 @@
 .ring {
     height: 300px;
     width: 300px;
-    border: 5px solid #007bff;;
+    border: 5px solid #e95420;
     border-radius: 50%;
 }
 
 .far:active {
-    color: #FFD700;
-    font-size: 100px;
+    color: #20e2e9;
+    opacity: 0.3;
     transition: .02s;
 }
 
