@@ -2,87 +2,88 @@
 {% block title %}Vacation{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2 class="mt-4 text-center">Vacation</h2>
-    <form method="post" class="was-validated my-5">
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                {{ form_l.seniority.label(for="seniority") }}
-                {{ form_l.seniority(class_="form-control", id="seniority", required="required", placeholder="Years of work") }}
-                <div class="invalid-feedback">
-                    This field must be filled!
-                </div>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-            </div>
-            <div class="form-group col-md-4">
-                {{ form_l.position.label(for="position") }}
-                {{ form_l.position(class_="form-control", id="position") }}
-            </div>
-            <div class="form-group col-md-4">
-                {{ form_l.school.label(for="school") }}
-                {{ form_l.school(class_="form-control", id="school") }}
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="form-check">
-            {{ form_l.disability(class_="form-check-input", id="disability") }}
-            {{ form_l.disability.label(class_="form-check-label", for="disability") }}
-            </div>
-        </div>
-        {{ form_l.submit_button(class_="btn btn-primary", id="submit_button") }}
-    </form>
 
-    <div class="form-row">
-            <div class="form-group col-md-6 border border-primary d-flex justify-content-between align-items-center">
-                The number of vacation days in the current year
-                <span class="badge badge-primary badge-pill m-2 ">{{ total_vacation_days if total_vacation_days else 0 }}</span>
-            </div>
-            <div class="form-group col-md-6 border border-primary d-flex justify-content-between align-items-center">
-                The remaining vacation days in the current year
-                <span class="badge badge-primary badge-pill m-2">{{ rem_days_off }}</span>
-            </div>
-    </div>
-    <hr>
-    <h3 class="text-center mt-4">Add vacation day</h3>
-    <form method="post" class="was-validated mt-4">
-        <div class="form-row">
-            <div class="form-group col-md-3">
-                {{ form_d.vacation_date.label(for="vacation_date") }}
-                {{ form_d.vacation_date(class_="form-control", id="vacation_date") }}
-                <small class="form-text text-muted">If it is empty, the current date will be saved. </small>
-            </div>
-        </div>
-        {{ form_d.confirm_button(for="vacation_date", class_="btn btn-primary", id="confirm_button") }}
-    </form>
+    <h2 class="text-center text-uppercase">Vacation</h2>
 
-    <h3 class="my-5 text-center">List of vacation days</h3>
-    <div class="vacation-list my-5">
-        <table class="table table-primary table-hover table-bordered">
-          <thead class="thead-dark">
-            <tr>
-              <th class="border border-dark" scope="col" style="width:80%">Date</th>
-              <th class="border border-dark" scope="col" style="width:20%"></th>
-            </tr>
-          </thead>
-            <tbody>
-        {% for day in days %}
-            {% if day.user_id == user.id %}
-            <tr>
-              <td class="border border-white">{{ day.vacation_date }}</td>
-              <td class="border border-white">
-                  <div class="d-flex justify-content-center">
-                    <button type="button" class="close text-danger" onClick="deleteVacationDay({{ day.id }})">
-                        <span aria-hidden="true" class="text-center">&times;</span>
-                    </button>
-                  </div>
-              </td>
-            </tr>
-            {% endif %}
-        {% endfor %}
-            </tbody>
-        </table>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="col-md-10 offset-md-1 my-4">
+                <form method="POST" class="form-group was-validated mt-4">
+                            <div class="mb-3">
+                                {{ form_l.seniority.label(for="seniority", class_="form-label") }}
+                                {{ form_l.seniority(class_="form-control", id="seniority", required="required", placeholder="Years of work") }}
+                                <div class="invalid-feedback">
+                                    This field must be filled!
+                                </div>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                        <div class="mb-3">
+                            {{ form_l.position.label(for="position", class_="form-label") }}
+                            {{ form_l.position(class_="form-control", id="position") }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_l.school.label(for="school", class_="form-label") }}
+                            {{ form_l.school(class_="form-control", id="school") }}
+                        </div>
+                        <div class="form-check mb-3">
+                        {{ form_l.disability(class_="form-check-input", id="disability") }}
+                        {{ form_l.disability.label(class_="form-check-label", for="disability") }}
+                        </div>
+                    {{ form_l.submit_button(class_="btn btn-success float-end mb-2 text-uppercase", id="submit_button") }}
+                </form>
+
+        <li class="list-group-item">
+                <div class="form-group col-md-6 border border-primary d-flex justify-content-between align-items-center">
+                    The number of vacation days in the current year
+                    <span class="badge badge-primary badge-pill m-2 ">{{ total_vacation_days if total_vacation_days else 0 }}</span>
+                </div>
+                <div class="form-group col-md-6 border border-primary d-flex justify-content-between align-items-center">
+                    The remaining vacation days in the current year
+                    <span class="badge badge-primary badge-pill m-2">{{ rem_days_off }}</span>
+                </div>
+
+                </li>
+            </ul>
+        <h3 class="text-center mt-4">Add vacation day</h3>
+        <form method="post" class="was-validated mt-4">
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    {{ form_d.vacation_date.label(for="vacation_date") }}
+                    {{ form_d.vacation_date(class_="form-control", id="vacation_date") }}
+                    <small class="form-text text-muted">If it is empty, the current date will be saved. </small>
+                </div>
+            </div>
+            {{ form_d.confirm_button(for="vacation_date", class_="btn btn-primary", id="confirm_button") }}
+        </form>
+
+        <h3 class="my-5 text-center">List of vacation days</h3>
+        <div class="vacation-list my-5">
+            <table class="table table-primary table-hover table-bordered">
+              <thead class="thead-dark">
+                <tr>
+                  <th class="border border-dark" scope="col" style="width:80%">Date</th>
+                  <th class="border border-dark" scope="col" style="width:20%"></th>
+                </tr>
+              </thead>
+                <tbody>
+            {% for day in days %}
+                {% if day.user_id == user.id %}
+                <tr>
+                  <td class="border border-white">{{ day.vacation_date }}</td>
+                  <td class="border border-white">
+                      <div class="d-flex justify-content-center">
+                        <button type="button" class="close text-danger" onClick="deleteVacationDay({{ day.id }})">
+                            <span aria-hidden="true" class="text-center">&times;</span>
+                        </button>
+                      </div>
+                  </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 {% endblock %}
