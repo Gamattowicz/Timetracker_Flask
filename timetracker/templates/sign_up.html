@@ -2,43 +2,54 @@
 {% block title %}Sign up{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2 class="mt-4 text-center">Register</h2>
-    <form id="signUpForm" class="was-validated my-5" method="POST" action="" role="form">
-        {{ form.hidden_tag() }}
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                {{ render_field(form.username.label, for="username") }}
-                {{ render_field(form.username, class_="form-control", id="username", required="required", placeholder="Username") }}
-                <div class="invalid-feedback">
-                    This field must be filled!
-                </div>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
+
+    <h2 class="text-center text-uppercase">Register</h2>
+
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="col-md-8 offset-md-2 my-4">
+                <form method="POST" class="was-validated mt-4" id="signUpForm">
+                    {{ form.hidden_tag() }}
+                    <div class="row mb-3">
+                        {{ render_field(form.username.label, for="username", class_="col-sm-4 col-form-label") }}
+                        <div class="col-sm-8">
+                            {{ render_field(form.username, class_="form-control", id="username", required="required", placeholder="Username") }}
+                            <div class="invalid-feedback">
+                                This field must be filled!
+                            </div>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                       {{ render_field(form.password.label, for="password1", class_="col-sm-4 col-form-label") }}
+                       <div class="col-sm-8">
+                            {{ render_field(form.password, class_="form-control", id="password1", required="required", placeholder="Password") }}
+                            <div class="invalid-feedback">
+                                This field must be filled!
+                            </div>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                       {{ render_field(form.confirm.label, for="password2", class_="col-sm-4 col-form-label") }}
+                       <div class="col-sm-8">
+                            {{ render_field(form.confirm, class_="form-control", id="password2", required="required", placeholder="Confirm password") }}
+                            <div class="invalid-feedback">
+                                This field must be filled!
+                            </div>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                    </div>
+                    <p>Have an account? <a href="/sign-up" class="sign_up" style="text-decoration: none">Login</a></p>
+                    {{ render_field(form.confirm_button, class_="btn btn-success float-end mb-2 text-uppercase") }}
+                </form>
             </div>
-            <div class="form-group col-md-4">
-               {{ render_field(form.password.label, for="password1") }}
-               {{ render_field(form.password, class_="form-control", id="password1", required="required", placeholder="Password") }}
-                <div class="invalid-feedback">
-                    This field must be filled!
-                </div>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-            </div>
-            <div class="form-group col-md-4">
-               {{ render_field(form.confirm.label, for="password2") }}
-               {{ render_field(form.confirm, class_="form-control", id="password2", required="required", placeholder="Confirm password") }}
-                <div class="invalid-feedback">
-                    This field must be filled!
-                </div>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-            </div>
-        </div>
-        {{ render_field(form.confirm_button, class_="btn btn-primary") }}
-    </form>
-</div>
+        </li>
+    </ul>
 {% endblock %}
