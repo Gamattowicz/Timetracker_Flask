@@ -2,63 +2,73 @@
 {% block title %}Add hours{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2 class="mt-4 text-center">Add hours</h2>
-    <form method="POST" class="was-validated my-5" action="{{ url_for('views.hours') }}">
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                {{ form.amount.label(for="amount") }}
-                {{ form.amount(class_="form-control", id="amount", required="required", placeholder="e.g. 5") }}
-                <div class="invalid-feedback">
-                    This field must be filled!
-                </div>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-            </div>
-            <div class="form-group col-md-4">
-                {{ form.work_date.label(for="work-date") }}
-                {{ form.work_date(class_="form-control", id="work-date") }}
-                <small class="form-text text-muted">If it is empty, the current date will be saved. </small>
-            </div>
-            <div class="form-group col-md-4">
-                {{ form.shortcut.label(for="shortcut") }}
-                {{ form.shortcut(class_="form-control", id="shortcut") }}
-            </div>
-        </div>
-        {{ form.confirm_button(class_="btn btn-primary") }}
-    </form>
 
-    <h3 class="my-5 text-center">List of hours</h3>
-    <div class="my-5 hours-list">
-        <table class="table table-primary table-hover table-bordered">
-          <thead class="thead-dark">
+    <h2 class="text-center text-uppercase">Add hours</h2>
+
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="col-md-10 offset-md-1 my-4">
+                <form method="POST" class="was-validated mt-4" action="{{ url_for('views.hours') }}">
+                    <div class="row mb-3">
+                            {{ form.amount.label(for="amount", class_="col-sm-4 col-form-label") }}
+                            <div class="col-sm-8">
+                            {{ form.amount(class_="form-control", id="amount", required="required", placeholder="e.g. 5") }}
+                            <div class="invalid-feedback">
+                                This field must be filled!
+                            </div>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        {{ form.work_date.label(for="work-date", class_="col-sm-4 col-form-label") }}
+                        <div class="col-sm-8">
+                            {{ form.work_date(class_="form-control", id="work-date") }}
+                            <small class="form-text text-muted">If it is empty, the current date will be saved. </small>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        {{ form.shortcut.label(for="shortcut", class_="col-sm-4 col-form-label") }}
+                        <div class="col-sm-8">
+                            {{ form.shortcut(class_="form-control", id="shortcut") }}
+                        </div>
+                    </div>
+                    {{ form.confirm_button(class_="btn btn-success float-end mb-2 text-uppercase") }}
+                </form>
+            </div>
+        </li>
+    </ul>
+
+    <div class="col-md-10 offset-md-1 my-5">
+        <table class="table table-striped caption-top table-light table-bordered">
+          <caption class="text-uppercase">List of projects</caption>
+          <thead class="table-dark">
             <tr>
-              <th class="border border-dark" scope="col" style="width:15%">Number of hours</th>
-              <th class="border border-dark" scope="col" style="width:40%">Date</th>
-              <th class="border border-dark" scope="col" style="width:40%">Project shortcut</th>
-              <th class="border border-dark" scope="col" style="width:5%"></th>
+                <th scope="col" style="width:40%">Project shortcut</th>
+                <th scope="col" style="width:25%">Date</th>
+                <th scope="col" style="width:30%">Number of hours</th>
+                <th scope="col" style="width:5%"></th>
             </tr>
           </thead>
             <tbody>
-        {% for result in results %}
-            {% if result.user_id == user.id %}
-            <tr>
-              <td class="border border-white">{{ result.amount }}</td>
-              <td class="border border-white">{{ result.work_date }}</td>
-              <td class="border border-white">{{ result.project_shortcut }}</td>
-              <td class="border border-white">
-                  <div class="d-flex justify-content-center">
-                    <button type="button" class="close text-danger" onClick="deleteHour({{ result.id }})">
-                        <span aria-hidden="true" class="text-center">&times;</span>
-                    </button>
-                  </div>
-              </td>
-            </tr>
-            {% endif %}
-        {% endfor %}
+            {% for result in results %}
+                {% if result.user_id == user.id %}
+                    <tr>
+                        <td>{{ result.project_shortcut }}</td>
+                        <td>{{ result.work_date }}</td>
+                        <td>{{ result.amount }}</td>
+                        <td>
+                          <div class="d-flex justify-content-center">
+                            <button type="button" class="close" onClick="deleteHour({{ result.id }})" style="border: none; background-color: transparent;">
+                                <i class="fas fa-minus-circle text-danger"></i>
+                            </button>
+                          </div>
+                      </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
             </tbody>
         </table>
     </div>
-</div>
 {% endblock %}
