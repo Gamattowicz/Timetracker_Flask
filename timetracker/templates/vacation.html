@@ -9,27 +9,37 @@
         <li class="list-group-item">
             <div class="col-md-10 offset-md-1 my-4">
                 <form method="POST" class="form-group was-validated mt-4">
-                        <div class="mb-3">
-                            {{ form_l.seniority.label(for="seniority", class_="form-label") }}
-                            {{ form_l.seniority(class_="form-control", id="seniority", required="required", placeholder="Years of work") }}
-                            <div class="invalid-feedback">
-                                This field must be filled!
+                        <div class="row mb-3">
+                            {{ form_l.seniority.label(for="seniority", class_="col-sm-4 col-form-label") }}
+                            <div class="col-sm-8">
+                                {{ form_l.seniority(class_="form-control", id="seniority", required="required", placeholder="Years of work") }}
+                                <div class="invalid-feedback">
+                                    This field must be filled!
+                                </div>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
                             </div>
-                            <div class="valid-feedback">
-                                Looks good!
+                        </div>
+                        <div class="row mb-3">
+                            {{ form_l.position.label(for="position", class_="col-sm-4 col-form-label") }}
+                            <div class="col-sm-8">
+                                {{ form_l.position(class_="form-control", id="position") }}
                             </div>
                         </div>
-                        <div class="mb-3">
-                            {{ form_l.position.label(for="position", class_="form-label") }}
-                            {{ form_l.position(class_="form-control", id="position") }}
+                        <div class="row mb-3">
+                            {{ form_l.school.label(for="school", class_="col-sm-4 col-form-label") }}
+                            <div class="col-sm-8">
+                                {{ form_l.school(class_="form-control", id="school") }}
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            {{ form_l.school.label(for="school", class_="form-label") }}
-                            {{ form_l.school(class_="form-control", id="school") }}
-                        </div>
-                        <div class="form-check mb-3">
-                        {{ form_l.disability(class_="form-check-input", id="disability") }}
-                        {{ form_l.disability.label(class_="form-check-label", for="disability") }}
+                        <div class="row mb-3">
+                                <div class="col-sm-8 offset-sm-4">
+                            <div class="form-check">
+                            {{ form_l.disability.label(class_="form-check-label", for="disability") }}
+                            {{ form_l.disability(class_="form-check-input", id="disability") }}
+                            </div>
+                                    </div>
                         </div>
                     {{ form_l.submit_button(class_="btn btn-success float-end mb-2 text-uppercase", id="submit_button") }}
                 </form>
@@ -45,7 +55,7 @@
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 The remaining vacation days in the current year
-                <span class="badge bg-info rounded-pill">{{ rem_days_off }}</span>
+                <span class="badge bg-success rounded-pill">{{ rem_days_off }}</span>
             </li>
         </ul>
     </div>
@@ -57,7 +67,7 @@
             <div class="col-md-10 offset-md-1 my-4">
                 <form method="POST" class="form-group was-validated mt-4">
                     <div class="row mb-3">
-                        {{ form_d.vacation_date.label(for="vacation_date", class_="col-sm-4 col-form-label col-form-label-sm") }}
+                        {{ form_d.vacation_date.label(for="vacation_date", class_="col-sm-4 col-form-label") }}
                         <div class="col-sm-8">
                         {{ form_d.vacation_date(class_="form-control form-control-sm", id="vacation_date") }}
                         <small class="form-text text-muted">If it is empty, the current date will be saved. </small>
@@ -71,9 +81,9 @@
 
 
     <div class="col-md-10 offset-md-1 my-5">
-        <table class="table table-striped caption-top table-light">
+        <table class="table table-striped caption-top table-light table-bordered">
           <caption class="text-uppercase">List of vacation days</caption>
-          <thead class="table-dark bg-gradient">
+          <thead class="table-dark">
             <tr>
               <th scope="col" style="width:80%">Date</th>
               <th class="text-center" scope="col" style="width:20%">Remove</th>
