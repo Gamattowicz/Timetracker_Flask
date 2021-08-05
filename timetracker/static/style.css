@@ -33,3 +33,7 @@
 .fab:hover, .fas:hover{
     color: rgb(248, 249, 250);
 }
+
+.fa-minus-circle:hover {
+    opacity: 0.4;
+}

@@ -73,7 +73,7 @@
     <div class="col-md-10 offset-md-1 my-5">
         <table class="table table-striped caption-top table-light">
           <caption class="text-uppercase">List of vacation days</caption>
-          <thead class="table-dark">
+          <thead class="table-dark bg-gradient">
             <tr>
               <th scope="col" style="width:80%">Date</th>
               <th class="text-center" scope="col" style="width:20%">Remove</th>
@@ -86,8 +86,8 @@
               <td>{{ day.vacation_date }}</td>
               <td>
                   <div class="d-flex justify-content-center">
-                    <button type="button" class="close text-danger" onClick="deleteVacationDay({{ day.id }})">
-                        <span aria-hidden="true" class="text-center">&times;</span>
+                    <button type="button" class="close" onClick="deleteVacationDay({{ day.id }})" style="border: none; background-color: transparent;">
+                        <i class="fas fa-minus-circle text-danger"></i>
                     </button>
                   </div>
               </td>
