@@ -2,96 +2,103 @@
 {% block title %}Add projects{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2 class="mt-4 text-center">Add new project</h2>
-    <form method="POST" class="was-validated my-5" action="{{ url_for('views.projects') }}">
-        <div class="form-group row my-4">
-            {{ form.name.label(class_="col-sm-2 col-form-label") }}
-            <div class="col-sm-10">
-                {{ form.name(class_="form-control", id="name", placeholder="Enter a project name", required="required") }}
-                <div class="invalid-feedback">
-                    This field must be filled!
-                </div>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-            </div>
-        </div>
-        <div class="form-group row my-4">
-            {{ form.shortcut.label(class_="col-sm-2 col-form-label") }}
-            <div class="col-sm-10">
-                {{ form.shortcut(class_="form-control", id="shortcut", placeholder="Enter a project shortcut", required="required") }}
-                <div class="invalid-feedback">
-                    This field must be filled!
-                </div>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-            </div>
-        </div>
-        <div class="form-group row my-4">
-            {{ form.phase.label(class_="col-sm-2 col-form-label") }}
-            <div class="col-sm-10">
-                {{ form.phase(class_="form-control", id="shortcut", placeholder="Enter a project phase", required="required") }}
-                <div class="invalid-feedback">
-                    This field must be filled!
-                </div>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-            </div>
-        </div>
-        <div class="form-group row my-4">
-            {{ form.start_date.label(class="col-sm-2 col-form-label") }}
-            <div class="col-sm-10">
-                {{ form.start_date(class_="form-control", id="start_date") }}
-                <small class="form-text text-muted">If it is empty, the current date will be saved. </small>
-            </div>
-        </div>
-        <div class="form-group row my-4">
-            {{ form.end_date.label(class="col-sm-2 col-form-label") }}
-            <div class="col-sm-10">
-                {{ form.end_date(class_="form-control", id="end_date", required="required") }}
-                <div class="invalid-feedback">
-                    This field must be filled!
-                </div>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-            </div>
-        </div>
-        {{ form.confirm_button(class_="btn btn-primary") }}
-    </form>
 
-    <h3 class="my-5 text-center">List of projects</h3>
-    <div class="project-list my-5">
-        <table class="table table-primary table-hover table-bordered">
-          <thead class="thead-dark">
+    <h2 class="text-center text-uppercase">Add new project</h2>
+
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="col-md-10 offset-md-1 my-4">
+                <form method="POST" class="was-validated mt-4" action="{{ url_for('views.projects') }}">
+                    <div class="row mb-3">
+                        {{ form.name.label(for="name", class_="col-sm-4 col-form-label") }}
+                        <div class="col-sm-8">
+                            {{ form.name(class_="form-control", id="name", required="required", placeholder="Enter a project name") }}
+                            <div class="invalid-feedback">
+                                This field must be filled!
+                            </div>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        {{ form.shortcut.label(for="shortcut", class_="col-sm-4 col-form-label") }}
+                        <div class="col-sm-8">
+                            {{ form.shortcut(class_="form-control", id="shortcut", required="required", placeholder="Enter a project shortcut") }}
+                            <div class="invalid-feedback">
+                                This field must be filled!
+                            </div>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        {{ form.phase.label(for="phase", class_="col-sm-4 col-form-label") }}
+                        <div class="col-sm-8">
+                            {{ form.phase(class_="form-control", id="phase", required="required", placeholder="Enter a project phase") }}
+                            <div class="invalid-feedback">
+                                This field must be filled!
+                            </div>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        {{ form.start_date.label(for="start_date", class="col-sm-4 col-form-label") }}
+                        <div class="col-sm-8">
+                            {{ form.start_date(class_="form-control", id="start_date") }}
+                            <small class="form-text text-muted">If it is empty, the current date will be saved. </small>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        {{ form.end_date.label(for="end_date", class="col-sm-4 col-form-label") }}
+                        <div class="col-sm-8">
+                            {{ form.end_date(class_="form-control", id="end_date", required="required") }}
+                            <div class="invalid-feedback">
+                                This field must be filled!
+                            </div>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                    </div>
+                    {{ form.confirm_button(class_="btn btn-success float-end mb-2 text-uppercase", id="submit_button") }}
+                </form>
+            </div>
+        </li>
+    </ul>
+
+    <div class="col-md-10 offset-md-1 my-5">
+        <table class="table table-striped caption-top table-light table-bordered">
+          <caption class="text-uppercase">List of projects</caption>
+          <thead class="table-dark">
             <tr>
-              <th class="border border-dark" scope="col" style="width:5%">#</th>
-              <th class="border border-dark" scope="col" style="width:29%">Name</th>
-              <th class="border border-dark" scope="col" style="width:18%">Shortcut</th>
-              <th class="border border-dark" scope="col" style="width:18%">Phase</th>
-              <th class="border border-dark" scope="col" style="width:15%">Start date</th>
-              <th class="border border-dark" scope="col" style="width:15%">End date</th>
-              <th class="border border-dark" scope="col" style="width:15%">Total hours</th>
-              <th class="border border-dark" scope="col" style="width:5%"></th>
+              <th scope="col" style="width:5%">#</th>
+              <th scope="col" style="width:29%">Name</th>
+              <th scope="col" style="width:18%">Shortcut</th>
+              <th scope="col" style="width:18%">Phase</th>
+              <th scope="col" style="width:15%">Start date</th>
+              <th scope="col" style="width:15%">End date</th>
+              <th scope="col" style="width:15%">Total hours</th>
+              <th scope="col" style="width:5%"></th>
             </tr>
           </thead>
             <tbody>
-        {% for result in results %}
+            {% for result in results %}
             <tr>
-              <th class="border border-white" scope="row">{{ result.id }}</th>
-              <td class="border border-white">{{ result.name }}</td>
-              <td class="border border-white">{{ result.shortcut }}</td>
-              <td class="border border-white">{{ result.phase }}</td>
-              <td class="border border-white">{{ result.start_date }}</td>
-              <td class="border border-white">{{ result.end_date }}</td>
-              <td class="border border-white">{{ result.sum }}</td>
-              <td class="border border-white">
+              <th scope="row">{{ result.id }}</th>
+              <td>{{ result.name }}</td>
+              <td>{{ result.shortcut }}</td>
+              <td>{{ result.phase }}</td>
+              <td>{{ result.start_date }}</td>
+              <td>{{ result.end_date }}</td>
+              <td>{{ result.sum }}</td>
+              <td>
                   <div class="d-flex justify-content-center">
-                    <button type="button" class="close text-danger" onClick="deleteProject({{ result.id }})">
-                        <span aria-hidden="true" class="text-center">&times;</span>
+                    <button type="button" class="close" onClick="deleteProject({{ result.id }})" style="border: none; background-color: transparent;">
+                        <i class="fas fa-minus-circle text-danger"></i>
                     </button>
                   </div>
               </td>
@@ -100,5 +107,4 @@
             </tbody>
         </table>
     </div>
-</div>
 {% endblock %}
