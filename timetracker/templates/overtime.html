@@ -2,59 +2,59 @@
 {% block title %}Overtime{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2 class="my-4 text-center">Overtime</h2>
-    <div class="form-row mb-5">
-        <div class="form-group col-md-6 border border-primary d-flex justify-content-between align-items-center">
-            The number of overtime
-            <span class="badge badge-primary badge-pill m-2 ">{{ overtime }}</span>
-        </div>
-        <div class="form-group col-md-6 border border-primary d-flex justify-content-between align-items-center">
-            The number of working hours
-            <span class="badge badge-primary badge-pill m-2">{{ working_hours }}</span>
-        </div>
-    </div>
-    <hr>
 
-    <h3 class="my-5 text-center">List of working hours in each day</h3>
-    <div class="work-day-list mb-5">
-        <table class="table table-primary table-hover table-bordered">
-          <thead class="thead-dark">
+    <h2 class="text-center text-uppercase">Overtime</h2>
+
+    <div class="col-md-10 offset-md-1 my-5">
+        <ul class="list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                The number of overtime
+                <span class="badge bg-dark rounded-pill">{{ overtime }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                The number of working hours
+                <span class="badge bg-success rounded-pill">{{ working_hours }}</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-md-10 offset-md-1 my-5">
+        <table class="table table-striped caption-top table-light table-bordered">
+          <caption class="text-uppercase">List of working hours in each day</caption>
+          <thead class="table-dark">
             <tr>
-              <th class="border border-dark" scope="col" style="width:60%">Date</th>
-              <th class="border border-dark" scope="col" style="width:40%">Number of hours</th>
+              <th scope="col" style="width:60%">Date</th>
+              <th scope="col" style="width:40%">Number of hours</th>
             </tr>
           </thead>
             <tbody>
-        {% for work_day, hour in work_days.items() %}
+            {% for work_day, hour in work_days.items() %}
             <tr>
-              <td class="border border-white">{{ work_day}}</td>
-              <td class="border border-white">{{ hour }}</td>
+              <td>{{ work_day}}</td>
+              <td>{{ hour }}</td>
             </tr>
-        {% endfor %}
+            {% endfor %}
             </tbody>
         </table>
     </div>
-    <hr>
 
-    <h3 class="my-5 text-center">List of overtime in each day</h3>
-    <div class="overtime-list my-5">
-        <table class="table table-primary table-hover table-bordered">
-          <thead class="thead-dark">
+    <div class="col-md-10 offset-md-1 my-5">
+        <table class="table table-striped caption-top table-light table-bordered">
+          <caption class="text-uppercase">List of overtime in each day</caption>
+          <thead class="table-dark">
             <tr>
-              <th class="border border-dark" scope="col" style="width:60%">Date</th>
-              <th class="border border-dark" scope="col" style="width:40%">Number of overtime</th>
+              <th scope="col" style="width:60%">Date</th>
+              <th scope="col" style="width:40%">Number of overtime</th>
             </tr>
           </thead>
             <tbody>
-        {% for d, h in overtime_list.items() %}
+            {% for d, h in overtime_list.items() %}
             <tr>
-              <td class="border border-white">{{ d }}</td>
-              <td class="border border-white">{{ h }}</td>
+              <td>{{ d }}</td>
+              <td>{{ h }}</td>
             </tr>
-        {% endfor %}
+            {% endfor %}
             </tbody>
         </table>
     </div>
-</div>
 {% endblock %}
