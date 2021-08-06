@@ -86,20 +86,20 @@
             </tr>
           </thead>
             <tbody>
-            {% for result in results %}
+            {% for project in projects %}
             <tr>
-              <th scope="row">{{ result.id }}</th>
-              <td>{{ result.name }}</td>
-              <td>{{ result.shortcut }}</td>
-              <td>{{ result.phase }}</td>
-              <td>{{ result.start_date }}</td>
-              <td>{{ result.end_date }}</td>
-              <td>{{ result.sum }}</td>
+              <th scope="row">{{ project.id }}</th>
+              <td>{{ project.name }}</td>
+              <td>{{ project.shortcut }}</td>
+              <td>{{ project.phase }}</td>
+              <td>{{ project.start_date }}</td>
+              <td>{{ project.end_date }}</td>
+              <td>{{ project.sum }}</td>
               <td>
                   <div class="d-flex justify-content-center">
-                    <button type="button" class="close" onClick="deleteProject({{ result.id }})" style="border: none; background-color: transparent;">
+                    <a href="/delete-project/{{project.id}}" style="border: none; background-color: transparent;">
                         <i class="fas fa-minus-circle text-danger"></i>
-                    </button>
+                    </a>
                   </div>
               </td>
             </tr>

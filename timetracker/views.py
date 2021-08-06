@@ -97,29 +97,29 @@ def projects():
         db.session.commit()
         flash('Project have been added!', category='success')
         return redirect(url_for('views.projects'))
-    results = db.session.query(Projects.id, Projects.name,
-                               Projects.shortcut,
-                               Projects.phase, Projects.start_date,
-                               Projects.end_date,
-                               func.ifnull(func.sum(Hours.amount), '0').label(
+    projects = db.session.query(Projects.id, Projects.name,
+                                Projects.shortcut,
+                                Projects.phase, Projects.start_date,
+                                Projects.end_date,
+                                func.ifnull(func.sum(Hours.amount), '0').label(
                                    'sum')).outerjoin(
                                     Hours, Projects.shortcut ==
                                     Hours.project_shortcut).group_by(Projects.id).all()
 
-    return render_template('projects.html', results=results,
+    return render_template('projects.html', projects=projects,
                            user=current_user, form=form)
 
 
-@views.route('/delete-project', methods=['POST'])
-def delete_project():
-    project = json.loads(request.data)
-    project_id = project['projectId']
-    project = Projects.query.get(project_id)
-    if project:
+@views.route('/delete-project/<project_id>')
+def delete_project(project_id):
+    project = Projects.query.filter_by(id=project_id).first()
+    if not project:
+        flash('Project do not exist', category='error')
+    else:
         db.session.delete(project)
         db.session.commit()
         flash('Project deleted!', category='success')
-    return jsonify({})
+    return redirect(url_for('views.projects'))
 
 
 @views.route('/vacation', methods=['GET', 'POST'])
