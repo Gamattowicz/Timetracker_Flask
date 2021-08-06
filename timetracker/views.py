@@ -77,30 +77,26 @@ def projects():
         if Projects.query.filter_by(name=name).first():
             flash(f'Project with name {name} already exist!',
                   category='error')
+            return redirect(url_for('views.projects'))
         elif Projects.query.filter_by(shortcut=shortcut).first():
-            flash(f'Project with shortcut {shortcut} already'
+            flash(f'Project with shortcut {shortcut} already '
                   f'exist!', category='error')
+            return redirect(url_for('views.projects'))
         elif request.form.get('start_date'):
             start_date = request.form.get('start_date')
             if start_date > end_date:
                 flash(f'Invalid date of start and end project', category='error')
-            else:
-                new_project = Projects(name=name, shortcut=shortcut,
-                                       phase=phase,
-                                       start_date=start_date, end_date=end_date)
-                db.session.add(new_project)
-                db.session.commit()
-                flash('Project have been added!', category='success')
-        else:
-            if end_date < date.today().strftime('%Y-%m-%d'):
-                flash(f'Invalid date of end project', category='error')
-            else:
-                new_project = Projects(name=name, shortcut=shortcut,
-                                       phase=phase,
-                                       end_date=end_date)
-                db.session.add(new_project)
-                db.session.commit()
-                flash('Project have been added!', category='success')
+                return redirect(url_for('views.projects'))
+        elif end_date < date.today().strftime('%Y-%m-%d'):
+            flash(f'Invalid date of end project', category='error')
+            return redirect(url_for('views.projects'))
+        new_project = Projects(name=name, shortcut=shortcut,
+                               phase=phase,
+                               end_date=end_date)
+        db.session.add(new_project)
+        db.session.commit()
+        flash('Project have been added!', category='success')
+        return redirect(url_for('views.projects'))
     results = db.session.query(Projects.id, Projects.name,
                                Projects.shortcut,
                                Projects.phase, Projects.start_date,
