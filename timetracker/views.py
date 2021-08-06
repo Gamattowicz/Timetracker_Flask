@@ -32,7 +32,7 @@ def home():
 def hours():
     form = HourForm()
     projects = Projects.query.all()
-    form.shortcut.choices = [(project.shortcut) for project in projects]
+    form.shortcut.choices = [project.shortcut for project in projects]
     if request.method == 'POST':
         amount = request.form['amount']
         project_shortcut = request.form['shortcut']

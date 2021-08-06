@@ -11,7 +11,7 @@ class Projects(db.Model):
     start_date = db.Column(db.String(50), nullable=False, default=func.current_date())
     end_date = db.Column(db.String(50), nullable=False)
     phase = db.Column(db.String(50), nullable=False)
-    hour = db.relationship('Hours')
+    hour = db.relationship('Hours', backref='projects', passive_deletes=True)
 
 
 class Hours(db.Model):
@@ -20,7 +20,7 @@ class Hours(db.Model):
     work_date = db.Column(db.String(50), default=func.current_date())
     project_shortcut = db.Column(db.String(50), db.ForeignKey(
         'projects.shortcut'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
 
 
 class User(db.Model, UserMixin):
@@ -29,8 +29,8 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(50))
     total_vacation_days = db.Column(db.Integer, default=0)
     rem_vacation_days = db.Column(db.Integer, default=0)
-    hour = db.relationship('Hours')
-    vacation = db.relationship('Vacation')
+    hour = db.relationship('Hours', backref='user', passive_deletes=True)
+    vacation = db.relationship('Vacation', backref='user', passive_deletes=True)
 
     def __repr__(self):
         return '<User({username!r})>'.format(username=self.username)
@@ -50,4 +50,4 @@ class User(db.Model, UserMixin):
 class Vacation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     vacation_date = db.Column(db.String(50), default=func.current_date())
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
