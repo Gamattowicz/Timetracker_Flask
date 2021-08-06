@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, jsonify
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from .models import Projects, Hours, User, Vacation
 from . import db
 from sqlalchemy.sql import func
@@ -42,16 +42,14 @@ def hours():
             new_hours = Hours(amount=amount, work_date=work_date,
                               project_shortcut=project_shortcut,
                               user_id=user_id)
-            db.session.add(new_hours)
-            db.session.commit()
-            flash('Hours have been added!', category='success')
         else:
             new_hours = Hours(amount=amount,
                               project_shortcut=project_shortcut,
                               user_id=user_id)
-            db.session.add(new_hours)
-            db.session.commit()
-            flash('Hours have been added!', category='success')
+        db.session.add(new_hours)
+        db.session.commit()
+        flash('Hours have been added!', category='success')
+        return redirect(url_for('views.hours'))
 
     results = Hours.query.all()
     return render_template('hours.html', results=results, user=current_user, form=form)
