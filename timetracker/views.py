@@ -19,7 +19,7 @@ from calendar import day_name
 views = Blueprint('views', __name__)
 
 
-@views.route('/', methods=['GET', 'POST'])
+@views.route('/', methods=['GET'])
 @login_required
 def home():
     return render_template('home.html', user=current_user)
@@ -49,20 +49,18 @@ def hours():
         flash('Hours have been added!', category='success')
         return redirect(url_for('views.hours'))
 
-    results = Hours.query.all()
-    return render_template('hours.html', results=results, user=current_user, form=form)
+    hours = Hours.query.all()
+    return render_template('hours.html', hours=hours, user=current_user, form=form)
 
 
-@views.route('/delete-hour', methods=['POST'])
-def delete_hour():
-    hour = json.loads(request.data)
-    hour_id = hour['hourId']
-    hour = Hours.query.get(hour_id)
+@views.route('/delete-hour/<hour_id>')
+def delete_hour(hour_id):
+    hour = Hours.query.filter_by(id=hour_id).first()
     if hour:
         db.session.delete(hour)
         db.session.commit()
         flash('Hours deleted!', category='success')
-    return jsonify({})
+    return redirect(url_for('views.hours'))
 
 
 @views.route('/projects', methods=['GET', 'POST'])
