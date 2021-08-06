@@ -32,11 +32,11 @@ def hours():
     projects = Projects.query.all()
     form.shortcut.choices = [project.shortcut for project in projects]
     if request.method == 'POST':
-        amount = request.form['amount']
-        project_shortcut = request.form['shortcut']
+        amount = request.form.get('amount')
+        project_shortcut = request.form.get('shortcut')
         user_id = current_user.id
-        if request.form['work_date']:
-            work_date = request.form['work_date']
+        if request.form.get('work_date'):
+            work_date = request.form.get('work_date')
             new_hours = Hours(amount=amount, work_date=work_date,
                               project_shortcut=project_shortcut,
                               user_id=user_id)
@@ -70,18 +70,18 @@ def delete_hour(hour_id):
 def projects():
     form = ProjectForm()
     if request.method == 'POST':
-        name = request.form['name']
-        shortcut = request.form['shortcut']
-        end_date = request.form['end_date']
-        phase = request.form['phase']
+        name = request.form.get('name')
+        shortcut = request.form.get('shortcut')
+        end_date = request.form.get('end_date')
+        phase = request.form.get('phase')
         if Projects.query.filter_by(name=name).first():
             flash(f'Project with name {name} already exist!',
                   category='error')
         elif Projects.query.filter_by(shortcut=shortcut).first():
             flash(f'Project with shortcut {shortcut} already'
                   f'exist!', category='error')
-        elif request.form['start_date']:
-            start_date = request.form['start_date']
+        elif request.form.get('start_date'):
+            start_date = request.form.get('start_date')
             if start_date > end_date:
                 flash(f'Invalid date of start and end project', category='error')
             else:
@@ -169,8 +169,8 @@ def vacation():
                 worker.total_vacation_days = total_vacation_days
                 db.session.commit()
         elif form_d.confirm_button.data:
-            if request.form['vacation_date']:
-                vacation_date = request.form['vacation_date']
+            if request.form.get('vacation_date'):
+                vacation_date = request.form.get('vacation_date')
                 new_vacation_day = Vacation(vacation_date=vacation_date, user_id=current_user.id)
                 db.session.add(new_vacation_day)
                 db.session.commit()
