@@ -22,8 +22,6 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    if request.method == 'POST':
-        print('<h1> Good </h1>')
     return render_template('home.html', user=current_user)
 
 
