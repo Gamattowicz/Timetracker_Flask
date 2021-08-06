@@ -56,7 +56,9 @@ def hours():
 @views.route('/delete-hour/<hour_id>')
 def delete_hour(hour_id):
     hour = Hours.query.filter_by(id=hour_id).first()
-    if hour:
+    if not hour:
+        flash('Hours do not exist', category='error')
+    else:
         db.session.delete(hour)
         db.session.commit()
         flash('Hours deleted!', category='success')
