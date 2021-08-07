@@ -143,6 +143,9 @@ def vacation():
         '3/4 time': 0.75
     }
     worker = User.query.filter_by(id=current_user.id).first()
+    days = Vacation.query.filter_by(user_id=current_user.id)
+    used_days = days.count()
+    worker.rem_vacation_days = worker.total_vacation_days - used_days
     if request.method == 'POST':
         if form_vacation_length.submit_button.data:
             if not form_vacation_length.seniority.data:
@@ -164,25 +167,33 @@ def vacation():
                         total_vacation_days = ceil(20 * job_position[position])
                 worker.total_vacation_days = total_vacation_days
                 db.session.commit()
+                return redirect(url_for('views.vacation'))
         elif form_vacation_day.confirm_button.data:
             if request.form.get('vacation_date'):
                 vacation_date = request.form.get('vacation_date')
-                if Vacation.query.filter_by(vacation_date=vacation_date).first():
+                if Vacation.query.filter_by(user_id=current_user.id, vacation_date=vacation_date).first():
                     flash(f'Vacation day with date {vacation_date} already exist!',
                           category='error')
                     return redirect(url_for('views.vacation'))
+                elif worker.rem_vacation_days <= 0:
+                    flash(f'You have already used all your vacation days in this year.', category='error')
+                    return redirect(url_for('views.vacation'))
+                new_vacation_day = Vacation(vacation_date=vacation_date, user_id=current_user.id)
+            else:
+                if Vacation.query.filter_by(user_id=current_user.id, vacation_date=date.today()).first():
+                    flash(f'Vacation day with date {date.today()} already exist!',
+                          category='error')
+                    return redirect(url_for('views.vacation'))
                 else:
-                    new_vacation_day = Vacation(vacation_date=vacation_date, user_id=current_user.id)
-                    db.session.add(new_vacation_day)
-                    db.session.commit()
-                    flash('Vacation day have been added!', category='success')
-    days = Vacation.query.all()
-    used_days = Vacation.query.filter_by(user_id=current_user.id).count()
-    worker.rem_vacation_days = worker.total_vacation_days - used_days
+                    new_vacation_day = Vacation(user_id=current_user.id)
+            db.session.add(new_vacation_day)
+            db.session.commit()
+            flash('Vacation day have been added!', category='success')
+            return redirect(url_for('views.vacation'))
 
     return render_template('vacation.html', user=current_user, form_vacation_length=form_vacation_length,
                            form_vacation_day=form_vacation_day, total_vacation_days=worker.total_vacation_days,
-                           rem_days_off=worker.rem_vacation_days, days=days)
+                           remaining_vacation_days=worker.rem_vacation_days, days=days)
 
 
 @views.route('/delete-vacation-day', methods=['POST'])
