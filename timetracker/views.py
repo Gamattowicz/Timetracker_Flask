@@ -6,7 +6,7 @@ from flask_login import login_required, current_user
 import json
 from .forms import HourForm, VacationLength, VacationDay, ProjectForm
 from math import ceil
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 import matplotlib.dates as mdates
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -169,16 +169,24 @@ def vacation():
                 db.session.commit()
                 return redirect(url_for('views.vacation'))
         elif form_vacation_day.confirm_button.data:
-            if request.form.get('vacation_date'):
-                vacation_date = request.form.get('vacation_date')
-                if Vacation.query.filter_by(user_id=current_user.id, vacation_date=vacation_date).first():
-                    flash(f'Vacation day with date {vacation_date} already exist!',
-                          category='error')
+            if request.form.get('vacation_start_date') and request.form.get('vacation_end_date'):
+                end_date = datetime.strptime(request.form.get('vacation_end_date'), '%Y-%m-%d').date()
+                vacation_date = datetime.strptime(request.form.get('vacation_start_date'), '%Y-%m-%d').date() - timedelta(days=1)
+                vacation_length = (end_date - vacation_date).days
+                if vacation_length < 0:
+                    flash(f'Incorrect vacation dates!', category='error')
                     return redirect(url_for('views.vacation'))
-                elif worker.rem_vacation_days <= 0:
-                    flash(f'You have already used all your vacation days in this year.', category='error')
-                    return redirect(url_for('views.vacation'))
-                new_vacation_day = Vacation(vacation_date=vacation_date, user_id=current_user.id)
+                for day in range(vacation_length):
+                    vacation_date += timedelta(days=1)
+                    if Vacation.query.filter_by(user_id=current_user.id, vacation_date=vacation_date).first():
+                        flash(f'Vacation day with date {vacation_date} already exist!',
+                              category='error')
+                        return redirect(url_for('views.vacation'))
+                    elif worker.rem_vacation_days < vacation_length:
+                        flash(f'You do not have enough vacation days in this year.', category='error')
+                        return redirect(url_for('views.vacation'))
+                    new_vacation_day = Vacation(vacation_date=vacation_date, user_id=current_user.id)
+                    db.session.add(new_vacation_day)
             else:
                 if Vacation.query.filter_by(user_id=current_user.id, vacation_date=date.today()).first():
                     flash(f'Vacation day with date {date.today()} already exist!',
@@ -186,7 +194,7 @@ def vacation():
                     return redirect(url_for('views.vacation'))
                 else:
                     new_vacation_day = Vacation(user_id=current_user.id)
-            db.session.add(new_vacation_day)
+                    db.session.add(new_vacation_day)
             db.session.commit()
             flash('Vacation day have been added!', category='success')
             return redirect(url_for('views.vacation'))
