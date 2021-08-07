@@ -69,42 +69,4 @@
             </div>
         </li>
     </ul>
-
-    <div class="col-md-10 offset-md-1 my-5">
-        <table class="table table-striped caption-top table-light table-bordered">
-          <caption class="text-uppercase">List of projects</caption>
-          <thead class="table-dark">
-            <tr>
-              <th scope="col" style="width:5%">#</th>
-              <th scope="col" style="width:29%">Name</th>
-              <th scope="col" style="width:18%">Shortcut</th>
-              <th scope="col" style="width:18%">Phase</th>
-              <th scope="col" style="width:15%">Start date</th>
-              <th scope="col" style="width:15%">End date</th>
-              <th scope="col" style="width:15%">Total hours</th>
-              <th scope="col" style="width:5%"></th>
-            </tr>
-          </thead>
-            <tbody>
-            {% for project in projects %}
-            <tr>
-              <th scope="row">{{ project.id }}</th>
-              <td>{{ project.name }}</td>
-              <td>{{ project.shortcut }}</td>
-              <td>{{ project.phase }}</td>
-              <td>{{ project.start_date }}</td>
-              <td>{{ project.end_date }}</td>
-              <td>{{ project.sum }}</td>
-              <td>
-                  <div class="d-flex justify-content-center">
-                    <a href="/delete-project/{{project.id}}" style="border: none; background-color: transparent;">
-                        <i class="fas fa-minus-circle text-danger"></i>
-                    </a>
-                  </div>
-              </td>
-            </tr>
-        {% endfor %}
-            </tbody>
-        </table>
-    </div>
 {% endblock %}
