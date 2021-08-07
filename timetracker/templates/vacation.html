@@ -10,9 +10,9 @@
             <div class="col-md-10 offset-md-1 my-4">
                 <form method="POST" class="form-group was-validated mt-4">
                         <div class="row mb-3">
-                            {{ form_l.seniority.label(for="seniority", class_="col-sm-4 col-form-label") }}
+                            {{ form_vacation_length.seniority.label(for="seniority", class_="col-sm-4 col-form-label") }}
                             <div class="col-sm-8">
-                                {{ form_l.seniority(class_="form-control", id="seniority", required="required", placeholder="Years of work") }}
+                                {{ form_vacation_length.seniority(class_="form-control", id="seniority", required="required", placeholder="Years of work") }}
                                 <div class="invalid-feedback">
                                     This field must be filled!
                                 </div>
@@ -22,26 +22,26 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            {{ form_l.position.label(for="position", class_="col-sm-4 col-form-label") }}
+                            {{ form_vacation_length.position.label(for="position", class_="col-sm-4 col-form-label") }}
                             <div class="col-sm-8">
-                                {{ form_l.position(class_="form-control", id="position") }}
+                                {{ form_vacation_length.position(class_="form-control", id="position") }}
                             </div>
                         </div>
                         <div class="row mb-3">
-                            {{ form_l.school.label(for="school", class_="col-sm-4 col-form-label") }}
+                            {{ form_vacation_length.school.label(for="school", class_="col-sm-4 col-form-label") }}
                             <div class="col-sm-8">
-                                {{ form_l.school(class_="form-control", id="school") }}
+                                {{ form_vacation_length.school(class_="form-control", id="school") }}
                             </div>
                         </div>
                         <div class="row mb-3">
                                 <div class="col-sm-8 offset-sm-4">
                             <div class="form-check">
-                            {{ form_l.disability.label(class_="form-check-label", for="disability") }}
-                            {{ form_l.disability(class_="form-check-input", id="disability") }}
+                            {{ form_vacation_length.disability.label(class_="form-check-label", for="disability") }}
+                            {{ form_vacation_length.disability(class_="form-check-input", id="disability") }}
                             </div>
                                     </div>
                         </div>
-                    {{ form_l.submit_button(class_="btn btn-success float-end mb-2 text-uppercase", id="submit_button") }}
+                    {{ form_vacation_length.submit_button(class_="btn btn-success float-end mb-2 text-uppercase", id="submit_button") }}
                 </form>
             </div>
         </li>
@@ -67,13 +67,13 @@
             <div class="col-md-10 offset-md-1 my-4">
                 <form method="POST" class="form-group was-validated mt-4">
                     <div class="row mb-3">
-                        {{ form_d.vacation_date.label(for="vacation_date", class_="col-sm-4 col-form-label") }}
+                        {{ form_vacation_day.vacation_date.label(for="vacation_date", class_="col-sm-4 col-form-label") }}
                         <div class="col-sm-8">
-                        {{ form_d.vacation_date(class_="form-control form-control-sm", id="vacation_date") }}
+                        {{ form_vacation_day.vacation_date(class_="form-control form-control-sm", id="vacation_date") }}
                         <small class="form-text text-muted">If it is empty, the current date will be saved. </small>
                             </div>
                     </div>
-                    {{ form_d.confirm_button(for="vacation_date", class_="btn btn-success float-end mb-2 text-uppercase", id="confirm_button") }}
+                    {{ form_vacation_day.confirm_button(for="vacation_date", class_="btn btn-success float-end mb-2 text-uppercase", id="confirm_button") }}
                 </form>
             </div>
         </li>

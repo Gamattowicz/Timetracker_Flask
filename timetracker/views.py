@@ -125,8 +125,8 @@ def delete_project(project_id):
 @views.route('/vacation', methods=['GET', 'POST'])
 @login_required
 def vacation():
-    form_l = VacationLength()
-    form_d = VacationDay()
+    form_vacation_length = VacationLength()
+    form_vacation_day = VacationDay()
     school_years = {
         'Basic vocational school': 3,
         'High vocational school': 5,
@@ -144,15 +144,15 @@ def vacation():
     }
     worker = User.query.filter_by(id=current_user.id).first()
     if request.method == 'POST':
-        if form_l.submit_button.data:
-            if not form_l.seniority.data:
+        if form_vacation_length.submit_button.data:
+            if not form_vacation_length.seniority.data:
                 flash('Seniority must be complete!', category='error')
             else:
-                seniority = form_l.seniority.data
-                school = form_l.school.data
-                position = form_l.position.data
+                seniority = form_vacation_length.seniority.data
+                school = form_vacation_length.school.data
+                position = form_vacation_length.position.data
                 vacation_days = int(seniority) + school_years[school]
-                if form_l.disability.data:
+                if form_vacation_length.disability.data:
                     if vacation_days > 10:
                         total_vacation_days = ceil(36 * job_position[position])
                     else:
@@ -164,7 +164,7 @@ def vacation():
                         total_vacation_days = ceil(20 * job_position[position])
                 worker.total_vacation_days = total_vacation_days
                 db.session.commit()
-        elif form_d.confirm_button.data:
+        elif form_vacation_day.confirm_button.data:
             if request.form.get('vacation_date'):
                 vacation_date = request.form.get('vacation_date')
                 new_vacation_day = Vacation(vacation_date=vacation_date, user_id=current_user.id)
@@ -176,10 +176,9 @@ def vacation():
     used_days = Vacation.query.filter_by(user_id=current_user.id).count()
     worker.rem_vacation_days = worker.total_vacation_days - used_days
 
-    return render_template('vacation.html', user=current_user, form_l=form_l, form_d=form_d,
-                           total_vacation_days=worker.total_vacation_days,
-                           rem_days_off=worker.rem_vacation_days,
-                           days=days)
+    return render_template('vacation.html', user=current_user, form_vacation_length=form_vacation_length,
+                           form_vacation_day=form_vacation_day, total_vacation_days=worker.total_vacation_days,
+                           rem_days_off=worker.rem_vacation_days, days=days)
 
 
 @views.route('/delete-vacation-day', methods=['POST'])
