@@ -23,7 +23,8 @@ class VacationLength(FlaskForm):
 
 
 class VacationDay(FlaskForm):
-    vacation_date = DateField('The date of the vacation day', format='%YYYY-%m-%d')
+    vacation_start_date = DateField('The start date of the vacation day', format='%YYYY-%m-%d')
+    vacation_end_date = DateField('The end date of the vacation day', format='%YYYY-%m-%d')
     confirm_button = SubmitField('Confirm')
 
 
