@@ -31,13 +31,15 @@
           <caption class="text-uppercase">List of working hours in each day</caption>
           <thead class="table-dark">
             <tr>
+              <th scope="col" style="width:5%">#</th>
               <th scope="col" style="width:60%">Date</th>
-              <th scope="col" style="width:40%">Number of hours</th>
+              <th scope="col" style="width:35%">Number of hours</th>
             </tr>
           </thead>
             <tbody>
             {% for work_day, hour in work_days.items() %}
             <tr>
+              <th scope="row">{{ loop.index }}</th>
               <td>{{ work_day}}</td>
               <td>{{ hour }}</td>
             </tr>
@@ -51,13 +53,15 @@
           <caption class="text-uppercase">List of overtime in each day</caption>
           <thead class="table-dark">
             <tr>
+              <th scope="col" style="width:5%">#</th>
               <th scope="col" style="width:60%">Date</th>
-              <th scope="col" style="width:40%">Number of overtime</th>
+              <th scope="col" style="width:35%">Number of overtime</th>
             </tr>
           </thead>
             <tbody>
             {% for date, hours in overtime_list.items() %}
             <tr>
+              <th scope="row">{{ loop.index }}</th>
               <td>{{ date }}</td>
               <td>{{ hours }}</td>
             </tr>

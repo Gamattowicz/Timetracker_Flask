@@ -9,6 +9,7 @@
         <table class="table table-striped caption-top table-light table-bordered">
           <thead class="table-dark">
             <tr>
+                <th scope="col" style="width:5%">#</th>
                 <th scope="col" style="width:40%">Project shortcut</th>
                 <th scope="col" style="width:25%">Date</th>
                 <th scope="col" style="width:30%">Number of hours</th>
@@ -18,6 +19,7 @@
             <tbody>
             {% for hour in hours %}
                 <tr>
+                    <th scope="row">{{ loop.index }}</th>
                     <td>{{ hour.project_shortcut }}</td>
                     <td>{{ hour.work_date }}</td>
                     <td>{{ hour.amount }}</td>

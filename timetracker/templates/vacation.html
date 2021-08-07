@@ -103,13 +103,15 @@
           <caption class="text-uppercase">List of vacation days</caption>
           <thead class="table-dark">
             <tr>
-              <th scope="col" style="width:80%">Date</th>
+              <th scope="col" style="width:5%">#</th>
+              <th scope="col" style="width:75%">Date</th>
               <th class="text-center" scope="col" style="width:20%">Remove</th>
             </tr>
           </thead>
             <tbody>
         {% for day in days %}
             <tr>
+              <th scope="row">{{ loop.index }}</th>
               <td>{{ day.vacation_date }}</td>
               <td>
                   <div class="d-flex justify-content-center">
