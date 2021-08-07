@@ -167,11 +167,15 @@ def vacation():
         elif form_vacation_day.confirm_button.data:
             if request.form.get('vacation_date'):
                 vacation_date = request.form.get('vacation_date')
-                new_vacation_day = Vacation(vacation_date=vacation_date, user_id=current_user.id)
-                db.session.add(new_vacation_day)
-                db.session.commit()
-                flash('Vacation day have been added!', category='success')
-
+                if Vacation.query.filter_by(vacation_date=vacation_date).first():
+                    flash(f'Vacation day with date {vacation_date} already exist!',
+                          category='error')
+                    return redirect(url_for('views.vacation'))
+                else:
+                    new_vacation_day = Vacation(vacation_date=vacation_date, user_id=current_user.id)
+                    db.session.add(new_vacation_day)
+                    db.session.commit()
+                    flash('Vacation day have been added!', category='success')
     days = Vacation.query.all()
     used_days = Vacation.query.filter_by(user_id=current_user.id).count()
     worker.rem_vacation_days = worker.total_vacation_days - used_days
