@@ -95,9 +95,9 @@
               <td>{{ day.vacation_date }}</td>
               <td>
                   <div class="d-flex justify-content-center">
-                    <button type="button" class="close" onClick="deleteVacationDay({{ day.id }})" style="border: none; background-color: transparent;">
+                    <a href="/delete-vacation-day/{{day.id}}" style="border: none; background-color: transparent;">
                         <i class="fas fa-minus-circle text-danger"></i>
-                    </button>
+                    </a>
                   </div>
               </td>
             </tr>

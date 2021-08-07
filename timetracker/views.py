@@ -114,7 +114,7 @@ def projects():
 def delete_project(project_id):
     project = Projects.query.filter_by(id=project_id).first()
     if not project:
-        flash('Project do not exist', category='error')
+        flash('Project does not exist', category='error')
     else:
         db.session.delete(project)
         db.session.commit()
@@ -196,16 +196,16 @@ def vacation():
                            remaining_vacation_days=worker.rem_vacation_days, days=days)
 
 
-@views.route('/delete-vacation-day', methods=['POST'])
-def delete_vacation_day():
-    day = json.loads(request.data)
-    day_id = day['dayId']
-    day = Vacation.query.get(day_id)
-    if day:
-        db.session.delete(day)
+@views.route('/delete-vacation-day/<vacation_day_id>')
+def delete_vacation_day(vacation_day_id):
+    vacation_day = Vacation.query.filter_by(id=vacation_day_id).first()
+    if not vacation_day:
+        flash('Vacation day does not exist', category='error')
+    else:
+        db.session.delete(vacation_day)
         db.session.commit()
-        flash('Day deleted!', category='success')
-    return jsonify({})
+        flash('Vacation day deleted!', category='success')
+    return redirect(url_for('views.vacation'))
 
 
 @views.route('/overtime')

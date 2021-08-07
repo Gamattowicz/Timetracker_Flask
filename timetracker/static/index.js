@@ -1,12 +1,3 @@
-function deleteVacationDay(dayId) {
-  fetch("/delete-vacation-day", {
-    method: "POST",
-    body: JSON.stringify({ dayId: dayId }),
-  }).then((_res) => {
-    window.location.href = "/vacation";
-  });
-}
-
 // Functions to timer in home page
 const startBtn = document.getElementById("startBtn");
 const pauseBtn = document.getElementById("pauseBtn");
