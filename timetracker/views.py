@@ -1,9 +1,8 @@
-from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import Projects, Hours, User, Vacation
 from . import db
 from sqlalchemy.sql import func
 from flask_login import login_required, current_user
-import json
 from .forms import HourForm, VacationLength, VacationDay, ProjectForm
 from math import ceil
 from datetime import date, datetime, timedelta
@@ -47,10 +46,16 @@ def hours():
         db.session.add(new_hours)
         db.session.commit()
         flash('Hours have been added!', category='success')
-        return redirect(url_for('views.hours'))
+        return redirect(url_for('views.hour_list'))
 
-    hours = Hours.query.all()
-    return render_template('hours.html', hours=hours, user=current_user, form=form)
+    return render_template('hours.html', user=current_user, form=form)
+
+
+@views.route('/hour-list', methods=['GET'])
+@login_required
+def hour_list():
+    hours = Hours.query.filter_by(user_id=current_user.id)
+    return render_template('hour_list.html', hours=hours, user=current_user)
 
 
 @views.route('/delete-hour/<hour_id>')
@@ -62,7 +67,7 @@ def delete_hour(hour_id):
         db.session.delete(hour)
         db.session.commit()
         flash('Hours deleted!', category='success')
-    return redirect(url_for('views.hours'))
+    return redirect(url_for('views.hour_list'))
 
 
 @views.route('/projects', methods=['GET', 'POST'])
