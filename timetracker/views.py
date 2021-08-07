@@ -101,7 +101,7 @@ def projects():
         db.session.add(new_project)
         db.session.commit()
         flash('Project have been added!', category='success')
-        return redirect(url_for('views.projects'))
+        return redirect(url_for('views.project_list'))
     projects = db.session.query(Projects.id, Projects.name,
                                 Projects.shortcut,
                                 Projects.phase, Projects.start_date,
@@ -113,6 +113,20 @@ def projects():
 
     return render_template('projects.html', projects=projects,
                            user=current_user, form=form)
+
+
+@views.route('/project-list', methods=['GET'])
+@login_required
+def project_list():
+    projects = db.session.query(Projects.id, Projects.name,
+                                Projects.shortcut,
+                                Projects.phase, Projects.start_date,
+                                Projects.end_date,
+                                func.ifnull(func.sum(Hours.amount), '0').label(
+                                    'sum')).outerjoin(
+                                                      Hours, Projects.shortcut ==
+                                                      Hours.project_shortcut).group_by(Projects.id).all()
+    return render_template('project_list.html', projects=projects, user=current_user)
 
 
 @views.route('/delete-project/<project_id>')
