@@ -23,32 +23,42 @@
               <ul class="navbar-nav me-auto">
                   {% if user.is_authenticated %}
                     <li class="nav-item">
-                      <a class="nav-link" href="/">Home</a>
+                      <a class="nav-link text-uppercase" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="/vacation">Vacation</a>
+                      <a class="nav-link text-uppercase" href="/vacation">Vacation</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle text-uppercase" href="#" id="navbarDropdownHour" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Hours
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/hours">Add hours</a></li>
+                        <li><a class="dropdown-item" href="/hour-list">Hour list</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/overtime">Overtime</a></li>
+                      </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle text-uppercase" href="#" id="navbarDropdownProject" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Projects
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/projects">Add new project</a></li>
+                        <li><a class="dropdown-item" href="/project-list">Project list</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/schedule">Schedule</a></li>
+                      </ul>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="/schedule">Schedule</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="/overtime">Overtime</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="/hours">Hours</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="/projects">Projects</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" aria-current="page" href="/logout">Logout</a>
+                      <a class="nav-link text-uppercase" aria-current="page" href="/logout">Logout</a>
                     </li>
                   {% else %}
                     <li class="nav-item">
-                      <a class="nav-link" aria-current="page" href="/sign-up">Sign up</a>
+                      <a class="nav-link text-uppercase" aria-current="page" href="/sign-up">Sign up</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" aria-current="page" href="/login">Login</a>
+                      <a class="nav-link text-uppercase" aria-current="page" href="/login">Login</a>
                     </li>
                   {% endif %}
               </ul>
