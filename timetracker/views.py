@@ -36,6 +36,7 @@ def hours():
         user_id = current_user.id
         if request.form.get('work_date'):
             work_date = request.form.get('work_date')
+            print(work_date)
             new_hours = Hours(amount=amount, work_date=work_date,
                               project_shortcut=project_shortcut,
                               user_id=user_id)
@@ -58,7 +59,31 @@ def hour_list():
     return render_template('hour_list.html', hours=hours, user=current_user)
 
 
+@views.route('/update-hour/<hour_id>', methods=['GET', 'POST'])
+@login_required
+def update_hour(hour_id):
+    hour = Hours.query.get_or_404(hour_id)
+    form = HourForm()
+    projects = Projects.query.all()
+    form.shortcut.choices = [project.shortcut for project in projects]
+    if request.method == 'POST':
+        hour.amount = request.form.get('amount')
+        hour.project_shortcut = request.form.get('shortcut')
+        hour.work_date = request.form.get('work_date')
+        print(request.form.get('work_date'))
+        db.session.commit()
+        flash('Hours have been updated!', category='success')
+        return redirect(url_for('views.hour_list'))
+    elif request.method == 'GET':
+        form.amount.data = hour.amount
+        form.shortcut.data = hour.project_shortcut
+        form.work_date.data = datetime.strptime(hour.work_date, '%Y-%m-%d').date()
+        print(datetime.strptime(hour.work_date, '%Y-%m-%d'))
+    return render_template('hour_update.html', user=current_user, form=form, data=datetime.strptime(hour.work_date, '%Y-%m-%d').date())
+
+
 @views.route('/delete-hour/<hour_id>')
+@login_required
 def delete_hour(hour_id):
     hour = Hours.query.filter_by(id=hour_id).first()
     if not hour:
@@ -130,6 +155,7 @@ def project_list():
 
 
 @views.route('/delete-project/<project_id>')
+@login_required
 def delete_project(project_id):
     project = Projects.query.filter_by(id=project_id).first()
     if not project:
@@ -241,6 +267,7 @@ def vacation_list():
 
 
 @views.route('/delete-vacation-day/<vacation_day_id>')
+@login_required
 def delete_vacation_day(vacation_day_id):
     vacation_day = Vacation.query.filter_by(id=vacation_day_id).first()
     if not vacation_day:
