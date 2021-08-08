@@ -220,7 +220,14 @@ def vacation():
 
     return render_template('vacation.html', user=current_user, form_vacation_length=form_vacation_length,
                            form_vacation_day=form_vacation_day, total_vacation_days=worker.total_vacation_days,
-                           remaining_vacation_days=worker.rem_vacation_days, days=days)
+                           remaining_vacation_days=worker.rem_vacation_days)
+
+
+@views.route('/vacation-list', methods=['GET'])
+@login_required
+def vacation_list():
+    days = Vacation.query.filter_by(user_id=current_user.id)
+    return render_template('vacation_list.html', days=days, user=current_user)
 
 
 @views.route('/delete-vacation-day/<vacation_day_id>')
