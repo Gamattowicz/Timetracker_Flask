@@ -266,6 +266,26 @@ def vacation_list():
     return render_template('vacation_list.html', days=days, user=current_user)
 
 
+@views.route('/update-vacation/<vacation_day_id>', methods=['GET', 'POST'])
+@login_required
+def update_vacation_day(vacation_day_id):
+    vacation = Vacation.query.get_or_404(vacation_day_id)
+    form = VacationDay()
+    if request.method == 'POST':
+        if Vacation.query.filter_by(user_id=current_user.id, vacation_date=request.form.get('vacation_end_date')).first():
+            flash(f'Vacation day with date {request.form.get("vacation_end_date")} already exist!',
+                  category='error')
+            return redirect(url_for('views.update_vacation_day'))
+        else:
+            vacation.vacation_date = request.form.get('vacation_end_date')
+            db.session.commit()
+            flash('Vacation day have been updated!', category='success')
+            return redirect(url_for('views.vacation_list'))
+    elif request.method == 'GET':
+        form.vacation_end_date.data = datetime.strptime(vacation.vacation_date, '%Y-%m-%d').date()
+    return render_template('vacation_update.html', user=current_user, form=form, data=datetime.strptime(vacation.vacation_date, '%Y-%m-%d').date())
+
+
 @views.route('/delete-vacation-day/<vacation_day_id>')
 @login_required
 def delete_vacation_day(vacation_day_id):
