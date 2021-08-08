@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Calculation of the number of vacation days{% endblock %}
+
+{% block content %}
+
+    <h2 class="text-center text-uppercase">Calculation of the number of vacation days</h2>
+
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="col-md-10 offset-md-1 my-4">
+                <form method="POST" class="form-group was-validated mt-4">
+                        <div class="row mb-3">
+                            {{ form.seniority.label(for="seniority", class_="col-sm-4 col-form-label") }}
+                            <div class="col-sm-8">
+                                {{ form.seniority(class_="form-control", id="seniority", required="required", placeholder="Years of work") }}
+                                <div class="invalid-feedback">
+                                    This field must be filled!
+                                </div>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            {{ form.position.label(for="position", class_="col-sm-4 col-form-label") }}
+                            <div class="col-sm-8">
+                                {{ form.position(class_="form-control", id="position") }}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            {{ form.school.label(for="school", class_="col-sm-4 col-form-label") }}
+                            <div class="col-sm-8">
+                                {{ form.school(class_="form-control", id="school") }}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-8 offset-sm-4">
+                                <div class="form-check">
+                                {{ form.disability.label(class_="form-check-label", for="disability") }}
+                                {{ form.disability(class_="form-check-input", id="disability") }}
+                                </div>
+                            </div>
+                        </div>
+                    {{ form.submit_button(class_="btn btn-success float-end mb-2 text-uppercase", id="submit_button") }}
+                </form>
+            </div>
+        </li>
+    </ul>
+
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="col-md-10 offset-md-1 mt-4">
+                 <div class="row row-cols-1 row-cols-md-2 g-5">
+                        <div class="col">
+                            <div class="card border-info mb-3 text-dark text-center" style="max-width: 40rem;">
+                                <div class="card-body">
+                                    <h2 class="card-title">{{ total_vacation_days if total_vacation_days else 0 }}</h2>
+                                    <p class="card-text">The number of vacation days in the current year</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card border-info mb-3 text-dark text-center" style="max-width: 40rem;">
+                                <div class="card-body">
+                                    <h2 class="card-title">{{ remaining_vacation_days }}</h2>
+                                    <p class="card-text">The remaining vacation days in the current year</p>
+                                </div>
+                            </div>
+                        </div>
+                 </div>
+             </div>
+        </li>
+    </ul>
+{% endblock %}

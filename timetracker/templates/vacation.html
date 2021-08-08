@@ -1,97 +1,29 @@
 {% extends 'base.html' %}
-{% block title %}Vacation{% endblock %}
+{% block title %}Add Vacation day{% endblock %}
 
 {% block content %}
 
-    <h2 class="text-center text-uppercase">Vacation</h2>
+    <h2 class="text-center text-uppercase">Add Vacation day</h2>
 
     <ul class="list-group list-group-flush">
         <li class="list-group-item">
             <div class="col-md-10 offset-md-1 my-4">
                 <form method="POST" class="form-group was-validated mt-4">
-                        <div class="row mb-3">
-                            {{ form_vacation_length.seniority.label(for="seniority", class_="col-sm-4 col-form-label") }}
-                            <div class="col-sm-8">
-                                {{ form_vacation_length.seniority(class_="form-control", id="seniority", required="required", placeholder="Years of work") }}
-                                <div class="invalid-feedback">
-                                    This field must be filled!
-                                </div>
-                                <div class="valid-feedback">
-                                    Looks good!
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            {{ form_vacation_length.position.label(for="position", class_="col-sm-4 col-form-label") }}
-                            <div class="col-sm-8">
-                                {{ form_vacation_length.position(class_="form-control", id="position") }}
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            {{ form_vacation_length.school.label(for="school", class_="col-sm-4 col-form-label") }}
-                            <div class="col-sm-8">
-                                {{ form_vacation_length.school(class_="form-control", id="school") }}
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                                <div class="col-sm-8 offset-sm-4">
-                            <div class="form-check">
-                            {{ form_vacation_length.disability.label(class_="form-check-label", for="disability") }}
-                            {{ form_vacation_length.disability(class_="form-check-input", id="disability") }}
-                            </div>
-                                    </div>
-                        </div>
-                    {{ form_vacation_length.submit_button(class_="btn btn-success float-end mb-2 text-uppercase", id="submit_button") }}
-                </form>
-            </div>
-        </li>
-    </ul>
-
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">
-            <div class="col-md-10 offset-md-1 mt-4">
-                 <div class="row row-cols-1 row-cols-md-2 g-5">
-                        <div class="col">
-                            <div class="card border-info mb-3 text-dark text-center" style="max-width: 40rem;">
-                                <div class="card-body">
-                                    <h2 class="card-title">{{ total_vacation_days if total_vacation_days else 0 }}</h2>
-                                    <p class="card-text">The number of vacation days in the current year</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card border-info mb-3 text-dark text-center" style="max-width: 40rem;">
-                                <div class="card-body">
-                                    <h2 class="card-title">{{ remaining_vacation_days }}</h2>
-                                    <p class="card-text">The remaining vacation days in the current year</p>
-                                </div>
-                            </div>
-                        </div>
-                 </div>
-             </div>
-        </li>
-    </ul>
-
-    <h3 class="text-center text-uppercase mt-4">Add vacation day</h3>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">
-            <div class="col-md-10 offset-md-1 my-4">
-                <form method="POST" class="form-group was-validated mt-4">
                     <div class="row mb-3">
-                        {{ form_vacation_day.vacation_start_date.label(for="vacation_start_date", class_="col-sm-4 col-form-label") }}
+                        {{ form.vacation_start_date.label(for="vacation_start_date", class_="col-sm-4 col-form-label") }}
                         <div class="col-sm-8">
-                            {{ form_vacation_day.vacation_start_date(class_="form-control form-control-sm", id="vacation_start_date") }}
+                            {{ form.vacation_start_date(class_="form-control form-control-sm", id="vacation_start_date") }}
                             <small class="form-text text-muted">If it is empty, the current date will be saved. </small>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        {{ form_vacation_day.vacation_end_date.label(for="vacation_end_date", class_="col-sm-4 col-form-label") }}
+                        {{ form.vacation_end_date.label(for="vacation_end_date", class_="col-sm-4 col-form-label") }}
                         <div class="col-sm-8">
-                            {{ form_vacation_day.vacation_end_date(class_="form-control form-control-sm", id="vacation_end_date") }}
+                            {{ form.vacation_end_date(class_="form-control form-control-sm", id="vacation_end_date") }}
                             <small class="form-text text-muted">If it is empty, the current date will be saved. </small>
                         </div>
                     </div>
-                    {{ form_vacation_day.confirm_button(for="vacation_date", class_="btn btn-success float-end mb-2 text-uppercase", id="confirm_button") }}
+                    {{ form.confirm_button(for="vacation_date", class_="btn btn-success float-end mb-2 text-uppercase", id="confirm_button") }}
                 </form>
             </div>
         </li>
