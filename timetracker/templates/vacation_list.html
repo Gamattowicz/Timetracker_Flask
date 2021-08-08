@@ -10,8 +10,9 @@
           <thead class="table-dark">
             <tr>
               <th scope="col" style="width:5%">#</th>
-              <th scope="col" style="width:75%">Date</th>
-              <th class="text-center" scope="col" style="width:20%">Remove</th>
+              <th scope="col" style="width:65%">Date</th>
+              <th class="text-center" scope="col" style="width:15%"></th>
+              <th class="text-center" scope="col" style="width:15%"></th>
             </tr>
           </thead>
             <tbody>
@@ -19,6 +20,13 @@
             <tr>
               <th scope="row">{{ loop.index }}</th>
               <td>{{ day.vacation_date }}</td>
+              <td>
+                  <div class="d-flex justify-content-center">
+                        <a href="/update-vacation/{{day.id}}" style="border: none; background-color: transparent;">
+                            <i class="fas fa-edit text-warning"></i>
+                    </a>
+                  </div>
+              </td>
               <td>
                   <div class="d-flex justify-content-center">
                     <a href="/delete-vacation-day/{{day.id}}" style="border: none; background-color: transparent;">
