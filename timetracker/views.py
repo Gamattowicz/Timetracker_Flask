@@ -141,11 +141,10 @@ def delete_project(project_id):
     return redirect(url_for('views.projects'))
 
 
-@views.route('/vacation', methods=['GET', 'POST'])
+@views.route('/vacation-calculation', methods=['GET', 'POST'])
 @login_required
-def vacation():
-    form_vacation_length = VacationLength()
-    form_vacation_day = VacationDay()
+def vacation_calculation():
+    form = VacationLength()
     school_years = {
         'Basic vocational school': 3,
         'High vocational school': 5,
@@ -166,61 +165,72 @@ def vacation():
     used_days = days.count()
     worker.rem_vacation_days = worker.total_vacation_days - used_days
     if request.method == 'POST':
-        if form_vacation_length.submit_button.data:
-            if not form_vacation_length.seniority.data:
-                flash('Seniority must be complete!', category='error')
-            else:
-                seniority = form_vacation_length.seniority.data
-                school = form_vacation_length.school.data
-                position = form_vacation_length.position.data
-                vacation_days = int(seniority) + school_years[school]
-                if form_vacation_length.disability.data:
-                    if vacation_days > 10:
-                        total_vacation_days = ceil(36 * job_position[position])
-                    else:
-                        total_vacation_days = ceil(30 * job_position[position])
+        if not form.seniority.data:
+            flash('Seniority must be complete!', category='error')
+        else:
+            seniority = form.seniority.data
+            school = form.school.data
+            position = form.position.data
+            vacation_days = int(seniority) + school_years[school]
+            if form.disability.data:
+                if vacation_days > 10:
+                    total_vacation_days = ceil(36 * job_position[position])
                 else:
-                    if vacation_days > 10:
-                        total_vacation_days = ceil(26 * job_position[position])
-                    else:
-                        total_vacation_days = ceil(20 * job_position[position])
-                worker.total_vacation_days = total_vacation_days
-                db.session.commit()
-                return redirect(url_for('views.vacation'))
-        elif form_vacation_day.confirm_button.data:
-            if request.form.get('vacation_start_date') and request.form.get('vacation_end_date'):
-                end_date = datetime.strptime(request.form.get('vacation_end_date'), '%Y-%m-%d').date()
-                vacation_date = datetime.strptime(request.form.get('vacation_start_date'), '%Y-%m-%d').date() - timedelta(days=1)
-                vacation_length = (end_date - vacation_date).days
-                if vacation_length < 0:
-                    flash(f'Incorrect vacation dates!', category='error')
-                    return redirect(url_for('views.vacation'))
-                for day in range(vacation_length):
-                    vacation_date += timedelta(days=1)
-                    if Vacation.query.filter_by(user_id=current_user.id, vacation_date=vacation_date).first():
-                        flash(f'Vacation day with date {vacation_date} already exist!',
-                              category='error')
-                        return redirect(url_for('views.vacation'))
-                    elif worker.rem_vacation_days < vacation_length:
-                        flash(f'You do not have enough vacation days in this year.', category='error')
-                        return redirect(url_for('views.vacation'))
-                    new_vacation_day = Vacation(vacation_date=vacation_date, user_id=current_user.id)
-                    db.session.add(new_vacation_day)
+                    total_vacation_days = ceil(30 * job_position[position])
             else:
-                if Vacation.query.filter_by(user_id=current_user.id, vacation_date=date.today()).first():
-                    flash(f'Vacation day with date {date.today()} already exist!',
+                if vacation_days > 10:
+                    total_vacation_days = ceil(26 * job_position[position])
+                else:
+                    total_vacation_days = ceil(20 * job_position[position])
+            worker.total_vacation_days = total_vacation_days
+            db.session.commit()
+            return redirect(url_for('views.vacation_calculation'))
+
+    return render_template('vacation_calculation.html', user=current_user, form=form,
+                           total_vacation_days=worker.total_vacation_days,
+                           remaining_vacation_days=worker.rem_vacation_days)
+
+
+@views.route('/vacation', methods=['GET', 'POST'])
+@login_required
+def vacation():
+    form = VacationDay()
+    worker = User.query.filter_by(id=current_user.id).first()
+    days = Vacation.query.filter_by(user_id=current_user.id)
+    used_days = days.count()
+    worker.rem_vacation_days = worker.total_vacation_days - used_days
+    if request.method == 'POST':
+        if request.form.get('vacation_start_date') and request.form.get('vacation_end_date'):
+            end_date = datetime.strptime(request.form.get('vacation_end_date'), '%Y-%m-%d').date()
+            vacation_date = datetime.strptime(request.form.get('vacation_start_date'), '%Y-%m-%d').date() - timedelta(days=1)
+            vacation_length = (end_date - vacation_date).days
+            if vacation_length < 0:
+                flash(f'Incorrect vacation dates!', category='error')
+                return redirect(url_for('views.vacation'))
+            for day in range(vacation_length):
+                vacation_date += timedelta(days=1)
+                if Vacation.query.filter_by(user_id=current_user.id, vacation_date=vacation_date).first():
+                    flash(f'Vacation day with date {vacation_date} already exist!',
                           category='error')
                     return redirect(url_for('views.vacation'))
-                else:
-                    new_vacation_day = Vacation(user_id=current_user.id)
-                    db.session.add(new_vacation_day)
-            db.session.commit()
-            flash('Vacation day have been added!', category='success')
-            return redirect(url_for('views.vacation'))
+                elif worker.rem_vacation_days < vacation_length:
+                    flash(f'You do not have enough vacation days in this year.', category='error')
+                    return redirect(url_for('views.vacation'))
+                new_vacation_day = Vacation(vacation_date=vacation_date, user_id=current_user.id)
+                db.session.add(new_vacation_day)
+        else:
+            if Vacation.query.filter_by(user_id=current_user.id, vacation_date=date.today()).first():
+                flash(f'Vacation day with date {date.today()} already exist!',
+                      category='error')
+                return redirect(url_for('views.vacation'))
+            else:
+                new_vacation_day = Vacation(user_id=current_user.id)
+                db.session.add(new_vacation_day)
+        db.session.commit()
+        flash('Vacation day have been added!', category='success')
+        return redirect(url_for('views.vacation_list'))
 
-    return render_template('vacation.html', user=current_user, form_vacation_length=form_vacation_length,
-                           form_vacation_day=form_vacation_day, total_vacation_days=worker.total_vacation_days,
-                           remaining_vacation_days=worker.rem_vacation_days)
+    return render_template('vacation.html', user=current_user, form=form)
 
 
 @views.route('/vacation-list', methods=['GET'])
