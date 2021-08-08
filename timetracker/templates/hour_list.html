@@ -12,7 +12,8 @@
                 <th scope="col" style="width:5%">#</th>
                 <th scope="col" style="width:40%">Project shortcut</th>
                 <th scope="col" style="width:25%">Date</th>
-                <th scope="col" style="width:30%">Number of hours</th>
+                <th scope="col" style="width:25%">Number of hours</th>
+                <th scope="col" style="width:5%"></th>
                 <th scope="col" style="width:5%"></th>
             </tr>
           </thead>
@@ -25,11 +26,18 @@
                     <td>{{ hour.amount }}</td>
                     <td>
                       <div class="d-flex justify-content-center">
+                        <a href="/update-hour/{{hour.id}}" style="border: none; background-color: transparent;">
+                            <i class="fas fa-edit text-warning"></i>
+                        </a>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex justify-content-center">
                         <a href="/delete-hour/{{hour.id}}" style="border: none; background-color: transparent;">
                             <i class="fas fa-minus-circle text-danger"></i>
                         </a>
                       </div>
-                  </td>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
