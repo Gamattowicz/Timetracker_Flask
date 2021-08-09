@@ -83,13 +83,10 @@ def update_hour(hour_id):
 @views.route('/delete-hour/<hour_id>')
 @login_required
 def delete_hour(hour_id):
-    hour = Hour.query.filter_by(id=hour_id).first()
-    if not hour:
-        flash('Hours do not exist', category='error')
-    else:
-        db.session.delete(hour)
-        db.session.commit()
-        flash('Hours deleted!', category='success')
+    hour = Hour.query.get_or_404(hour_id)
+    db.session.delete(hour)
+    db.session.commit()
+    flash('Hours deleted!', category='success')
     return redirect(url_for('views.hour_list'))
 
 
@@ -193,13 +190,10 @@ def update_project(project_id):
 @views.route('/delete-project/<project_id>')
 @login_required
 def delete_project(project_id):
-    project = Project.query.filter_by(id=project_id).first()
-    if not project:
-        flash('Project does not exist', category='error')
-    else:
-        db.session.delete(project)
-        db.session.commit()
-        flash('Project deleted!', category='success')
+    project = Project.query.get_or_404(project_id)
+    db.session.delete(project)
+    db.session.commit()
+    flash('Project deleted!', category='success')
     return redirect(url_for('views.projects'))
 
 
@@ -325,13 +319,10 @@ def update_vacation_day(vacation_day_id):
 @views.route('/delete-vacation-day/<vacation_day_id>')
 @login_required
 def delete_vacation_day(vacation_day_id):
-    vacation_day = Vacation.query.filter_by(id=vacation_day_id).first()
-    if not vacation_day:
-        flash('Vacation day does not exist', category='error')
-    else:
-        db.session.delete(vacation_day)
-        db.session.commit()
-        flash('Vacation day deleted!', category='success')
+    vacation_day = Vacation.query.get_or_404(vacation_day_id)
+    db.session.delete(vacation_day)
+    db.session.commit()
+    flash('Vacation day deleted!', category='success')
     return redirect(url_for('views.vacation'))
 
 
