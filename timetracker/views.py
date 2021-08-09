@@ -70,7 +70,6 @@ def update_hour(hour_id):
         hour.amount = request.form.get('amount')
         hour.project_shortcut = request.form.get('shortcut')
         hour.work_date = request.form.get('work_date')
-        print(request.form.get('work_date'))
         db.session.commit()
         flash('Hours have been updated!', category='success')
         return redirect(url_for('views.hour_list'))
@@ -78,8 +77,7 @@ def update_hour(hour_id):
         form.amount.data = hour.amount
         form.shortcut.data = hour.project_shortcut
         form.work_date.data = datetime.strptime(hour.work_date, '%Y-%m-%d').date()
-        print(datetime.strptime(hour.work_date, '%Y-%m-%d'))
-    return render_template('hour_update.html', user=current_user, form=form, data=datetime.strptime(hour.work_date, '%Y-%m-%d').date())
+    return render_template('hour_update.html', user=current_user, form=form, date=datetime.strptime(hour.work_date, '%Y-%m-%d').date())
 
 
 @views.route('/delete-hour/<hour_id>')
@@ -127,17 +125,8 @@ def projects():
         db.session.commit()
         flash('Project have been added!', category='success')
         return redirect(url_for('views.project_list'))
-    projects = db.session.query(Projects.id, Projects.name,
-                                Projects.shortcut,
-                                Projects.phase, Projects.start_date,
-                                Projects.end_date,
-                                func.ifnull(func.sum(Hours.amount), '0').label(
-                                   'sum')).outerjoin(
-                                    Hours, Projects.shortcut ==
-                                    Hours.project_shortcut).group_by(Projects.id).all()
 
-    return render_template('projects.html', projects=projects,
-                           user=current_user, form=form)
+    return render_template('projects.html', user=current_user, form=form)
 
 
 @views.route('/project-list', methods=['GET'])
@@ -152,6 +141,53 @@ def project_list():
                                                       Hours, Projects.shortcut ==
                                                       Hours.project_shortcut).group_by(Projects.id).all()
     return render_template('project_list.html', projects=projects, user=current_user)
+
+
+@views.route('/update-project/<project_id>', methods=['GET', 'POST'])
+@login_required
+def update_project(project_id):
+    project = Projects.query.get_or_404(project_id)
+    form = ProjectForm()
+    if request.method == 'POST':
+        if request.form.get('name') != project.name:
+            if Projects.query.filter_by(name=request.form.get('name')).first():
+                flash(f'Project with name {project.name} already exist!',
+                      category='error')
+                return redirect(url_for('views.update_project', project_id=project.id))
+        if request.form.get('shortcut') != project.shortcut:
+            if Projects.query.filter_by(shortcut=request.form.get('shortcut')).first():
+                flash(f'Project with shortcut {project.shortcut} already '
+                      f'exist!', category='error')
+                return redirect(url_for('views.update_project', project_id=project.id))
+        hours = Hours.query.filter_by(project_shortcut=project.shortcut)
+        project.name = request.form.get('name')
+        project.shortcut = request.form.get('shortcut')
+        project.phase = request.form.get('phase')
+        project.end_date = request.form.get('end_date')
+        print(Projects.query.filter_by(name=project.name).first().name)
+        if request.form.get('start_date'):
+            project.start_date = request.form.get('start_date')
+            if project.start_date > project.end_date:
+                flash(f'Invalid date of start and end project', category='error')
+                return redirect(url_for('views.projects'))
+        elif project.end_date < date.today().strftime('%Y-%m-%d'):
+            flash(f'Invalid date of end project', category='error')
+            return redirect(url_for('views.projects'))
+        for hour in hours:
+            hour.project_shortcut = project.shortcut
+        db.session.commit()
+        flash('Project have been updated!', category='success')
+        return redirect(url_for('views.project_list'))
+    elif request.method == 'GET':
+        form.name.data = project.name
+        form.shortcut.data = project.shortcut
+        form.phase.data = project.phase
+        form.end_date.data = datetime.strptime(project.end_date, '%Y-%m-%d').date()
+        form.start_date.data = datetime.strptime(project.start_date, '%Y-%m-%d').date()
+
+    return render_template('project_update.html', user=current_user, form=form,
+                           start_date=datetime.strptime(project.start_date, '%Y-%m-%d').date(),
+                           end_date=datetime.strptime(project.end_date, '%Y-%m-%d').date())
 
 
 @views.route('/delete-project/<project_id>')
@@ -283,7 +319,7 @@ def update_vacation_day(vacation_day_id):
             return redirect(url_for('views.vacation_list'))
     elif request.method == 'GET':
         form.vacation_end_date.data = datetime.strptime(vacation.vacation_date, '%Y-%m-%d').date()
-    return render_template('vacation_update.html', user=current_user, form=form, data=datetime.strptime(vacation.vacation_date, '%Y-%m-%d').date())
+    return render_template('vacation_update.html', user=current_user, form=form, date=datetime.strptime(vacation.vacation_date, '%Y-%m-%d').date())
 
 
 @views.route('/delete-vacation-day/<vacation_day_id>')
