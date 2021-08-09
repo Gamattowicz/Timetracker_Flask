@@ -1,4 +1,4 @@
-.far {
+.far, .fas {
     color: #333;
     font-size: 80px;
 }
@@ -34,6 +34,6 @@
     color: rgb(248, 249, 250);
 }
 
-.fa-minus-circle:hover {
+.fa-minus-circle:hover, .fa-edit:hover, .fa-arrow-circle-left:hover {
     opacity: 0.4;
 }
