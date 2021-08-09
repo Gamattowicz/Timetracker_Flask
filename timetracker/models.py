@@ -13,6 +13,9 @@ class Project(db.Model):
     phase = db.Column(db.String(50), nullable=False)
     hour = db.relationship('Hour', backref='project', passive_deletes=True)
 
+    def __repr__(self):
+        return f"Project: {self.name}"
+
 
 class Hour(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -21,6 +24,9 @@ class Hour(db.Model):
     project_shortcut = db.Column(db.String(50), db.ForeignKey(
         'project.shortcut'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
+
+    def __repr__(self):
+        return f"{self.amount} hours"
 
 
 class User(db.Model, UserMixin):
@@ -33,7 +39,7 @@ class User(db.Model, UserMixin):
     vacation = db.relationship('Vacation', backref='user', passive_deletes=True)
 
     def __repr__(self):
-        return '<User({username!r})>'.format(username=self.username)
+        return f"{self.username}"
 
     @property
     def password(self):
@@ -51,3 +57,6 @@ class Vacation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     vacation_date = db.Column(db.String(50), default=func.current_date())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
+
+    def __repr__(self):
+        return f"Vacation day in {self.vacation_date}"
