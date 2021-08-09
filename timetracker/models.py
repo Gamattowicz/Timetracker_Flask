@@ -4,22 +4,22 @@ from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
-class Projects(db.Model):
+class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False, unique=True)
     shortcut = db.Column(db.String(50), nullable=False, unique=True)
     start_date = db.Column(db.String(50), nullable=False, default=func.current_date())
     end_date = db.Column(db.String(50), nullable=False)
     phase = db.Column(db.String(50), nullable=False)
-    hour = db.relationship('Hours', backref='projects', passive_deletes=True)
+    hour = db.relationship('Hour', backref='project', passive_deletes=True)
 
 
-class Hours(db.Model):
+class Hour(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Integer, nullable=False)
     work_date = db.Column(db.String(50), default=func.current_date())
     project_shortcut = db.Column(db.String(50), db.ForeignKey(
-        'projects.shortcut'), nullable=False)
+        'project.shortcut'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
 
 
@@ -29,7 +29,7 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(50))
     total_vacation_days = db.Column(db.Integer, default=0)
     rem_vacation_days = db.Column(db.Integer, default=0)
-    hour = db.relationship('Hours', backref='user', passive_deletes=True)
+    hour = db.relationship('Hour', backref='user', passive_deletes=True)
     vacation = db.relationship('Vacation', backref='user', passive_deletes=True)
 
     def __repr__(self):

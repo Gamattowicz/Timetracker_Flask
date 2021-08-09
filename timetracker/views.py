@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import Projects, Hours, User, Vacation
+from .models import Project, Hour, User, Vacation
 from . import db
 from sqlalchemy.sql import func
 from flask_login import login_required, current_user
@@ -28,7 +28,7 @@ def home():
 @login_required
 def hours():
     form = HourForm()
-    projects = Projects.query.all()
+    projects = Project.query.all()
     form.shortcut.choices = [project.shortcut for project in projects]
     if request.method == 'POST':
         amount = request.form.get('amount')
@@ -37,11 +37,11 @@ def hours():
         if request.form.get('work_date'):
             work_date = request.form.get('work_date')
             print(work_date)
-            new_hours = Hours(amount=amount, work_date=work_date,
+            new_hours = Hour(amount=amount, work_date=work_date,
                               project_shortcut=project_shortcut,
                               user_id=user_id)
         else:
-            new_hours = Hours(amount=amount,
+            new_hours = Hour(amount=amount,
                               project_shortcut=project_shortcut,
                               user_id=user_id)
         db.session.add(new_hours)
@@ -55,16 +55,16 @@ def hours():
 @views.route('/hour-list', methods=['GET'])
 @login_required
 def hour_list():
-    hours = Hours.query.filter_by(user_id=current_user.id)
+    hours = Hour.query.filter_by(user_id=current_user.id)
     return render_template('hour_list.html', hours=hours, user=current_user)
 
 
 @views.route('/update-hour/<hour_id>', methods=['GET', 'POST'])
 @login_required
 def update_hour(hour_id):
-    hour = Hours.query.get_or_404(hour_id)
+    hour = Hour.query.get_or_404(hour_id)
     form = HourForm()
-    projects = Projects.query.all()
+    projects = Project.query.all()
     form.shortcut.choices = [project.shortcut for project in projects]
     if request.method == 'POST':
         hour.amount = request.form.get('amount')
@@ -83,7 +83,7 @@ def update_hour(hour_id):
 @views.route('/delete-hour/<hour_id>')
 @login_required
 def delete_hour(hour_id):
-    hour = Hours.query.filter_by(id=hour_id).first()
+    hour = Hour.query.filter_by(id=hour_id).first()
     if not hour:
         flash('Hours do not exist', category='error')
     else:
@@ -102,11 +102,11 @@ def projects():
         shortcut = request.form.get('shortcut')
         end_date = request.form.get('end_date')
         phase = request.form.get('phase')
-        if Projects.query.filter_by(name=name).first():
+        if Project.query.filter_by(name=name).first():
             flash(f'Project with name {name} already exist!',
                   category='error')
             return redirect(url_for('views.projects'))
-        elif Projects.query.filter_by(shortcut=shortcut).first():
+        elif Project.query.filter_by(shortcut=shortcut).first():
             flash(f'Project with shortcut {shortcut} already '
                   f'exist!', category='error')
             return redirect(url_for('views.projects'))
@@ -118,7 +118,7 @@ def projects():
         elif end_date < date.today().strftime('%Y-%m-%d'):
             flash(f'Invalid date of end project', category='error')
             return redirect(url_for('views.projects'))
-        new_project = Projects(name=name, shortcut=shortcut,
+        new_project = Project(name=name, shortcut=shortcut,
                                phase=phase,
                                end_date=end_date)
         db.session.add(new_project)
@@ -132,39 +132,39 @@ def projects():
 @views.route('/project-list', methods=['GET'])
 @login_required
 def project_list():
-    projects = db.session.query(Projects.id, Projects.name,
-                                Projects.shortcut,
-                                Projects.phase, Projects.start_date,
-                                Projects.end_date,
-                                func.ifnull(func.sum(Hours.amount), '0').label(
+    projects = db.session.query(Project.id, Project.name,
+                                Project.shortcut,
+                                Project.phase, Project.start_date,
+                                Project.end_date,
+                                func.ifnull(func.sum(Hour.amount), '0').label(
                                     'sum')).outerjoin(
-                                                      Hours, Projects.shortcut ==
-                                                      Hours.project_shortcut).group_by(Projects.id).all()
+                                                      Hour, Project.shortcut ==
+                                                      Hour.project_shortcut).group_by(Project.id).all()
     return render_template('project_list.html', projects=projects, user=current_user)
 
 
 @views.route('/update-project/<project_id>', methods=['GET', 'POST'])
 @login_required
 def update_project(project_id):
-    project = Projects.query.get_or_404(project_id)
+    project = Project.query.get_or_404(project_id)
     form = ProjectForm()
     if request.method == 'POST':
         if request.form.get('name') != project.name:
-            if Projects.query.filter_by(name=request.form.get('name')).first():
+            if Project.query.filter_by(name=request.form.get('name')).first():
                 flash(f'Project with name {project.name} already exist!',
                       category='error')
                 return redirect(url_for('views.update_project', project_id=project.id))
         if request.form.get('shortcut') != project.shortcut:
-            if Projects.query.filter_by(shortcut=request.form.get('shortcut')).first():
+            if Project.query.filter_by(shortcut=request.form.get('shortcut')).first():
                 flash(f'Project with shortcut {project.shortcut} already '
                       f'exist!', category='error')
                 return redirect(url_for('views.update_project', project_id=project.id))
-        hours = Hours.query.filter_by(project_shortcut=project.shortcut)
+        hours = Hour.query.filter_by(project_shortcut=project.shortcut)
         project.name = request.form.get('name')
         project.shortcut = request.form.get('shortcut')
         project.phase = request.form.get('phase')
         project.end_date = request.form.get('end_date')
-        print(Projects.query.filter_by(name=project.name).first().name)
+        print(Project.query.filter_by(name=project.name).first().name)
         if request.form.get('start_date'):
             project.start_date = request.form.get('start_date')
             if project.start_date > project.end_date:
@@ -193,7 +193,7 @@ def update_project(project_id):
 @views.route('/delete-project/<project_id>')
 @login_required
 def delete_project(project_id):
-    project = Projects.query.filter_by(id=project_id).first()
+    project = Project.query.filter_by(id=project_id).first()
     if not project:
         flash('Project does not exist', category='error')
     else:
@@ -338,7 +338,7 @@ def delete_vacation_day(vacation_day_id):
 @views.route('/overtime')
 @login_required
 def overtime():
-    hours = Hours.query.filter_by(user_id=current_user.id).all()
+    hours = Hour.query.filter_by(user_id=current_user.id).all()
     work_days = {}
     overtime_list = {}
     for hour in hours:
@@ -369,7 +369,7 @@ def overtime():
 @views.route('/schedule')
 @login_required
 def schedule():
-    projects_list = Projects.query.all()
+    projects_list = Project.query.all()
     fig = Figure(figsize=(13, 4.4), dpi=100)
     ax = fig.add_subplot()
     y_ticks = []
