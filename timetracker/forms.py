@@ -7,7 +7,7 @@ from wtforms.validators import DataRequired, Length, EqualTo
 from .models import User
 
 
-class VacationLength(FlaskForm):
+class VacationLengthForm(FlaskForm):
     seniority = IntegerField('Seniority', widget=NumberInput(min=0, max=60,
                                                              step=1))
     disability = BooleanField('Certificate of disability', false_values=(False, 'false', '',))
@@ -22,7 +22,7 @@ class VacationLength(FlaskForm):
     submit_button = SubmitField('Submit')
 
 
-class VacationDay(FlaskForm):
+class VacationDayForm(FlaskForm):
     vacation_start_date = DateField('The start date of the vacation day', format='%YYYY-%m-%d')
     vacation_end_date = DateField('The end date of the vacation day', format='%YYYY-%m-%d')
     confirm_button = SubmitField('Confirm')

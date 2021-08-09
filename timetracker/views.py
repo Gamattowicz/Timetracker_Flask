@@ -3,7 +3,7 @@ from .models import Project, Hour, User, Vacation
 from . import db
 from sqlalchemy.sql import func
 from flask_login import login_required, current_user
-from .forms import HourForm, VacationLength, VacationDay, ProjectForm
+from .forms import HourForm, VacationLengthForm, VacationDayForm, ProjectForm
 from math import ceil
 from datetime import date, datetime, timedelta
 import matplotlib.dates as mdates
@@ -206,7 +206,7 @@ def delete_project(project_id):
 @views.route('/vacation-calculation', methods=['GET', 'POST'])
 @login_required
 def vacation_calculation():
-    form = VacationLength()
+    form = VacationLengthForm()
     school_years = {
         'Basic vocational school': 3,
         'High vocational school': 5,
@@ -256,7 +256,7 @@ def vacation_calculation():
 @views.route('/vacation', methods=['GET', 'POST'])
 @login_required
 def vacation():
-    form = VacationDay()
+    form = VacationDayForm()
     worker = User.query.filter_by(id=current_user.id).first()
     days = Vacation.query.filter_by(user_id=current_user.id)
     used_days = days.count()
@@ -306,7 +306,7 @@ def vacation_list():
 @login_required
 def update_vacation_day(vacation_day_id):
     vacation = Vacation.query.get_or_404(vacation_day_id)
-    form = VacationDay()
+    form = VacationDayForm()
     if request.method == 'POST':
         if Vacation.query.filter_by(user_id=current_user.id, vacation_date=request.form.get('vacation_end_date')).first():
             flash(f'Vacation day with date {request.form.get("vacation_end_date")} already exist!',
