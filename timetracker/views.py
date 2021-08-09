@@ -80,14 +80,16 @@ def update_hour(hour_id):
     return render_template('hour_update.html', user=current_user, form=form, date=datetime.strptime(hour.work_date, '%Y-%m-%d').date())
 
 
-@views.route('/delete-hour/<hour_id>')
+@views.route('/delete-hour/<hour_id>', methods=['GET', 'POST'])
 @login_required
 def delete_hour(hour_id):
     hour = Hour.query.get_or_404(hour_id)
-    db.session.delete(hour)
-    db.session.commit()
-    flash('Hours deleted!', category='success')
-    return redirect(url_for('views.hour_list'))
+    if request.method == 'POST':
+        db.session.delete(hour)
+        db.session.commit()
+        flash('Hours deleted!', category='success')
+        return redirect(url_for('views.hour_list'))
+    return render_template('hour_delete.html', user=current_user, hour=hour)
 
 
 @views.route('/projects', methods=['GET', 'POST'])
@@ -187,14 +189,16 @@ def update_project(project_id):
                            end_date=datetime.strptime(project.end_date, '%Y-%m-%d').date())
 
 
-@views.route('/delete-project/<project_id>')
+@views.route('/delete-project/<project_id>', methods=['GET', 'POST'])
 @login_required
 def delete_project(project_id):
     project = Project.query.get_or_404(project_id)
-    db.session.delete(project)
-    db.session.commit()
-    flash('Project deleted!', category='success')
-    return redirect(url_for('views.projects'))
+    if request.method == 'POST':
+        db.session.delete(project)
+        db.session.commit()
+        flash('Project deleted!', category='success')
+        return redirect(url_for('views.projects'))
+    return render_template('project_delete.html', user=current_user, project=project)
 
 
 @views.route('/vacation-calculation', methods=['GET', 'POST'])
@@ -316,14 +320,16 @@ def update_vacation_day(vacation_day_id):
     return render_template('vacation_update.html', user=current_user, form=form, date=datetime.strptime(vacation.vacation_date, '%Y-%m-%d').date())
 
 
-@views.route('/delete-vacation-day/<vacation_day_id>')
+@views.route('/delete-vacation-day/<vacation_day_id>', methods=['GET', 'POST'])
 @login_required
 def delete_vacation_day(vacation_day_id):
     vacation_day = Vacation.query.get_or_404(vacation_day_id)
-    db.session.delete(vacation_day)
-    db.session.commit()
-    flash('Vacation day deleted!', category='success')
-    return redirect(url_for('views.vacation'))
+    if request.method == 'POST':
+        db.session.delete(vacation_day)
+        db.session.commit()
+        flash('Vacation day deleted!', category='success')
+        return redirect(url_for('views.vacation'))
+    return render_template('vacation_delete.html', user=current_user, vacation_day=vacation_day)
 
 
 @views.route('/overtime')

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete hours {{ hour.id }}{% endblock %}
+
+{% block content %}
+    <div class="col-md-8 offset-md-2 my-4">
+        <a href="{{ url_for('views.hour_list') }}"><i class="fas fa-arrow-circle-left text-danger mb-4"></i></a>
+        <form method="POST" class="form-group col-md-7 mt-4">
+            <h5 class="mb-4">Are you sure you want to delete "{{ hour }}" hour?</h5>
+            <button type="submit" name="delete" class="btn btn-danger float-end mb-2 text-uppercase">Delete</button>
+        </form>
+    </div>
+
+{% endblock %}
