@@ -34,6 +34,10 @@
                             </div>
                         </div>
                     </div>
+                <div class="form-check">
+                    {{ render_field(form.remember_me.label, for="remember", class_="col-sm-4 col-form-label form-check-label") }}
+                    {{ render_field(form.remember_me, id="remember", class_="col-sm-4 col-form-label form-check-input") }}
+                </div>
                     <p>Create new account <a href="{{url_for('auth.sign_up')}}" class="sign_up" style="text-decoration: none">Here</a></p>
                     {{ render_field(form.submit, class_="btn btn-success float-end mb-2 text-uppercase") }}
                 </form>
