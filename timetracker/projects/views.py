@@ -34,17 +34,22 @@ def create_project_view():
             flash(f'Project with shortcut {shortcut} already '
                   f'exist!', category='error')
             return redirect(url_for('projects.create_project_view'))
-        elif request.form.get('start_date'):
+        if request.form.get('start_date'):
             start_date = request.form.get('start_date')
             if start_date > end_date:
                 flash(f'Invalid date of start and end project', category='error')
                 return redirect(url_for('projects.create_project_view'))
-        elif end_date < date.today().strftime('%Y-%m-%d'):
-            flash(f'Invalid date of end project', category='error')
-            return redirect(url_for('projects.create_project_view'))
-        new_project = Project(name=name, shortcut=shortcut,
-                               phase=phase,
-                               end_date=end_date)
+            new_project = Project(name=name, shortcut=shortcut,
+                                   phase=phase, start_date=start_date,
+                                   end_date=end_date)
+        else:
+            start_date = date.today().strftime('%Y-%m-%d')
+            if end_date < start_date:
+                flash(f'Invalid date of end project', category='error')
+                return redirect(url_for('projects.create_project_view'))
+            new_project = Project(name=name, shortcut=shortcut,
+                                   phase=phase,
+                                   end_date=end_date)
         db.session.add(new_project)
         db.session.commit()
         flash('Project have been added!', category='success')
