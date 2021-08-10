@@ -52,10 +52,10 @@
                         Projects
                       </a>
                       <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/projects">Add new project</a></li>
-                        <li><a class="dropdown-item" href="/project-list">Project list</a></li>
+                        <li><a class="dropdown-item" href="{{url_for('projects.create_project_view')}}">Add new project</a></li>
+                        <li><a class="dropdown-item" href="{{url_for('projects.list_project_view')}}">Project list</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="/schedule">Schedule</a></li>
+                        <li><a class="dropdown-item" href="{{url_for('projects.schedule_view')}}">Schedule</a></li>
                       </ul>
                     </li>
                     <li class="nav-item">

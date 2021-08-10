@@ -16,13 +16,16 @@ def create_app(config_name='development'):
     from .views import views
     from .auth import auth
     from timetracker.hours.views import hours
+    from timetracker.projects.views import projects
 
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(hours, url_prefix='/hour')
+    app.register_blueprint(projects, url_prefix='/project')
 
-    from .models import Project, User
+    from .models import User
     from timetracker.hours.models import Hour
+    from timetracker.projects.models import Project
 
     create_database(app)
 

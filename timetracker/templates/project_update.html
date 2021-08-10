@@ -9,7 +9,7 @@
         <li class="list-group-item">
             <div class="col-md-10 offset-md-1 mb-4">
                 <form method="POST" class="was-validated">
-                <a href="{{ url_for('views.project_list') }}"><i class="fas fa-arrow-circle-left text-danger mb-4"></i></a>
+                <a href="{{ url_for('projects.list_project_view') }}"><i class="fas fa-arrow-circle-left text-danger mb-4"></i></a>
                     <div class="row mb-3">
                         {{ form.name.label(for="name", class_="col-sm-4 col-form-label") }}
                         <div class="col-sm-8">

@@ -32,14 +32,14 @@
               <td>{{ project.sum }}</td>
               <td>
                   <div class="d-flex justify-content-center">
-                    <a href="/update-project/{{project.id}}" style="border: none; background-color: transparent;">
+                    <a href="{{ url_for('projects.update_project_view', project_id=project.id) }}" style="border: none; background-color: transparent;">
                         <i class="fas fa-edit text-warning"></i>
                     </a>
                   </div>
               </td>
               <td>
                   <div class="d-flex justify-content-center">
-                    <a href="/delete-project/{{project.id}}" style="border: none; background-color: transparent;">
+                    <a href="{{ url_for('projects.delete_project_view', project_id=project.id) }}" style="border: none; background-color: transparent;">
                         <i class="fas fa-minus-circle text-danger"></i>
                     </a>
                   </div>

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import Hour
-from timetracker.models import Project
+from timetracker.projects.models import Project
 from timetracker import db
 from flask_login import login_required, current_user
 from .forms import HourForm
