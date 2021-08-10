@@ -1,9 +1,10 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import Project, Hour, User, Vacation
+from .models import Project, User, Vacation
+from timetracker.hours.models import Hour
 from . import db
 from sqlalchemy.sql import func
 from flask_login import login_required, current_user
-from .forms import HourForm, VacationLengthForm, VacationDayForm, ProjectForm
+from .forms import VacationLengthForm, VacationDayForm, ProjectForm
 from math import ceil
 from datetime import date, datetime, timedelta
 import matplotlib.dates as mdates
@@ -12,7 +13,6 @@ from matplotlib.figure import Figure
 import io
 import base64
 import numpy as np
-from calendar import day_name
 
 
 views = Blueprint('views', __name__)
@@ -22,74 +22,6 @@ views = Blueprint('views', __name__)
 @login_required
 def home():
     return render_template('home.html', user=current_user)
-
-
-@views.route('/hours', methods=['GET', 'POST'])
-@login_required
-def hours():
-    form = HourForm()
-    projects = Project.query.all()
-    form.shortcut.choices = [project.shortcut for project in projects]
-    if request.method == 'POST':
-        amount = request.form.get('amount')
-        project_shortcut = request.form.get('shortcut')
-        user_id = current_user.id
-        if request.form.get('work_date'):
-            work_date = request.form.get('work_date')
-            print(work_date)
-            new_hours = Hour(amount=amount, work_date=work_date,
-                              project_shortcut=project_shortcut,
-                              user_id=user_id)
-        else:
-            new_hours = Hour(amount=amount,
-                              project_shortcut=project_shortcut,
-                              user_id=user_id)
-        db.session.add(new_hours)
-        db.session.commit()
-        flash('Hours have been added!', category='success')
-        return redirect(url_for('views.hour_list'))
-
-    return render_template('hours.html', user=current_user, form=form)
-
-
-@views.route('/hour-list', methods=['GET'])
-@login_required
-def hour_list():
-    hours = Hour.query.filter_by(user_id=current_user.id)
-    return render_template('hour_list.html', hours=hours, user=current_user)
-
-
-@views.route('/update-hour/<hour_id>', methods=['GET', 'POST'])
-@login_required
-def update_hour(hour_id):
-    hour = Hour.query.get_or_404(hour_id)
-    form = HourForm()
-    projects = Project.query.all()
-    form.shortcut.choices = [project.shortcut for project in projects]
-    if request.method == 'POST':
-        hour.amount = request.form.get('amount')
-        hour.project_shortcut = request.form.get('shortcut')
-        hour.work_date = request.form.get('work_date')
-        db.session.commit()
-        flash('Hours have been updated!', category='success')
-        return redirect(url_for('views.hour_list'))
-    elif request.method == 'GET':
-        form.amount.data = hour.amount
-        form.shortcut.data = hour.project_shortcut
-        form.work_date.data = datetime.strptime(hour.work_date, '%Y-%m-%d').date()
-    return render_template('hour_update.html', user=current_user, form=form, date=datetime.strptime(hour.work_date, '%Y-%m-%d').date())
-
-
-@views.route('/delete-hour/<hour_id>', methods=['GET', 'POST'])
-@login_required
-def delete_hour(hour_id):
-    hour = Hour.query.get_or_404(hour_id)
-    if request.method == 'POST':
-        db.session.delete(hour)
-        db.session.commit()
-        flash('Hours deleted!', category='success')
-        return redirect(url_for('views.hour_list'))
-    return render_template('hour_delete.html', user=current_user, hour=hour)
 
 
 @views.route('/projects', methods=['GET', 'POST'])
@@ -330,37 +262,6 @@ def delete_vacation_day(vacation_day_id):
         flash('Vacation day deleted!', category='success')
         return redirect(url_for('views.vacation'))
     return render_template('vacation_delete.html', user=current_user, vacation_day=vacation_day)
-
-
-@views.route('/overtime')
-@login_required
-def overtime():
-    hours = Hour.query.filter_by(user_id=current_user.id).all()
-    work_days = {}
-    overtime_list = {}
-    for hour in hours:
-        try:
-            work_days[hour.work_date] += hour.amount
-        except KeyError:
-            work_days[hour.work_date] = hour.amount
-    for day, num in work_days.items():
-        date = datetime.strptime(day, '%Y-%m-%d').weekday()
-        if day_name[date] != 'Saturday' and day_name[date] != 'Sunday':
-            if num > 8:
-                try:
-                    overtime_list[day] += num - 8
-                except KeyError:
-                    overtime_list[day] = num - 8
-        else:
-            try:
-                overtime_list[day] += num
-            except KeyError:
-                overtime_list[day] = num
-    overtime = sum([h for d, h in overtime_list.items()])
-    working_hours = sum([h for d, h in work_days.items()])
-    return render_template('overtime.html', user=current_user,
-                           work_days=work_days, overtime_list=overtime_list,
-                           overtime=overtime, working_hours=working_hours)
 
 
 @views.route('/schedule')
