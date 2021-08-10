@@ -34,7 +34,7 @@
                             </div>
                         </div>
                     </div>
-                    <p>Create new account <a href="/sign-up" class="sign_up" style="text-decoration: none">Here</a></p>
+                    <p>Create new account <a href="{{url_for('auth.sign_up')}}" class="sign_up" style="text-decoration: none">Here</a></p>
                     {{ render_field(form.submit, class_="btn btn-success float-end mb-2 text-uppercase") }}
                 </form>
             </div>

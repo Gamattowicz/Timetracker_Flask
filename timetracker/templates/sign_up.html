@@ -46,7 +46,7 @@
                             </div>
                         </div>
                     </div>
-                    <p>Have an account? <a href="/sign-up" class="sign_up" style="text-decoration: none">Login</a></p>
+                    <p>Have an account? <a href="{{url_for('auth.login')}}" class="sign_up" style="text-decoration: none">Login</a></p>
                     {{ render_field(form.confirm_button, class_="btn btn-success float-end mb-2 text-uppercase") }}
                 </form>
             </div>
