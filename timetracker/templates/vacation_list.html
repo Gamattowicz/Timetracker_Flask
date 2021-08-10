@@ -22,14 +22,14 @@
               <td>{{ day.vacation_date }}</td>
               <td>
                   <div class="d-flex justify-content-center">
-                        <a href="/update-vacation/{{day.id}}" style="border: none; background-color: transparent;">
+                        <a href="{{ url_for('vacation.update_vacation_view', vacation_day_id=day.id) }}" style="border: none; background-color: transparent;">
                             <i class="fas fa-edit text-warning"></i>
                     </a>
                   </div>
               </td>
               <td>
                   <div class="d-flex justify-content-center">
-                    <a href="/delete-vacation-day/{{day.id}}" style="border: none; background-color: transparent;">
+                    <a href="{{ url_for('vacation.delete_vacation_view', vacation_day_id=day.id) }}" style="border: none; background-color: transparent;">
                         <i class="fas fa-minus-circle text-danger"></i>
                     </a>
                   </div>

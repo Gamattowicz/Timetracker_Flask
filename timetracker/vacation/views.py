@@ -1,23 +1,19 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import User
-from . import db
+from .models import Vacation
+from timetracker.models import User
+from timetracker import db
 from flask_login import login_required, current_user
+from .forms import VacationLengthForm, VacationDayForm
 from math import ceil
 from datetime import date, datetime, timedelta
 
 
-views = Blueprint('views', __name__)
+vacation = Blueprint('vacation', __name__)
 
 
-@views.route('/', methods=['GET'])
+@vacation.route('/calculation', methods=['GET', 'POST'])
 @login_required
-def home():
-    return render_template('home.html', user=current_user)
-
-
-@views.route('/vacation-calculation', methods=['GET', 'POST'])
-@login_required
-def vacation_calculation():
+def vacation_calculation_view():
     form = VacationLengthForm()
     school_years = {
         'Basic vocational school': 3,
@@ -58,16 +54,15 @@ def vacation_calculation():
                     total_vacation_days = ceil(20 * job_position[position])
             worker.total_vacation_days = total_vacation_days
             db.session.commit()
-            return redirect(url_for('views.vacation_calculation'))
-
+            return redirect(url_for('vacation.vacation_calculation_view'))
     return render_template('vacation_calculation.html', user=current_user, form=form,
                            total_vacation_days=worker.total_vacation_days,
                            remaining_vacation_days=worker.rem_vacation_days)
 
 
-@views.route('/vacation', methods=['GET', 'POST'])
+@vacation.route('/create', methods=['GET', 'POST'])
 @login_required
-def vacation():
+def create_vacation_view():
     form = VacationDayForm()
     worker = User.query.filter_by(id=current_user.id).first()
     days = Vacation.query.filter_by(user_id=current_user.id)
@@ -80,67 +75,66 @@ def vacation():
             vacation_length = (end_date - vacation_date).days
             if vacation_length < 0:
                 flash(f'Incorrect vacation dates!', category='error')
-                return redirect(url_for('views.vacation'))
+                return redirect(url_for('vacation.create_vacation_view'))
             for day in range(vacation_length):
                 vacation_date += timedelta(days=1)
                 if Vacation.query.filter_by(user_id=current_user.id, vacation_date=vacation_date).first():
                     flash(f'Vacation day with date {vacation_date} already exist!',
                           category='error')
-                    return redirect(url_for('views.vacation'))
+                    return redirect(url_for('vacation.create_vacation_view'))
                 elif worker.rem_vacation_days < vacation_length:
                     flash(f'You do not have enough vacation days in this year.', category='error')
-                    return redirect(url_for('views.vacation'))
+                    return redirect(url_for('vacation.create_vacation_view'))
                 new_vacation_day = Vacation(vacation_date=vacation_date, user_id=current_user.id)
                 db.session.add(new_vacation_day)
         else:
             if Vacation.query.filter_by(user_id=current_user.id, vacation_date=date.today()).first():
                 flash(f'Vacation day with date {date.today()} already exist!',
                       category='error')
-                return redirect(url_for('views.vacation'))
+                return redirect(url_for('vacation.create_vacation_view'))
             else:
                 new_vacation_day = Vacation(user_id=current_user.id)
                 db.session.add(new_vacation_day)
         db.session.commit()
         flash('Vacation day have been added!', category='success')
-        return redirect(url_for('views.vacation_list'))
+        return redirect(url_for('vacation.list_vacation_view'))
+    return render_template('vacation_create.html', user=current_user, form=form)
 
-    return render_template('vacation.html', user=current_user, form=form)
 
-
-@views.route('/vacation-list', methods=['GET'])
+@vacation.route('/', methods=['GET'])
 @login_required
-def vacation_list():
+def list_vacation_view():
     days = Vacation.query.filter_by(user_id=current_user.id)
     return render_template('vacation_list.html', days=days, user=current_user)
 
 
-@views.route('/update-vacation/<vacation_day_id>', methods=['GET', 'POST'])
+@vacation.route('/<vacation_day_id>/update', methods=['GET', 'POST'])
 @login_required
-def update_vacation_day(vacation_day_id):
+def update_vacation_view(vacation_day_id):
     vacation = Vacation.query.get_or_404(vacation_day_id)
     form = VacationDayForm()
     if request.method == 'POST':
         if Vacation.query.filter_by(user_id=current_user.id, vacation_date=request.form.get('vacation_end_date')).first():
             flash(f'Vacation day with date {request.form.get("vacation_end_date")} already exist!',
                   category='error')
-            return redirect(url_for('views.update_vacation_day'))
+            return redirect(url_for('vacation.list_vacation_view'))
         else:
             vacation.vacation_date = request.form.get('vacation_end_date')
             db.session.commit()
             flash('Vacation day have been updated!', category='success')
-            return redirect(url_for('views.vacation_list'))
+            return redirect(url_for('vacation.list_vacation_view'))
     elif request.method == 'GET':
         form.vacation_end_date.data = datetime.strptime(vacation.vacation_date, '%Y-%m-%d').date()
     return render_template('vacation_update.html', user=current_user, form=form, date=datetime.strptime(vacation.vacation_date, '%Y-%m-%d').date())
 
 
-@views.route('/delete-vacation-day/<vacation_day_id>', methods=['GET', 'POST'])
+@vacation.route('/<vacation_day_id>/delete', methods=['GET', 'POST'])
 @login_required
-def delete_vacation_day(vacation_day_id):
+def delete_vacation_view(vacation_day_id):
     vacation_day = Vacation.query.get_or_404(vacation_day_id)
     if request.method == 'POST':
         db.session.delete(vacation_day)
         db.session.commit()
         flash('Vacation day deleted!', category='success')
-        return redirect(url_for('views.vacation'))
+        return redirect(url_for('vacation.list_vacation_view'))
     return render_template('vacation_delete.html', user=current_user, vacation_day=vacation_day)
