@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, SubmitField, TextField, PasswordField
 from wtforms.validators import DataRequired, Length, EqualTo
-from .models import User
+from timetracker.users.models import User
 
 
 class RegisterForm(FlaskForm):

@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, request, flash, redirect, \
     url_for, g
-from .models import User
-from . import db
+from timetracker.users.models import User
+from timetracker import db
 from flask_login import login_user, current_user, logout_user, login_required
-from .forms import RegisterForm, LoginForm
+from timetracker.users.forms import RegisterForm, LoginForm
 
 
 auth = Blueprint('auth', __name__)

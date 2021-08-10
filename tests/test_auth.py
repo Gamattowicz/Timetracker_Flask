@@ -1,4 +1,4 @@
-from timetracker.models import User
+from timetracker.users.models import User
 import pytest
 
 

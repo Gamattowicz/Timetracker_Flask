@@ -13,8 +13,8 @@ def create_app(config_name='development'):
     app.config.from_object(config[config_name])
     db.init_app(app)
 
-    from .views import views
-    from .auth import auth
+    from timetracker.views import views
+    from timetracker.users.auth import auth
     from timetracker.hours.views import hours
     from timetracker.projects.views import projects
     from timetracker.vacation.views import vacation
@@ -25,7 +25,7 @@ def create_app(config_name='development'):
     app.register_blueprint(projects, url_prefix='/project')
     app.register_blueprint(vacation, url_prefix='/vacation')
 
-    from .models import User
+    from timetracker.users.models import User
     from timetracker.hours.models import Hour
     from timetracker.projects.models import Project
     from timetracker.vacation.models import Vacation

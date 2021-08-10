@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import Vacation
-from timetracker.models import User
+from timetracker.users.models import User
 from timetracker import db
 from flask_login import login_required, current_user
 from .forms import VacationLengthForm, VacationDayForm
