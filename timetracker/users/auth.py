@@ -21,7 +21,6 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
-            print(form.remember_me.data)
             redirect_url = request.args.get('next') or url_for('views.home')
             return redirect(redirect_url)
     return render_template('login.html', form=form, user=current_user)

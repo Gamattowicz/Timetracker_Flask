@@ -4,7 +4,7 @@ from timetracker.projects.models import Project
 from timetracker import db
 from flask_login import login_required, current_user
 from .forms import HourForm
-from datetime import datetime
+from datetime import datetime, date
 from calendar import day_name
 
 
@@ -21,16 +21,30 @@ def create_hour_view():
         amount = request.form.get('amount')
         project_shortcut = request.form.get('shortcut')
         user_id = current_user.id
+        hour_num = int(amount)
         if request.form.get('work_date'):
             work_date = request.form.get('work_date')
-            print(work_date)
-            new_hours = Hour(amount=amount, work_date=work_date,
-                              project_shortcut=project_shortcut,
-                              user_id=user_id)
+            hours = Hour.query.filter_by(work_date=work_date, user_id=user_id)
+            for hour in hours:
+                hour_num += hour.amount
+            if hour_num > 24:
+                flash(f'Your numbers of hours in {work_date} exceeds 24!', category='error')
+                return redirect(url_for('hours.create_hour_view'))
+            else:
+                new_hours = Hour(amount=amount, work_date=work_date,
+                                  project_shortcut=project_shortcut,
+                                  user_id=user_id)
         else:
-            new_hours = Hour(amount=amount,
-                              project_shortcut=project_shortcut,
-                              user_id=user_id)
+            hours = Hour.query.filter_by(work_date=date.today(), user_id=user_id)
+            for hour in hours:
+                hour_num += hour.amount
+            if hour_num > 24:
+                flash(f'Your numbers of hours in {date.today()} exceeds 24!', category='error')
+                return redirect(url_for('hours.create_hour_view'))
+            else:
+                new_hours = Hour(amount=amount,
+                                  project_shortcut=project_shortcut,
+                                  user_id=user_id)
         db.session.add(new_hours)
         db.session.commit()
         flash('Hours have been added!', category='success')
@@ -56,9 +70,17 @@ def update_hour_view(hour_id):
         hour.amount = request.form.get('amount')
         hour.project_shortcut = request.form.get('shortcut')
         hour.work_date = request.form.get('work_date')
-        db.session.commit()
-        flash('Hours have been updated!', category='success')
-        return redirect(url_for('hours.list_hour_view'))
+        hour_num = int(hour.amount)
+        hours = Hour.query.filter_by(work_date=hour.work_date, user_id=current_user.id)
+        for hour in hours:
+            hour_num += int(hour.amount)
+        if hour_num > 24:
+            flash(f'Your numbers of hours in {hour.work_date} exceeds 24!', category='error')
+            return redirect(url_for('hours.create_hour_view'))
+        else:
+            db.session.commit()
+            flash('Hours have been updated!', category='success')
+            return redirect(url_for('hours.list_hour_view'))
     elif request.method == 'GET':
         form.amount.data = hour.amount
         form.shortcut.data = hour.project_shortcut
