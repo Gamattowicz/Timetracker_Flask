@@ -63,7 +63,7 @@ def list_project_view():
     projects = db.session.query(Project.id, Project.name,
                                 Project.shortcut,
                                 Project.phase, Project.start_date,
-                                Project.end_date,
+                                Project.end_date, Project.active,
                                 func.ifnull(func.sum(Hour.amount), '0').label(
                                     'sum')).outerjoin(
                                                       Hour, Project.shortcut ==
@@ -92,6 +92,7 @@ def update_project_view(project_id):
         project.shortcut = request.form.get('shortcut')
         project.phase = request.form.get('phase')
         project.end_date = request.form.get('end_date')
+        project.active = bool(request.form.get('active'))
         if request.form.get('start_date'):
             project.start_date = request.form.get('start_date')
             if project.start_date > project.end_date:
@@ -111,6 +112,7 @@ def update_project_view(project_id):
         form.phase.data = project.phase
         form.end_date.data = datetime.strptime(project.end_date, '%Y-%m-%d').date()
         form.start_date.data = datetime.strptime(project.start_date, '%Y-%m-%d').date()
+        form.active.data = project.active
 
     return render_template('project_update.html', user=current_user, form=form,
                            start_date=datetime.strptime(project.start_date, '%Y-%m-%d').date(),
@@ -132,7 +134,8 @@ def delete_project_view(project_id):
 @projects.route('/schedule')
 @login_required
 def schedule_view():
-    projects_list = Project.query.all()
+    projects_list = Project.query.filter_by(active=True).all()
+    (print(projects_list))
     fig = Figure(figsize=(13, 4.4), dpi=100)
     ax = fig.add_subplot()
     y_ticks = []

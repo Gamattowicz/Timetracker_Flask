@@ -10,11 +10,12 @@
           <thead class="table-dark">
             <tr>
               <th scope="col" style="width:5%">#</th>
-              <th scope="col" style="width:29%">Name</th>
+              <th scope="col" style="width:24%">Name</th>
               <th scope="col" style="width:18%">Shortcut</th>
               <th scope="col" style="width:13%">Phase</th>
               <th scope="col" style="width:15%">Start date</th>
               <th scope="col" style="width:15%">End date</th>
+              <th scope="col" style="width:15%">Visible</th>
               <th scope="col" style="width:15%">Total hours</th>
               <th scope="col" style="width:5%"></th>
               <th scope="col" style="width:5%"></th>
@@ -29,6 +30,15 @@
               <td>{{ project.phase }}</td>
               <td>{{ project.start_date }}</td>
               <td>{{ project.end_date }}</td>
+              <td>
+                  <div class="d-flex justify-content-center">
+                  {% if project.active %}
+                    <i class="fas fa-check text-success"></i>
+                  {% else %}
+                    <i class="fas fa-times text-danger"></i>
+                  {% endif %}
+                  </div>
+              </td>
               <td>{{ project.sum }}</td>
               <td>
                   <div class="d-flex justify-content-center">

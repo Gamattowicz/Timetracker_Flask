@@ -65,6 +65,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        {{ form.active.label(for="active", class="col-sm-4 col-form-label form-check-label") }}
+                        <div class="col-sm-8">
+                            {{ form.active(class_="col-sm-4 col-form-label form-check-input align-middle", id="active") }}
+                        </div>
+                    </div>
                     {{ form.confirm_button(class_="btn btn-success float-end mb-2 text-uppercase", id="submit_button") }}
                 </form>
             </div>
