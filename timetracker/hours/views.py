@@ -22,8 +22,17 @@ def create_hour_view():
         project_shortcut = request.form.get('shortcut')
         user_id = current_user.id
         hour_num = int(amount)
+        project = Project.query.filter_by(shortcut=project_shortcut).first()
+        project_start_date = datetime.strptime(project.start_date, '%Y-%m-%d').date()
+        project_end_date = datetime.strptime(project.end_date, '%Y-%m-%d').date()
         if request.form.get('work_date'):
             work_date = request.form.get('work_date')
+            work_date_formatted = datetime.strptime(work_date, '%Y-%m-%d').date()
+            # Check if working hours date is within the project date range
+            if (work_date_formatted - project_start_date).days < 0 or (work_date_formatted - project_end_date).days > 0:
+                flash(f'Your working hours date is out of the date range of selected project!', category='error')
+                return redirect(url_for('hours.create_hour_view'))
+            # Check if user exceeds 24 hours of work during one day
             hours = Hour.query.filter_by(work_date=work_date, user_id=user_id)
             for hour in hours:
                 hour_num += hour.amount
@@ -35,6 +44,11 @@ def create_hour_view():
                                   project_shortcut=project_shortcut,
                                   user_id=user_id)
         else:
+            # Check if working hours date is within the project date range
+            if (date.today() - project_start_date).days < 0 or (date.today() - project_end_date).days > 0:
+                flash(f'Your working hours date is out of the date range of selected project!', category='error')
+                return redirect(url_for('hours.create_hour_view'))
+            # Check if user exceeds 24 hours of work during one day
             hours = Hour.query.filter_by(work_date=date.today(), user_id=user_id)
             for hour in hours:
                 hour_num += hour.amount
@@ -70,13 +84,22 @@ def update_hour_view(hour_id):
         hour.amount = request.form.get('amount')
         hour.project_shortcut = request.form.get('shortcut')
         hour.work_date = request.form.get('work_date')
+        project = Project.query.filter_by(shortcut=hour.project_shortcut).first()
+        project_start_date = datetime.strptime(project.start_date, '%Y-%m-%d').date()
+        project_end_date = datetime.strptime(project.end_date, '%Y-%m-%d').date()
+        work_date_formatted = datetime.strptime(hour.work_date, '%Y-%m-%d').date()
+        # Check if working hours date is within the project date range
+        if (work_date_formatted - project_start_date).days < 0 or (work_date_formatted - project_end_date).days > 0:
+            flash(f'Your working hours date is out of the date range of selected project!', category='error')
+            return redirect(url_for('hours.update_hour_view', hour_id=hour_id))
+        # Check if user exceeds 24 hours of work during one day
         hour_num = int(hour.amount)
         hours = Hour.query.filter_by(work_date=hour.work_date, user_id=current_user.id)
         for hour in hours:
             hour_num += int(hour.amount)
         if hour_num > 24:
             flash(f'Your numbers of hours in {hour.work_date} exceeds 24!', category='error')
-            return redirect(url_for('hours.create_hour_view'))
+            return redirect(url_for('hours.update_hour_view', hour_id=hour_id))
         else:
             db.session.commit()
             flash('Hours have been updated!', category='success')

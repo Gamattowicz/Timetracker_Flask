@@ -117,12 +117,12 @@ def update_vacation_view(vacation_day_id):
         if Vacation.query.filter_by(user_id=current_user.id, vacation_date=request.form.get('vacation_end_date')).first():
             flash(f'Vacation day with date {request.form.get("vacation_end_date")} already exist!',
                   category='error')
-            return redirect(url_for('vacation.list_vacation_view'))
+            return redirect(url_for('vacation.update_vacation_view', vacation_day_id=vacation_day_id))
         else:
             vacation.vacation_date = request.form.get('vacation_end_date')
             db.session.commit()
             flash('Vacation day have been updated!', category='success')
-            return redirect(url_for('vacation.list_vacation_view'))
+            return redirect(url_for('vacation.update_vacation_view', vacation_day_id=vacation_day_id))
     elif request.method == 'GET':
         form.vacation_end_date.data = datetime.strptime(vacation.vacation_date, '%Y-%m-%d').date()
     return render_template('vacation_update.html', user=current_user, form=form, date=datetime.strptime(vacation.vacation_date, '%Y-%m-%d').date())
