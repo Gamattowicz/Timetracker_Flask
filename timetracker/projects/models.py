@@ -9,6 +9,7 @@ class Project(db.Model):
     start_date = db.Column(db.String(50), nullable=False, default=func.current_date())
     end_date = db.Column(db.String(50), nullable=False)
     phase = db.Column(db.String(50), nullable=False)
+    active = db.Column(db.Boolean, default=True)
     hour = db.relationship('Hour', backref='project', passive_deletes=True)
 
     def __repr__(self):
