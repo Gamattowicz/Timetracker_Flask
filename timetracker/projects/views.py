@@ -92,15 +92,14 @@ def update_project_view(project_id):
         project.shortcut = request.form.get('shortcut')
         project.phase = request.form.get('phase')
         project.end_date = request.form.get('end_date')
-        print(Project.query.filter_by(name=project.name).first().name)
         if request.form.get('start_date'):
             project.start_date = request.form.get('start_date')
             if project.start_date > project.end_date:
                 flash(f'Invalid date of start and end project', category='error')
-                return redirect(url_for('projects.update_project_view'))
+                return redirect(url_for('projects.update_project_view', project_id=project.id))
         elif project.end_date < date.today().strftime('%Y-%m-%d'):
             flash(f'Invalid date of end project', category='error')
-            return redirect(url_for('projects.update_project_view'))
+            return redirect(url_for('projects.update_project_view', project_id=project_id))
         for hour in hours:
             hour.project_shortcut = project.shortcut
         db.session.commit()
