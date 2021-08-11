@@ -135,7 +135,6 @@ def delete_project_view(project_id):
 @login_required
 def schedule_view():
     projects_list = Project.query.filter_by(active=True).all()
-    (print(projects_list))
     fig = Figure(figsize=(13, 4.4), dpi=100)
     ax = fig.add_subplot()
     y_ticks = []

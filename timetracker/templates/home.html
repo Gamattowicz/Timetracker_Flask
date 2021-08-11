@@ -2,18 +2,4 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1 class="my-4 text-center">TIMER</h1>
-    <div class="d-flex justify-content-center">
-        <div align="center" class="ring shadow row">
-            <div id="watch" class="m-auto align-self-center">00:00:00:00</div>
-        </div>
-    </div>
-    <div id="buttons" align="center" class="my-5 d-flex justify-content-center">
-        <span onclick="start()" id="startBtn" style="display:inline-block"><i class="far fa-play-circle mx-4"></i></span>
-        <span onclick="pause()" id="pauseBtn" style="display:none"><i class="far fa-pause-circle mx-4"></i></span>
-        <span onclick="reset()" id="resetBtn"><i class="far fa-stop-circle mx-4"></i></span>
-        <span id="copyBtn"><i class="far fa-clipboard mx-4 mb-2"></i></span>
-    </div>
-</div>
 {% endblock %}
