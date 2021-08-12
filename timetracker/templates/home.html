@@ -166,8 +166,7 @@
                 style="text-decoration: none"
                 >Add</a
               >
-              your working hours and copy to clipboard with the one click of a
-              button.
+              new project with name, shortcut, phase, start and end date.
           </div>
           <div class="col-sm-6">
             <img
@@ -211,12 +210,84 @@
             />
           </div>
         </div>
-
-
       </div>
     </div>
       </div>
 
+      <div class="accordion-item bg-light">
+    <h2 class="accordion-header" id="panelsStayOpen-headingFour">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#panelsStayOpen-collapseFour"
+        aria-expanded="false"
+        aria-controls="panelsStayOpen-collapseFour"
+      >
+        HOURS
+      </button>
+    </h2>
+    <div
+      id="panelsStayOpen-collapseFour"
+      class="accordion-collapse collapse"
+      aria-labelledby="panelsStayOpen-headingThree"
+    >
+      <div class="accordion-body">
+        <div class="row mb-3 d-flex align-items-center">
+          <div class="col-sm-6 text-center">
+              <a
+                href="{{url_for('hours.create_hour_view')}}"
+                class="badge rounded-pill btn-dark text-upper"
+                style="text-decoration: none"
+                >Add</a
+              >
+              working hours and select the project your worked with date.
+          </div>
+          <div class="col-sm-6">
+            <img
+              src="{{ url_for('static', filename='img/add_hour.PNG') }}"
+              class="img-thumbnail rounded float-start"
+            />
+          </div>
+        </div>
+          <div class="row mb-3 d-flex align-items-center">
+          <div class="col-sm-6">
+            <img
+              src="{{ url_for('static', filename='img/hours_list.PNG') }}"
+              class="img-thumbnail rounded float-start"
+            />
+          </div>
+          <div class="col-sm-6 text-center">
+              <a
+                href="{{url_for('hours.list_hour_view')}}"
+                class="badge rounded-pill btn-dark text-upper"
+                style="text-decoration: none"
+                >Check</a
+              >
+              hours list and edit or delete them.
+          </div>
+        </div>
+
+                  <div class="row mb-3 d-flex align-items-center">
+          <div class="col-sm-6 text-center">
+              <a
+                href="{{url_for('hours.overtime_view')}}"
+                class="badge rounded-pill btn-dark text-upper"
+                style="text-decoration: none"
+                >View</a
+              >
+              list days with number of working hours and overtime.
+          </div>
+          <div class="col-sm-6">
+            <img
+              src="{{ url_for('static', filename='img/overtime.PNG') }}"
+              class="img-thumbnail rounded float-start"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+      </div>
 
 </div>
 {% endblock %}
