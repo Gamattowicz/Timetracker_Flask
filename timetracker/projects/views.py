@@ -156,7 +156,7 @@ def schedule_view():
     fig.autofmt_xdate()
     fig.suptitle('Projects start and end dates', fontsize=20)
     fig.supxlabel('Start and end dates', fontsize=14)
-    fig.supylabel('Names of projects', fontsize=14)
+    fig.supylabel('Project name', fontsize=14)
 
     png_image = io.BytesIO()
     FigureCanvas(fig).print_png(png_image)
