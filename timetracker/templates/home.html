@@ -1,5 +1,21 @@
-{% extends 'base.html' %}
-{% block title %}Home{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% block title %}Home{% endblock %} {% block content
+%}
+<h1 class="text-center">TimeTracker</h1>
+{% if not user.is_authenticated %}
+<p>Welcome, Stranger!</p>
+<p>
+  <strong>TimeTracker</strong> is an web-based written in Flask, Python web
+  framework, which simplify the management of work-related stuff.
+</p>
+<p>
+  To use the TimeTracker features, create an account
+  <a
+    href="{{url_for('auth.sign_up')}}"
+    class="badge rounded-pill btn-dark sign_up"
+    style="text-decoration: none"
+    >HERE</a
+  >
+  at first.
+</p>
+{% endif %}
 {% endblock %}
