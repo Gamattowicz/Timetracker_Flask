@@ -18,4 +18,85 @@
   at first.
 </p>
 {% endif %}
+<h4 class="text-upper mb-4">Features</h4>
+
+<div class="accordion" id="accordionPanelsStayOpenExample">
+
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+      <button
+        class="accordion-button"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#panelsStayOpen-collapseOne"
+        aria-expanded="true"
+        aria-controls="panelsStayOpen-collapseOne"
+      >
+        VACATION
+      </button>
+    </h2>
+    <div
+      id="panelsStayOpen-collapseOne"
+      class="accordion-collapse collapse show"
+      aria-labelledby="panelsStayOpen-headingOne"
+    >
+      <div class="accordion-body">
+        <div class="row mb-3 d-flex align-items-center">
+          <div class="col-sm-7 text-center">
+              <a
+                href="{{url_for('vacation.vacation_calculation_view')}}"
+                class="badge rounded-pill btn-dark text-upper"
+                style="text-decoration: none"
+                >Calculate</a
+              >
+              your vacation days (according to Polish labour law).
+          </div>
+          <div class="col-sm-5">
+            <img
+              src="{{ url_for('static', filename='img/vacation_calculate.PNG') }}"
+              class="img-thumbnail rounded float-start"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-3 d-flex align-items-center">
+          <div class="col-sm-7 text-center">
+              <a
+                href="{{url_for('vacation.vacation_calculation_view')}}"
+                class="badge rounded-pill btn-dark text-upper"
+                style="text-decoration: none"
+                >Add</a
+              >
+              one or more vacation day with specific date at a time.
+          </div>
+          <div class="col-sm-5">
+            <img
+              src="{{ url_for('static', filename='img/add_vacation.PNG') }}"
+              class="img-thumbnail rounded float-start"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-3 align-middle d-flex align-items-center">
+          <div class="col-sm-7 text-center">
+              <a
+                href="{{url_for('vacation.vacation_calculation_view')}}"
+                class="badge rounded-pill btn-dark text-upper"
+                style="text-decoration: none"
+                >Check</a
+              >
+              list of your vacation days and edit or delete them.
+          </div>
+          <div class="col-sm-5">
+            <img
+              src="{{ url_for('static', filename='img/vacation_list.PNG') }}"
+              class="img-thumbnail rounded float-start"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
 {% endblock %}
