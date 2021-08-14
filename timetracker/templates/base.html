@@ -1,135 +1,273 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://kit.fontawesome.com/7094cf2481.js" crossorigin="anonymous"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script
+      src="https://kit.fontawesome.com/7094cf2481.js"
+      crossorigin="anonymous"
+    ></script>
     <title>{% block title %}{% endblock %}</title>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body class="d-flex flex-column min-vh-100">
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='img/favicon.ico') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body class="d-flex flex-column min-vh-100">
     <div class="wrapper flex-grow-1">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-          <div class="container-fluid">
-          <a class="navbar-brand" href="{{url_for('views.home')}}">TIMETRACKER</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{{url_for('views.home')}}"
+            >TIMETRACKER</a
+          >
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarColor01"
+            aria-controls="navbarColor01"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-            <div class="collapse navbar-collapse" id="navbarColor01">
-              <ul class="navbar-nav me-auto">
-                  {% if user.is_authenticated %}
-                    <li class="nav-item">
-                      <a class="nav-link text-uppercase" href="{{url_for('views.timer')}}">Timer</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle text-uppercase" href="#" id="navbarDropdownVacation" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Vacation
-                      </a>
-                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{url_for('vacation.create_vacation_view')}}">Add vacation</a></li>
-                        <li><a class="dropdown-item" href="{{url_for('vacation.list_vacation_view')}}">Vacation day list</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{url_for('vacation.vacation_calculation_view')}}">Calculation of the number of vacation days</a></li>
-                      </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle text-uppercase" href="#" id="navbarDropdownHour" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Hours
-                      </a>
-                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{url_for('hours.create_hour_view')}}">Add hours</a></li>
-                        <li><a class="dropdown-item" href="{{url_for('hours.list_hour_view')}}">Hour list</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{url_for('hours.overtime_view')}}">Overtime</a></li>
-                      </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle text-uppercase" href="#" id="navbarDropdownProject" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Projects
-                      </a>
-                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{url_for('projects.create_project_view')}}">Add new project</a></li>
-                        <li><a class="dropdown-item" href="{{url_for('projects.list_project_view')}}">Project list</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{url_for('projects.schedule_view')}}">Schedule</a></li>
-                      </ul>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link text-uppercase" aria-current="page" href="{{url_for('auth.logout')}}">Logout</a>
-                    </li>
-                  {% else %}
-                    <li class="nav-item">
-                      <a class="nav-link text-uppercase" aria-current="page" href="{{url_for('auth.sign_up')}}">Sign up</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link text-uppercase" aria-current="page" href="{{url_for('auth.login')}}">Login</a>
-                    </li>
-                  {% endif %}
-              </ul>
-            </div>
+          <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav me-auto">
+              {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a
+                  class="nav-link text-uppercase"
+                  href="{{url_for('views.timer')}}"
+                  >Timer</a
+                >
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle text-uppercase"
+                  href="#"
+                  id="navbarDropdownVacation"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Vacation
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="{{url_for('vacation.create_vacation_view')}}"
+                      >Add vacation</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="{{url_for('vacation.list_vacation_view')}}"
+                      >Vacation day list</a
+                    >
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="{{url_for('vacation.vacation_calculation_view')}}"
+                      >Calculation of the number of vacation days</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle text-uppercase"
+                  href="#"
+                  id="navbarDropdownHour"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Hours
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="{{url_for('hours.create_hour_view')}}"
+                      >Add hours</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="{{url_for('hours.list_hour_view')}}"
+                      >Hour list</a
+                    >
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="{{url_for('hours.overtime_view')}}"
+                      >Overtime</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle text-uppercase"
+                  href="#"
+                  id="navbarDropdownProject"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Projects
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="{{url_for('projects.create_project_view')}}"
+                      >Add new project</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="{{url_for('projects.list_project_view')}}"
+                      >Project list</a
+                    >
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="{{url_for('projects.schedule_view')}}"
+                      >Schedule</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link text-uppercase"
+                  aria-current="page"
+                  href="{{url_for('auth.logout')}}"
+                  >Logout</a
+                >
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a
+                  class="nav-link text-uppercase"
+                  aria-current="page"
+                  href="{{url_for('auth.sign_up')}}"
+                  >Sign up</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link text-uppercase"
+                  aria-current="page"
+                  href="{{url_for('auth.login')}}"
+                  >Login</a
+                >
+              </li>
+              {% endif %}
+            </ul>
           </div>
-        </nav>
-
-            {% macro render_field(field) %}
-                {{ field(**kwargs)|safe }}
-                {% if field.errors %}
-                    {% for error in field.errors %}
-                        {{ error }}
-                    {% endfor %}
-                {% endif %}
-            {% endmacro %}
-
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                {% if category == 'error' %}
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        <p class="mb-0">{{message}}</p>
-                    </div>
-                {% else %}
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        <p class="mb-0">{{message}}</p>
-                    </div>
-                {% endif %}
-                {% endfor %}
-            {% endif %}
-            {% endwith %}
-
-        <div class="container">
-            <div class="row">
-                <div class="col-md-10 offset-md-1 my-4">
-                {% block content%}{% endblock %}
-                </div>
-            </div>
         </div>
+      </nav>
+
+      {% macro render_field(field) %}
+        {{ field(**kwargs)|safe }}
+          {% if field.errors %}
+            {% for error in field.errors %}
+              {{ error }}
+            {% endfor %}
+          {% endif %}
+      {% endmacro %}
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            {% if category == 'error' %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+              ></button>
+              <p class="mb-0">{{message}}</p>
+            </div>
+            {% else %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+              ></button>
+              <p class="mb-0">{{message}}</p>
+            </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-10 offset-md-1 my-4">
+            {% block content%}{% endblock %}
+          </div>
+        </div>
+      </div>
     </div>
 
     <footer class="bg-dark text-light py-2">
-        <div class="container">
-            <div class="row">
-                <div class="social col-md-12 d-flex justify-content-center pb-1">
-                    <span><a href="mailto: p.romanczuk31@gmail.com"><i class="fas fa-envelope mx-3"></i></a></span>
-                    <span><a href="https://github.com/Gamattowicz"><i class="fab fa-github-square mx-3"></i></a></span>
-                    <span><a href="https://linkedin.com/in/przemysław-romańczuk"><i class="fab fa-linkedin mx-3"></i></a></span>
-                </div>
-                <div class="copyright col-md-12 d-flex justify-content-center pt-1">
-                    <span>© 2021 Copyright | Designed by Przemysław Romańczuk</span>
-               </div>
-            </div>
+      <div class="container">
+        <div class="row">
+          <div class="social col-md-12 d-flex justify-content-center pb-1">
+            <span
+              ><a href="mailto: p.romanczuk31@gmail.com"
+                ><i class="fas fa-envelope mx-3"></i></a
+            ></span>
+            <span
+              ><a href="https://github.com/Gamattowicz"
+                ><i class="fab fa-github-square mx-3"></i></a
+            ></span>
+            <span
+              ><a href="https://linkedin.com/in/przemysław-romańczuk"
+                ><i class="fab fa-linkedin mx-3"></i></a
+            ></span>
+          </div>
+          <div class="copyright col-md-12 d-flex justify-content-center pt-1">
+            <span>© 2021 Copyright | Designed by Przemysław Romańczuk</span>
+          </div>
         </div>
+      </div>
     </footer>
     <script
       type="text/javascript"
       src="{{ url_for('static', filename='js/bootstrap.min.js') }}"
     ></script>
     {% block js %} {% endblock %}
-
-</body>
+  </body>
 </html>

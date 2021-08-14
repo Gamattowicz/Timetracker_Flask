@@ -2,46 +2,45 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
+<h2 class="text-center text-uppercase">Login</h2>
 
-    <h2 class="text-center text-uppercase">Login</h2>
-
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">
-            <div class="col-md-8 offset-md-2 my-4">
-                <form method="POST" class="was-validated mt-4" id="loginForm">
-                    {{ form.hidden_tag() }}
-                    <div class="row mb-3">
-                        {{ render_field(form.username.label, for="login", class_="col-sm-4 col-form-label") }}
-                        <div class="col-sm-8">
-                            {{ render_field(form.username, class_="form-control", id="login", required="required", placeholder="Username") }}
-                            <div class="invalid-feedback">
-                                This field must be filled!
-                            </div>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        {{ render_field(form.password.label, for="password", class_="col-sm-4 col-form-label") }}
-                        <div class="col-sm-8">
-                            {{ render_field(form.password, class_="form-control", id="password", required="required", placeholder="Password") }}
-                            <div class="invalid-feedback">
-                                This field must be filled!
-                            </div>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-                    </div>
-                <div class="form-check">
-                    {{ render_field(form.remember_me.label, for="remember", class_="col-sm-4 col-form-label form-check-label") }}
-                    {{ render_field(form.remember_me, id="remember", class_="col-sm-4 col-form-label form-check-input") }}
-                </div>
-                    <p>Create new account <a href="{{url_for('auth.sign_up')}}" class="sign_up" style="text-decoration: none">Here</a></p>
-                    {{ render_field(form.submit, class_="btn btn-success float-end mb-2 text-uppercase") }}
-                </form>
-            </div>
-        </li>
-    </ul>
+<ul class="list-group list-group-flush">
+  <li class="list-group-item">
+    <div class="col-md-8 offset-md-2 my-4">
+      <form method="POST" class="was-validated mt-4" id="loginForm">
+        {{ form.hidden_tag() }}
+        <div class="row mb-3">
+          {{ render_field(form.username.label, for="login", class_="col-sm-4 col-form-label") }}
+          <div class="col-sm-8">
+            {{ render_field(form.username, class_="form-control", id="login", required="required", placeholder="Username") }}
+            <div class="invalid-feedback">This field must be filled!</div>
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          {{ render_field(form.password.label, for="password", class_="col-sm-4 col-form-label") }}
+          <div class="col-sm-8">
+            {{ render_field(form.password, class_="form-control", id="password", required="required", placeholder="Password") }}
+            <div class="invalid-feedback">This field must be filled!</div>
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+        </div>
+        <div class="form-check">
+          {{ render_field(form.remember_me.label, for="remember", class_="col-sm-4 col-form-label form-check-label") }}
+          {{ render_field(form.remember_me, id="remember", class_="col-sm-4 col-form-label form-check-input") }}
+        </div>
+        <p>
+          Create new account
+          <a
+            href="{{url_for('auth.sign_up')}}"
+            class="sign_up"
+            style="text-decoration: none"
+            >Here</a
+          >
+        </p>
+        {{ render_field(form.submit, class_="btn btn-success float-end mb-2 text-uppercase") }}
+      </form>
+    </div>
+  </li>
+</ul>
 {% endblock %}

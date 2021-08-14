@@ -2,45 +2,50 @@
 {% block title %}List of hours{% endblock %}
 
 {% block content %}
+<h2 class="text-center text-uppercase">List of hours</h2>
 
-    <h2 class="text-center text-uppercase">List of hours</h2>
-
-    <div class="col-md-10 offset-md-1 my-5">
-        <table class="table table-striped caption-top table-light table-bordered">
-          <thead class="table-dark">
-            <tr>
-                <th scope="col" style="width:5%">#</th>
-                <th scope="col" style="width:40%">Project shortcut</th>
-                <th scope="col" style="width:25%">Date</th>
-                <th scope="col" style="width:25%">Number of hours</th>
-                <th scope="col" style="width:5%"></th>
-                <th scope="col" style="width:5%"></th>
-            </tr>
-          </thead>
-            <tbody>
-            {% for hour in hours %}
-                <tr>
-                    <th scope="row">{{ loop.index }}</th>
-                    <td>{{ hour.project_shortcut }}</td>
-                    <td>{{ hour.work_date }}</td>
-                    <td>{{ hour.amount }}</td>
-                    <td>
-                      <div class="d-flex justify-content-center">
-                        <a href="{{ url_for('hours.update_hour_view', hour_id=hour.id) }}" style="border: none; background-color: transparent;">
-                            <i class="fas fa-edit text-warning"></i>
-                        </a>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="d-flex justify-content-center">
-                        <a href="{{ url_for('hours.delete_hour_view', hour_id=hour.id) }}" style="border: none; background-color: transparent;">
-                            <i class="fas fa-minus-circle text-danger"></i>
-                        </a>
-                      </div>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+<div class="col-md-10 offset-md-1 my-5">
+  <table class="table table-striped caption-top table-light table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col" style="width: 5%">#</th>
+        <th scope="col" style="width: 40%">Project shortcut</th>
+        <th scope="col" style="width: 25%">Date</th>
+        <th scope="col" style="width: 25%">Number of hours</th>
+        <th scope="col" style="width: 5%"></th>
+        <th scope="col" style="width: 5%"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for hour in hours %}
+      <tr>
+        <th scope="row">{{ loop.index }}</th>
+        <td>{{ hour.project_shortcut }}</td>
+        <td>{{ hour.work_date }}</td>
+        <td>{{ hour.amount }}</td>
+        <td>
+          <div class="d-flex justify-content-center">
+            <a
+              href="{{ url_for('hours.update_hour_view', hour_id=hour.id) }}"
+              style="border: none; background-color: transparent"
+            >
+              <i class="fas fa-edit text-warning"></i>
+            </a>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex justify-content-center">
+            <a
+              href="{{ url_for('hours.delete_hour_view', hour_id=hour.id) }}"
+              style="border: none; background-color: transparent"
+            >
+              <i class="fas fa-minus-circle text-danger"></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}

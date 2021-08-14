@@ -1,5 +1,7 @@
-{% extends 'base.html' %} {% block title %}Home{% endblock %} {% block content
-%}
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
 <h1 class="text-center">TimeTracker</h1>
 {% if not user.is_authenticated %}
 <p>Welcome, Stranger!</p>
@@ -21,7 +23,6 @@
 <h4 class="text-upper mb-4">Features</h4>
 
 <div class="accordion accordion-flush" id="accordionPanelsStayOpenExample">
-
   <div class="accordion-item bg-light">
     <h2 class="accordion-header" id="panelsStayOpen-headingOne">
       <button
@@ -43,13 +44,13 @@
       <div class="accordion-body">
         <div class="row mb-3 d-flex align-items-center">
           <div class="col-sm-6 text-center">
-              <a
-                href="{{url_for('vacation.vacation_calculation_view')}}"
-                class="badge rounded-pill btn-dark text-upper"
-                style="text-decoration: none"
-                >Calculate</a
-              >
-              your vacation days (according to Polish labour law).
+            <a
+              href="{{url_for('vacation.vacation_calculation_view')}}"
+              class="badge rounded-pill btn-dark text-upper"
+              style="text-decoration: none"
+              >Calculate</a
+            >
+            your vacation days (according to Polish labour law).
           </div>
           <div class="col-sm-6">
             <img
@@ -67,25 +68,25 @@
             />
           </div>
           <div class="col-sm-6 text-center">
-              <a
-                href="{{url_for('vacation.create_vacation_view')}}"
-                class="badge rounded-pill btn-dark text-upper"
-                style="text-decoration: none"
-                >Add</a
-              >
-              one or more vacation day with specific date at a time.
+            <a
+              href="{{url_for('vacation.create_vacation_view')}}"
+              class="badge rounded-pill btn-dark text-upper"
+              style="text-decoration: none"
+              >Add</a
+            >
+            one or more vacation day with specific date at a time.
           </div>
         </div>
 
         <div class="row mb-3 align-middle d-flex align-items-center">
           <div class="col-sm-6 text-center">
-              <a
-                href="{{url_for('vacation.list_vacation_view')}}"
-                class="badge rounded-pill btn-dark text-upper"
-                style="text-decoration: none"
-                >Check</a
-              >
-              list of your vacation days and edit or delete them.
+            <a
+              href="{{url_for('vacation.list_vacation_view')}}"
+              class="badge rounded-pill btn-dark text-upper"
+              style="text-decoration: none"
+              >Check</a
+            >
+            list of your vacation days and edit or delete them.
           </div>
           <div class="col-sm-6">
             <img
@@ -119,14 +120,14 @@
       <div class="accordion-body">
         <div class="row mb-3 d-flex align-items-center">
           <div class="col-sm-6 text-center">
-              <a
-                href="{{url_for('views.timer')}}"
-                class="badge rounded-pill btn-dark text-upper"
-                style="text-decoration: none"
-                >Count</a
-              >
-              your working hours and copy to clipboard with the one click of a
-              button.
+            <a
+              href="{{url_for('views.timer')}}"
+              class="badge rounded-pill btn-dark text-upper"
+              style="text-decoration: none"
+              >Count</a
+            >
+            your working hours and copy to clipboard with the one click of a
+            button.
           </div>
           <div class="col-sm-6">
             <img
@@ -137,9 +138,9 @@
         </div>
       </div>
     </div>
-      </div>
+  </div>
 
-    <div class="accordion-item bg-light">
+  <div class="accordion-item bg-light">
     <h2 class="accordion-header" id="panelsStayOpen-headingThree">
       <button
         class="accordion-button collapsed"
@@ -160,13 +161,13 @@
       <div class="accordion-body">
         <div class="row mb-3 d-flex align-items-center">
           <div class="col-sm-6 text-center">
-              <a
-                href="{{url_for('projects.create_project_view')}}"
-                class="badge rounded-pill btn-dark text-upper"
-                style="text-decoration: none"
-                >Add</a
-              >
-              new project with name, shortcut, phase, start and end date.
+            <a
+              href="{{url_for('projects.create_project_view')}}"
+              class="badge rounded-pill btn-dark text-upper"
+              style="text-decoration: none"
+              >Add</a
+            >
+            new project with name, shortcut, phase, start and end date.
           </div>
           <div class="col-sm-6">
             <img
@@ -175,7 +176,7 @@
             />
           </div>
         </div>
-          <div class="row mb-3 d-flex align-items-center">
+        <div class="row mb-3 d-flex align-items-center">
           <div class="col-sm-6">
             <img
               src="{{ url_for('static', filename='img/projects_list.PNG') }}"
@@ -183,25 +184,25 @@
             />
           </div>
           <div class="col-sm-6 text-center">
-              <a
-                href="{{url_for('projects.list_project_view')}}"
-                class="badge rounded-pill btn-dark text-upper"
-                style="text-decoration: none"
-                >Check</a
-              >
-              projects list and edit or delete one of them.
+            <a
+              href="{{url_for('projects.list_project_view')}}"
+              class="badge rounded-pill btn-dark text-upper"
+              style="text-decoration: none"
+              >Check</a
+            >
+            projects list and edit or delete one of them.
           </div>
         </div>
 
-                  <div class="row mb-3 d-flex align-items-center">
+        <div class="row mb-3 d-flex align-items-center">
           <div class="col-sm-6 text-center">
-              <a
-                href="{{url_for('projects.schedule_view')}}"
-                class="badge rounded-pill btn-dark text-upper"
-                style="text-decoration: none"
-                >View</a
-              >
-              project schedule chart.
+            <a
+              href="{{url_for('projects.schedule_view')}}"
+              class="badge rounded-pill btn-dark text-upper"
+              style="text-decoration: none"
+              >View</a
+            >
+            project schedule chart.
           </div>
           <div class="col-sm-6">
             <img
@@ -212,9 +213,9 @@
         </div>
       </div>
     </div>
-      </div>
+  </div>
 
-      <div class="accordion-item bg-light">
+  <div class="accordion-item bg-light">
     <h2 class="accordion-header" id="panelsStayOpen-headingFour">
       <button
         class="accordion-button collapsed"
@@ -235,13 +236,13 @@
       <div class="accordion-body">
         <div class="row mb-3 d-flex align-items-center">
           <div class="col-sm-6 text-center">
-              <a
-                href="{{url_for('hours.create_hour_view')}}"
-                class="badge rounded-pill btn-dark text-upper"
-                style="text-decoration: none"
-                >Add</a
-              >
-              working hours and select the project your worked with date.
+            <a
+              href="{{url_for('hours.create_hour_view')}}"
+              class="badge rounded-pill btn-dark text-upper"
+              style="text-decoration: none"
+              >Add</a
+            >
+            working hours and select the project your worked with date.
           </div>
           <div class="col-sm-6">
             <img
@@ -250,7 +251,7 @@
             />
           </div>
         </div>
-          <div class="row mb-3 d-flex align-items-center">
+        <div class="row mb-3 d-flex align-items-center">
           <div class="col-sm-6">
             <img
               src="{{ url_for('static', filename='img/hours_list.PNG') }}"
@@ -258,25 +259,25 @@
             />
           </div>
           <div class="col-sm-6 text-center">
-              <a
-                href="{{url_for('hours.list_hour_view')}}"
-                class="badge rounded-pill btn-dark text-upper"
-                style="text-decoration: none"
-                >Check</a
-              >
-              hours list and edit or delete them.
+            <a
+              href="{{url_for('hours.list_hour_view')}}"
+              class="badge rounded-pill btn-dark text-upper"
+              style="text-decoration: none"
+              >Check</a
+            >
+            hours list and edit or delete them.
           </div>
         </div>
 
-                  <div class="row mb-3 d-flex align-items-center">
+        <div class="row mb-3 d-flex align-items-center">
           <div class="col-sm-6 text-center">
-              <a
-                href="{{url_for('hours.overtime_view')}}"
-                class="badge rounded-pill btn-dark text-upper"
-                style="text-decoration: none"
-                >View</a
-              >
-              list days with number of working hours and overtime.
+            <a
+              href="{{url_for('hours.overtime_view')}}"
+              class="badge rounded-pill btn-dark text-upper"
+              style="text-decoration: none"
+              >View</a
+            >
+            list days with number of working hours and overtime.
           </div>
           <div class="col-sm-6">
             <img
@@ -287,7 +288,6 @@
         </div>
       </div>
     </div>
-      </div>
-
+  </div>
 </div>
 {% endblock %}

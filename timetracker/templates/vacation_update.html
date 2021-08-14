@@ -2,23 +2,24 @@
 {% block title %}Vacation day update{% endblock %}
 
 {% block content %}
+<h2 class="text-center text-uppercase">Vacation day update</h2>
 
-    <h2 class="text-center text-uppercase">Vacation day update</h2>
-
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">
-            <div class="col-md-10 offset-md-1 mb-4">
-                <form method="POST" class="was-validated">
-                <a href="{{ url_for('vacation.list_vacation_view') }}"><i class="fas fa-arrow-circle-left text-danger mb-4"></i></a>
-                    <div class="row mb-3">
-                        {{ form.vacation_end_date.label(for="vacation_end_date", class_="col-sm-4 col-form-label") }}
-                        <div class="col-sm-8">
-                            {{ form.vacation_end_date(class_="form-control form-control-sm", id="vacation_end_date", value=date) }}
-                        </div>
-                    </div>
-                    {{ form.confirm_button(for="vacation_date", class_="btn btn-success float-end mb-2 text-uppercase", id="confirm_button") }}
-                </form>
-            </div>
-        </li>
-    </ul>
+<ul class="list-group list-group-flush">
+  <li class="list-group-item">
+    <div class="col-md-10 offset-md-1 mb-4">
+      <form method="POST" class="was-validated">
+        <a href="{{ url_for('vacation.list_vacation_view') }}"
+          ><i class="fas fa-arrow-circle-left text-danger mb-4"></i
+        ></a>
+        <div class="row mb-3">
+          {{ form.vacation_end_date.label(for="vacation_end_date", class_="col-sm-4 col-form-label") }}
+          <div class="col-sm-8">
+            {{ form.vacation_end_date(class_="form-control form-control-sm", id="vacation_end_date", value=date) }}
+          </div>
+        </div>
+        {{ form.confirm_button(for="vacation_date", class_="btn btn-success float-end mb-2 text-uppercase", id="confirm_button") }}
+      </form>
+    </div>
+  </li>
+</ul>
 {% endblock %}

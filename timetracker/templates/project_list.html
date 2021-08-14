@@ -2,61 +2,66 @@
 {% block title %}List of projects{% endblock %}
 
 {% block content %}
+<h2 class="text-center text-uppercase">List of projects</h2>
 
-    <h2 class="text-center text-uppercase">List of projects</h2>
-
-    <div class="col-md-10 offset-md-1 my-5">
-        <table class="table table-striped caption-top table-light table-bordered">
-          <thead class="table-dark">
-            <tr>
-              <th scope="col" style="width:5%">#</th>
-              <th scope="col" style="width:24%">Name</th>
-              <th scope="col" style="width:18%">Shortcut</th>
-              <th scope="col" style="width:13%">Phase</th>
-              <th scope="col" style="width:15%">Start date</th>
-              <th scope="col" style="width:15%">End date</th>
-              <th scope="col" style="width:15%">Visible</th>
-              <th scope="col" style="width:15%">Total hours</th>
-              <th scope="col" style="width:5%"></th>
-              <th scope="col" style="width:5%"></th>
-            </tr>
-          </thead>
-            <tbody>
-            {% for project in projects %}
-            <tr>
-              <th scope="row">{{ loop.index }}</th>
-              <td>{{ project.name }}</td>
-              <td>{{ project.shortcut }}</td>
-              <td>{{ project.phase }}</td>
-              <td>{{ project.start_date }}</td>
-              <td>{{ project.end_date }}</td>
-              <td>
-                  <div class="d-flex justify-content-center">
-                  {% if project.active %}
-                    <i class="fas fa-check text-success"></i>
-                  {% else %}
-                    <i class="fas fa-times text-danger"></i>
-                  {% endif %}
-                  </div>
-              </td>
-              <td>{{ project.sum }}</td>
-              <td>
-                  <div class="d-flex justify-content-center">
-                    <a href="{{ url_for('projects.update_project_view', project_id=project.id) }}" style="border: none; background-color: transparent;">
-                        <i class="fas fa-edit text-warning"></i>
-                    </a>
-                  </div>
-              </td>
-              <td>
-                  <div class="d-flex justify-content-center">
-                    <a href="{{ url_for('projects.delete_project_view', project_id=project.id) }}" style="border: none; background-color: transparent;">
-                        <i class="fas fa-minus-circle text-danger"></i>
-                    </a>
-                  </div>
-              </td>
-            </tr>
-        {% endfor %}
-            </tbody>
-        </table>
-    </div>
+<div class="col-md-10 offset-md-1 my-5">
+  <table class="table table-striped caption-top table-light table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col" style="width: 5%">#</th>
+        <th scope="col" style="width: 24%">Name</th>
+        <th scope="col" style="width: 18%">Shortcut</th>
+        <th scope="col" style="width: 13%">Phase</th>
+        <th scope="col" style="width: 15%">Start date</th>
+        <th scope="col" style="width: 15%">End date</th>
+        <th scope="col" style="width: 15%">Visible</th>
+        <th scope="col" style="width: 15%">Total hours</th>
+        <th scope="col" style="width: 5%"></th>
+        <th scope="col" style="width: 5%"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for project in projects %}
+      <tr>
+        <th scope="row">{{ loop.index }}</th>
+        <td>{{ project.name }}</td>
+        <td>{{ project.shortcut }}</td>
+        <td>{{ project.phase }}</td>
+        <td>{{ project.start_date }}</td>
+        <td>{{ project.end_date }}</td>
+        <td>
+          <div class="d-flex justify-content-center">
+            {% if project.active %}
+            <i class="fas fa-check text-success"></i>
+            {% else %}
+            <i class="fas fa-times text-danger"></i>
+            {% endif %}
+          </div>
+        </td>
+        <td>{{ project.sum }}</td>
+        <td>
+          <div class="d-flex justify-content-center">
+            <a
+              href="{{ url_for('projects.update_project_view', project_id=project.id) }}"
+              style="border: none; background-color: transparent"
+            >
+              <i class="fas fa-edit text-warning"></i>
+            </a>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex justify-content-center">
+            <a
+              href="{{ url_for('projects.delete_project_view', project_id=project.id) }}"
+              style="border: none; background-color: transparent"
+            >
+              <i class="fas fa-minus-circle text-danger"></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}

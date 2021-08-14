@@ -2,41 +2,46 @@
 {% block title %}List of vacation days{% endblock %}
 
 {% block content %}
+<h2 class="text-center text-uppercase">List of vacation days</h2>
 
-    <h2 class="text-center text-uppercase">List of vacation days</h2>
-
-    <div class="col-md-10 offset-md-1 my-5">
-        <table class="table table-striped caption-top table-light table-bordered">
-          <thead class="table-dark">
-            <tr>
-              <th scope="col" style="width:5%">#</th>
-              <th scope="col" style="width:65%">Date</th>
-              <th class="text-center" scope="col" style="width:15%">Edit</th>
-              <th class="text-center" scope="col" style="width:15%">Remove</th>
-            </tr>
-          </thead>
-            <tbody>
-        {% for day in days %}
-            <tr>
-              <th scope="row">{{ loop.index }}</th>
-              <td>{{ day.vacation_date }}</td>
-              <td>
-                  <div class="d-flex justify-content-center">
-                        <a href="{{ url_for('vacation.update_vacation_view', vacation_day_id=day.id) }}" style="border: none; background-color: transparent;">
-                            <i class="fas fa-edit text-warning"></i>
-                    </a>
-                  </div>
-              </td>
-              <td>
-                  <div class="d-flex justify-content-center">
-                    <a href="{{ url_for('vacation.delete_vacation_view', vacation_day_id=day.id) }}" style="border: none; background-color: transparent;">
-                        <i class="fas fa-minus-circle text-danger"></i>
-                    </a>
-                  </div>
-              </td>
-            </tr>
-        {% endfor %}
-            </tbody>
-        </table>
-    </div>
+<div class="col-md-10 offset-md-1 my-5">
+  <table class="table table-striped caption-top table-light table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col" style="width: 5%">#</th>
+        <th scope="col" style="width: 65%">Date</th>
+        <th class="text-center" scope="col" style="width: 15%">Edit</th>
+        <th class="text-center" scope="col" style="width: 15%">Remove</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for day in days %}
+      <tr>
+        <th scope="row">{{ loop.index }}</th>
+        <td>{{ day.vacation_date }}</td>
+        <td>
+          <div class="d-flex justify-content-center">
+            <a
+              href="{{ url_for('vacation.update_vacation_view', vacation_day_id=day.id) }}"
+              style="border: none; background-color: transparent"
+            >
+              <i class="fas fa-edit text-warning"></i>
+            </a>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex justify-content-center">
+            <a
+              href="{{ url_for('vacation.delete_vacation_view', vacation_day_id=day.id) }}"
+              style="border: none; background-color: transparent"
+            >
+              <i class="fas fa-minus-circle text-danger"></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}

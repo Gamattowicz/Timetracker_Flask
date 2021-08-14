@@ -2,71 +2,56 @@
 {% block title %}Add projects{% endblock %}
 
 {% block content %}
+<h2 class="text-center text-uppercase">Add new project</h2>
 
-    <h2 class="text-center text-uppercase">Add new project</h2>
-
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">
-            <div class="col-md-10 offset-md-1 my-4">
-                <form method="POST" class="was-validated mt-4">
-                    <div class="row mb-3">
-                        {{ form.name.label(for="name", class_="col-sm-4 col-form-label") }}
-                        <div class="col-sm-8">
-                            {{ form.name(class_="form-control", id="name", required="required", placeholder="Enter a project name") }}
-                            <div class="invalid-feedback">
-                                This field must be filled!
-                            </div>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        {{ form.shortcut.label(for="shortcut", class_="col-sm-4 col-form-label") }}
-                        <div class="col-sm-8">
-                            {{ form.shortcut(class_="form-control", id="shortcut", required="required", placeholder="Enter a project shortcut") }}
-                            <div class="invalid-feedback">
-                                This field must be filled!
-                            </div>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        {{ form.phase.label(for="phase", class_="col-sm-4 col-form-label") }}
-                        <div class="col-sm-8">
-                            {{ form.phase(class_="form-control", id="phase", required="required", placeholder="Enter a project phase") }}
-                            <div class="invalid-feedback">
-                                This field must be filled!
-                            </div>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        {{ form.start_date.label(for="start_date", class="col-sm-4 col-form-label") }}
-                        <div class="col-sm-8">
-                            {{ form.start_date(class_="form-control", id="start_date") }}
-                            <small class="form-text text-muted">If it is empty, the current date will be saved. </small>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        {{ form.end_date.label(for="end_date", class="col-sm-4 col-form-label") }}
-                        <div class="col-sm-8">
-                            {{ form.end_date(class_="form-control", id="end_date", required="required") }}
-                            <div class="invalid-feedback">
-                                This field must be filled!
-                            </div>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-                    </div>
-                    {{ form.confirm_button(class_="btn btn-success float-end mb-2 text-uppercase", id="submit_button") }}
-                </form>
-            </div>
-        </li>
-    </ul>
+<ul class="list-group list-group-flush">
+  <li class="list-group-item">
+    <div class="col-md-10 offset-md-1 my-4">
+      <form method="POST" class="was-validated mt-4">
+        <div class="row mb-3">
+          {{ form.name.label(for="name", class_="col-sm-4 col-form-label") }}
+          <div class="col-sm-8">
+            {{ form.name(class_="form-control", id="name", required="required", placeholder="Enter a project name") }}
+            <div class="invalid-feedback">This field must be filled!</div>
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          {{ form.shortcut.label(for="shortcut", class_="col-sm-4 col-form-label") }}
+          <div class="col-sm-8">
+            {{ form.shortcut(class_="form-control", id="shortcut", required="required", placeholder="Enter a project shortcut") }}
+            <div class="invalid-feedback">This field must be filled!</div>
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          {{ form.phase.label(for="phase", class_="col-sm-4 col-form-label") }}
+          <div class="col-sm-8">
+            {{ form.phase(class_="form-control", id="phase", required="required", placeholder="Enter a project phase") }}
+            <div class="invalid-feedback">This field must be filled!</div>
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          {{ form.start_date.label(for="start_date", class="col-sm-4 col-form-label") }}
+          <div class="col-sm-8">
+            {{ form.start_date(class_="form-control", id="start_date") }}
+            <small class="form-text text-muted"
+              >If it is empty, the current date will be saved.
+            </small>
+          </div>
+        </div>
+        <div class="row mb-3">
+          {{ form.end_date.label(for="end_date", class="col-sm-4 col-form-label") }}
+          <div class="col-sm-8">
+            {{ form.end_date(class_="form-control", id="end_date", required="required") }}
+            <div class="invalid-feedback">This field must be filled!</div>
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+        </div>
+        {{ form.confirm_button(class_="btn btn-success float-end mb-2 text-uppercase", id="submit_button") }}
+      </form>
+    </div>
+  </li>
+</ul>
 {% endblock %}
