@@ -4,6 +4,7 @@
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
+* [Demo](#demo)
 * [Setup & Installation](#setup-&-installation)
 * [Running The App](#running-the-app)
 * [Viewing The App](#viewing-the-app)
@@ -22,6 +23,9 @@
 * Flask 1.1.x
 * SQLAlchemy 1.3.x
 * SQLite3
+
+## Demo
+Check app demo [here.](https://my-timetracker.herokuapp.com/)
 
 ## Setup & Installation
 Make sure you have the latest version of Python installed.
