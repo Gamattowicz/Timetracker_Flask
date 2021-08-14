@@ -5,14 +5,18 @@ from timetracker.users.models import User
 
 
 class RegisterForm(FlaskForm):
-    username = TextField('Username',
-            validators=[DataRequired(), Length(min=3, max=32)])
-    password = PasswordField('Password',
-            validators=[DataRequired(), Length(min=8, max=64)])
-    confirm = PasswordField('Verify password',
-            validators=[DataRequired(), EqualTo('password',
-            message='Passwords must match')])
-    confirm_button = SubmitField('Submit')
+    username = TextField("Username", validators=[DataRequired(), Length(min=3, max=32)])
+    password = PasswordField(
+        "Password", validators=[DataRequired(), Length(min=8, max=64)]
+    )
+    confirm = PasswordField(
+        "Verify password",
+        validators=[
+            DataRequired(),
+            EqualTo("password", message="Passwords must match"),
+        ],
+    )
+    confirm_button = SubmitField("Submit")
 
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)
@@ -29,11 +33,10 @@ class RegisterForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    username = TextField('Username',
-                      validators=[DataRequired(), Length(1, 64)])
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Keep me logged in')
-    submit = SubmitField('Log In')
+    username = TextField("Username", validators=[DataRequired(), Length(1, 64)])
+    password = PasswordField("Password", validators=[DataRequired()])
+    remember_me = BooleanField("Keep me logged in")
+    submit = SubmitField("Log In")
 
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
@@ -44,9 +47,9 @@ class LoginForm(FlaskForm):
             return False
         user = User.query.filter_by(username=self.username.data).first()
         if not user:
-            self.username.errors.append('Unknown username')
+            self.username.errors.append("Unknown username")
             return False
         if not user.verify_password(self.password.data):
-            self.password.errors.append('Invalid password')
+            self.password.errors.append("Invalid password")
             return False
         return True

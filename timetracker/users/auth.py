@@ -1,12 +1,11 @@
-from flask import Blueprint, render_template, request, flash, redirect, \
-    url_for, g
+from flask import Blueprint, render_template, request, flash, redirect, url_for, g
 from timetracker.users.models import User
 from timetracker import db
 from flask_login import login_user, current_user, logout_user, login_required
 from timetracker.users.forms import RegisterForm, LoginForm
 
 
-auth = Blueprint('auth', __name__)
+auth = Blueprint("auth", __name__)
 
 
 @auth.before_request
@@ -14,19 +13,19 @@ def before_request():
     g.user = current_user
 
 
-@auth.route('/login', methods=['GET', 'POST'])
+@auth.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm(request.form)
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
-            redirect_url = request.args.get('next') or url_for('views.home')
+            redirect_url = request.args.get("next") or url_for("views.home")
             return redirect(redirect_url)
-    return render_template('login.html', form=form, user=current_user)
+    return render_template("login.html", form=form, user=current_user)
 
 
-@auth.route('sign-up', methods=['GET', 'POST'])
+@auth.route("sign-up", methods=["GET", "POST"])
 def sign_up():
     form = RegisterForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
@@ -34,13 +33,13 @@ def sign_up():
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
-        return redirect(url_for('views.home'))
-    return render_template('sign_up.html', form=form, user=current_user)
+        return redirect(url_for("views.home"))
+    return render_template("sign_up.html", form=form, user=current_user)
 
 
-@auth.route('logout')
+@auth.route("logout")
 @login_required
 def logout():
     logout_user()
-    flash('You have been logged out', category='success')
-    return redirect(url_for('auth.login'))
+    flash("You have been logged out", category="success")
+    return redirect(url_for("auth.login"))

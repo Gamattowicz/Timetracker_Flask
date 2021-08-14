@@ -9,15 +9,15 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(50))
     total_vacation_days = db.Column(db.Integer, default=0)
     rem_vacation_days = db.Column(db.Integer, default=0)
-    hour = db.relationship('Hour', backref='user', passive_deletes=True)
-    vacation = db.relationship('Vacation', backref='user', passive_deletes=True)
+    hour = db.relationship("Hour", backref="user", passive_deletes=True)
+    vacation = db.relationship("Vacation", backref="user", passive_deletes=True)
 
     def __repr__(self):
         return f"{self.username}"
 
     @property
     def password(self):
-        raise AttributeError('password is not a readable attribute')
+        raise AttributeError("password is not a readable attribute")
 
     @password.setter
     def password(self, password):
