@@ -4,7 +4,6 @@
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
-* [Demo](#demo)
 * [Setup & Installation](#setup-&-installation)
 * [Running The App](#running-the-app)
 * [Viewing The App](#viewing-the-app)
@@ -24,19 +23,29 @@
 * SQLAlchemy 1.3.x
 * SQLite3
 
-## Demo
-Check app demo [here.](https://my-timetracker.herokuapp.com/)
-
 ## Setup & Installation
-Make sure you have the latest version of Python installed.
-```bash
-git clone <repo-url>
-```
+Make sure you have the latest version of Python and pip installed
 
+Clone the repository using the following command
+```bash
+git clone https://github.com/Gamattowicz/Timetracker_Flask.git
+```
+Create a virtual environment
+```bash
+python -m venv venv
+```
+Active the virtual environment
+```bash
+.\env\Scripts\activate
+```
+Install all the project Requirements
 ```bash
 pip install -r requirements.txt
 ```
-
+Create file with environment variables, where <secret_key_name> is your unique data. It should be hidden.
+```bash
+echo SECRET_KEY=<secret_key_name> > .env
+```
 ## Running The App
 ```bash
 python timetracker.py
