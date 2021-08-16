@@ -4,6 +4,7 @@
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
+* [Demo](#demo)
 * [Setup & Installation](#setup-&-installation)
 * [Running The App](#running-the-app)
 * [Viewing The App](#viewing-the-app)
@@ -12,16 +13,20 @@
 * [Contact](#contact)
 
 ## General info
-**Work time registration** with many features created in **Flask** to check Flask skills.
+**Timetracker** is an app created in **Flask** that helps you manage projects, work hours or vacation days. \
+The main purpose of creating it was to learn more about Flask and to make it useful in everyday work.
 
 ## Technologies
-* HTML5
-* CSS3
-* Bootstrap 4
 * Python 3.9.x
 * Flask 1.1.x
 * SQLAlchemy 1.3.x
 * SQLite3
+* Bootstrap 5
+* HTML5
+* CSS3
+
+## Demo
+Check app demo [here.](https://my-timetracker.herokuapp.com/)
 
 ## Setup & Installation
 Make sure you have the latest version of Python and pip installed
@@ -55,12 +60,14 @@ python timetracker.py
 Go to `http://127.0.0.1:5000`
 
 ## Features
-* User management system
-* Calculation of vacation days
-* Working timer
-* Adding hours of work and projects
-* Projects schedule
-* Calculation of overtime
+* User management system ![user_management.gif](readme_gifs/user_management.gif)
+* Calculating and adding vacation days ![vacation.gif](readme_gifs/vacation.gif)
+* Projects CRUD and schedule ![projects.gif](readme_gifs/projects.gif)
+* Hours CRUD and calculation of overtime ![projects.gif](readme_gifs/projects.gif)
+* Measuring working time and copying values ![timer.gif](readme_gifs/timer.gif)
+
+**To Do:**
+* Add more tests
 
 ## Status 
 Project in progress.
