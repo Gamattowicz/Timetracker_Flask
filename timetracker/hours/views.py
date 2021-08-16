@@ -21,7 +21,7 @@ def create_hour_view():
         amount = request.form.get("amount")
         project_shortcut = request.form.get("shortcut")
         user_id = current_user.id
-        hour_num = int(amount)
+        hour_num = float(amount)
         project = Project.query.filter_by(shortcut=project_shortcut).first()
         project_start_date = datetime.strptime(project.start_date, "%Y-%m-%d").date()
         project_end_date = datetime.strptime(project.end_date, "%Y-%m-%d").date()
