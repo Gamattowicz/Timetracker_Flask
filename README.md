@@ -1,6 +1,8 @@
 <div align="center">
 <h1 align="center">Timetracker</h1></div>
 
+![Timetracker_thumbnail.PNG](readme_gifs/Timetracker_thumbnail.PNG)
+
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
